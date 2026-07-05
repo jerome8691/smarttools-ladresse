@@ -1,0 +1,9 @@
+{
+  "name": "smarttools-ladresse-graal",
+  "version": "5.9.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "openai": "latest"
+  }
+}
