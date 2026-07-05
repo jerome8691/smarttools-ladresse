@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>SmartTools — Cockpit opérationnel de l'agence</title>
+<title>SmartTools V5.9.6 — IA front corrigée</title>
 <style>
 :root{
   --teal:#008985;
@@ -262,6 +262,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
       <article class="card" onclick="openModule('negotiate')"><div class="icon">📉</div><h3>SmartNegotiate</h3><p>Défend honoraires, baisse de prix, offre ou exclusivité.</p><span class="pill">Négociation</span></article>
       <article class="card" onclick="openModule('prospect')"><div class="icon">☎️</div><h3>SmartProspect</h3><p>Scripts téléphone, porte-à-porte, copropriété, DPE.</p><span class="pill">Prospection</span></article>
       <article class="card" onclick="openModule('news')"><div class="icon">📰</div><h3>SmartNews</h3><p>Actualité immo du jour : impact terrain, phrase commerciale, action du jour.</p><span class="pill">Quotidien</span></article>
+      <article class="card" onclick="openModule('testapi')"><div class="icon">🧪</div><h3>Test IA</h3><p>Vérifie que SmartTools appelle bien la vraie API Vercel et que la réponse change selon la demande.</p><span class="pill">Diagnostic</span></article>
     </div>
   </section>
 
@@ -330,7 +331,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   <section id="roadmap" class="section">
     <div class="panel">
       <h2>🧭 Roadmap Graal</h2>
-      <div class="box">✅ Interface cockpit claire et reposante<br>✅ Calculettes intégrées dans SmartCalcul<br>✅ Accès aux versions GitHub originales<br>✅ SmartWriter / SmartManager / SmartNews en démonstration<br>🔜 Déploiement propre GitHub Pages<br>✅ Pack Vercel/API prêt à déposer<br>🔜 Ajouter la clé OpenAI dans Vercel<br>🔜 Comptes utilisateurs et historique</div>
+      <div class="box">✅ Interface cockpit claire et reposante<br>✅ Calculettes intégrées dans SmartCalcul<br>✅ Accès aux versions GitHub originales<br>✅ SmartWriter / SmartManager / SmartNews en démonstration<br>🔜 Déploiement propre GitHub Pages<br>🔜 Vercel + API OpenAI réelle côté serveur<br>🔜 Comptes utilisateurs et historique</div>
     </div>
   </section>
 
@@ -369,6 +370,7 @@ function openModule(name){
     negotiate: promptHTML('📉 SmartNegotiate','Prépare un argumentaire pour défendre les honoraires, la baisse de prix ou l’exclusivité.'),
     prospect: promptHTML('☎️ SmartProspect','Prépare un script de prospection copropriété / DPE / ancien client / voisinage.'),
     news: promptHTML('📰 SmartNews Immo Quotidien','Actualité → impact terrain → phrase commerciale → action du jour.'),
+    testapi: testApiHTML(),
     github: githubHTML()
   }[name] || checklistHTML('Module','Module en préparation.');
   document.getElementById('moduleContent').innerHTML=html;
@@ -408,6 +410,7 @@ function commissionHTML(){return `<div class="split"><div class="panel"><h2>🤝
 <button class="btn" onclick="calcCommission()">Répartir</button></div><div class="result" id="c_out">Résultat</div></div>`}
 function checklistHTML(title,text){return `<div class="panel"><h2>${title}</h2><div class="box">${text}<br><br>Ce module sera enrichi avec cases à cocher, exports et modèles prêts à copier.</div><button class="btn secondary" onclick="show('dashboard',navBtnByText('Vision'))">Retour cockpit</button></div>`}
 function promptHTML(title,seed){return `<div class="split"><div class="panel"><h2>${title}</h2><label>Demande<textarea id="p_text">${seed}</textarea></label><button class="btn" onclick="promptDemo('${title.replace(/'/g,"")}')">Générer</button></div><div class="result" id="p_out">Résultat généré ici.</div></div>`}
+function testApiHTML(){return `<div class="split"><div class="panel"><h2>🧪 Test connexion IA</h2><label>Demande test<textarea id="p_text">Réponds en une phrase très courte : test SmartTools IA ${new Date().toLocaleTimeString('fr-FR')}</textarea></label><button class="btn" onclick="promptDemo('Test IA')">Tester l'IA</button><div class="box">Si la vraie IA fonctionne, la réponse change selon ta demande. Si tu vois MODE DÉMO ou ERREUR API, la clé OpenAI / le modèle / le redéploiement Vercel est à vérifier.</div></div><div class="result" id="p_out">Résultat du test ici.</div></div>`}
 function githubHTML(){return `<div class="panel"><h2>🔗 Calculettes GitHub originales</h2>
 <div class="source"><b>Simulateur crédit agence</b><br><a target="_blank" href="https://jerome8691.github.io/simulateur-credit-agence/">Ouvrir la version originale</a></div>
 <div class="source"><b>Barème honoraires</b><br><a target="_blank" href="https://jerome8691.github.io/Bareme-Honoraires/">Ouvrir la version originale</a></div>
@@ -422,11 +425,60 @@ function calcRelais(){let v=num('r_val'),dec=num('r_dec'),crd=num('r_crd'),q=num
 function calcInvest(){let p=num('i_prix'),trav=num('i_trav'),loyer=num('i_loyer'),ch=num('i_ch'),tf=num('i_tf'),mens=num('i_mens'),cout=p+notaireVal(p,'ancien')+trav,brut=loyer*12/cout*100,net=(loyer*12-ch*12-tf)/cout*100,cf=loyer-ch-tf/12-mens;document.getElementById('i_out').innerHTML=`<h2>Investissement locatif</h2>Coût total estimé : ${euros(cout)}\nLoyers annuels : ${euros(loyer*12)}\nRentabilité brute : ${percent(brut)}\nRentabilité nette simplifiée : ${percent(net)}\nCash-flow mensuel : <span class="${cf>=0?'ok':'warn'}">${euros(cf)}</span>`}
 function calcBaisse(){let old=num('b_old'),nw=num('b_new'),fo=num('b_fee_old'),fn=num('b_fee_new'),netOld=old-fo,netNew=nw-fn;document.getElementById('b_out').innerHTML=`<h2>Baisse de prix</h2>Ancien prix FAI : ${euros(old)}\nNouveau prix FAI : ${euros(nw)}\nBaisse affichée : ${euros(old-nw)}\nAncien net vendeur : ${euros(netOld)}\nNouveau net vendeur : ${euros(netNew)}\nImpact net vendeur : <span class="warn">-${euros(netOld-netNew)}</span>\nImpact honoraires : <span class="warn">-${euros(fo-fn)}</span>\n\nPhrase terrain : mieux vaut une baisse maîtrisée qu'un bien qui s'use sur le marché.`}
 function calcCommission(){let total=num('c_total'),e=num('c_entree'),s=num('c_sortie');document.getElementById('c_out').innerHTML=`<h2>Répartition commission</h2>Commission totale : ${euros(total)}\nPart entrée ${e}% : ${euros(total*e/100)}\nPart sortie ${s}% : ${euros(total*s/100)}\n\nÀ adapter aux règles internes selon mandat, droit de suite, copro et arbitrage Direction.`}
-function promptDemo(t){document.getElementById('p_out').innerHTML=`<h2>${t}</h2>Analyse : situation classique à traiter avec méthode.\n\nArguments terrain :\n• Reformuler le besoin du client.\n• Donner un élément factuel : prix, financement, délai, concurrence.\n• Proposer une action simple et datée.\n\nPhrase prête à dire :\n« Mon rôle est de sécuriser votre projet, pas simplement de publier une annonce. On ajuste la stratégie pour obtenir un vrai résultat. »\n\nAction : envoyer un compte-rendu clair et programmer une relance.`}
-function fakeAI(){document.getElementById('ai_out').innerHTML=`<h2>Réponse SmartTools AI</h2>Pour défendre les honoraires, ne pars pas du prix de la commission. Pars du risque évité et de la valeur créée : estimation juste, stratégie de vente, qualification acquéreur, négociation, sécurité juridique.\n\nPhrase : « Nos honoraires ne rémunèrent pas une annonce, ils rémunèrent la sécurisation complète de votre vente. »`}
-function writer(){let type=document.getElementById('w_type').value,ctx=document.getElementById('w_ctx').value;document.getElementById('w_out').innerHTML=`<h2>${type}</h2>Bonjour,\n\nSuite aux derniers retours, les visites confirment l'intérêt pour le bien, notamment sur ses points forts. En revanche, le prix ressort comme le principal frein à la décision.\n\nJe vous propose que nous ajustions ensemble la stratégie afin de relancer l'intérêt et provoquer de nouvelles visites qualifiées.\n\nBien cordialement,\n\nContexte pris en compte : ${ctx}`}
-function manager(){let ctx=document.getElementById('m_ctx').value;document.getElementById('m_out').innerHTML=`<h2>Plan d'action manager</h2>Diagnostic : activité présente mais transformation insuffisante.\n\nActions :\n1. Revoir les R2 estimation et la défense de l'exclusivité.\n2. Mettre un point hebdomadaire sur les relances vendeurs.\n3. Travailler un script honoraires / exclusivité.\n4. Mesurer sur 30 jours : estimations, mandats, exclusifs, relances.\n\nSituation analysée : ${ctx}`}
+async function callSmartToolsAI(moduleName, promptText){
+  const cleanPrompt = (promptText || '').trim();
+  try{
+    const response = await fetch('/api/ai', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ module: moduleName, prompt: cleanPrompt })
+    });
+    let data = {};
+    try { data = await response.json(); } catch(e) {}
+    if(!response.ok){
+      return `ERREUR API (${response.status})\n\n${data.text || data.error || 'La fonction /api/ai répond mais signale une erreur.'}\n\nÀ vérifier dans Vercel :\n• OPENAI_API_KEY\n• OPENAI_MODEL\n• redéploiement après changement de variable`;
+    }
+    return data.text || fallbackSmartToolsAI(moduleName, cleanPrompt);
+  }catch(e){
+    return fallbackSmartToolsAI(moduleName, cleanPrompt);
+  }
+}
+function fallbackSmartToolsAI(moduleName, promptText){
+  return `MODE DÉMO — API IA non appelée ou non disponible\n\nModule : ${moduleName}\n\nDemande prise en compte :\n${promptText}\n\nDiagnostic :\nLe front fonctionne, mais SmartTools n'obtient pas encore une réponse OpenAI réelle.\n\nCauses probables :\n• le site affiché n'est pas cette version V5.9.6 ;\n• Vercel n'a pas redéployé après ajout du fichier ;\n• OPENAI_API_KEY manque ou n'est pas dans Production + Preview ;\n• OPENAI_MODEL n'est pas accepté par l'API.\n\nRéponse exemple :\n• analyser la situation terrain ;\n• préparer un argumentaire simple ;\n• proposer un mail ou SMS prêt à copier ;\n• définir la prochaine action.`;
+}
+function renderAI(text){return `<h2>Réponse SmartTools IA</h2>${String(text).replace(/\n/g,'<br>')}`}
+async function promptDemo(t){
+  const prompt = document.getElementById('p_text')?.value || '';
+  const out = document.getElementById('p_out');
+  if(out) out.innerHTML = `<h2>${t}</h2>Génération IA en cours...`;
+  const text = await callSmartToolsAI(t, prompt);
+  if(out) out.innerHTML = renderAI(text);
+}
+async function fakeAI(){
+  const prompt = document.getElementById('ai_prompt')?.value || '';
+  const out = document.getElementById('ai_out');
+  if(out) out.innerHTML = `<h2>SmartTools AI</h2>Génération IA en cours...`;
+  const text = await callSmartToolsAI('SmartTools AI', prompt);
+  if(out) out.innerHTML = renderAI(text);
+}
+async function writer(){
+  const type = document.getElementById('w_type')?.value || 'Texte métier';
+  const ctx = document.getElementById('w_ctx')?.value || '';
+  const out = document.getElementById('w_out');
+  if(out) out.innerHTML = `<h2>${type}</h2>Rédaction IA en cours...`;
+  const text = await callSmartToolsAI('SmartWriter - ' + type, ctx);
+  if(out) out.innerHTML = renderAI(text);
+}
+async function manager(){
+  const ctx = document.getElementById('m_ctx')?.value || '';
+  const out = document.getElementById('m_out');
+  if(out) out.innerHTML = `<h2>SmartManager</h2>Analyse IA en cours...`;
+  const text = await callSmartToolsAI('SmartManager', ctx);
+  if(out) out.innerHTML = renderAI(text);
+}
+
+
+
 </script>
-\n<script>\nasync function callSmartToolsAI(moduleName, promptText){\n  const cleanPrompt = (promptText || '').trim();\n  try{\n    const response = await fetch('/api/ai', {\n      method:'POST',\n      headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({module: moduleName, prompt: cleanPrompt})\n    });\n    if(!response.ok) throw new Error('API indisponible');\n    const data = await response.json();\n    return data.text || fallbackSmartToolsAI(moduleName, cleanPrompt);\n  }catch(e){\n    return fallbackSmartToolsAI(moduleName, cleanPrompt);\n  }\n}\nfunction fallbackSmartToolsAI(moduleName, promptText){\n  return `MODE DÉMO — ${moduleName}\n\nLa vraie IA sera active quand SmartTools sera déployé sur Vercel avec OPENAI_API_KEY.\n\nDemande prise en compte :\n${promptText}\n\nRéponse métier exemple :\n• Diagnostic terrain clair.\n• Argumentaire commercial utilisable en rendez-vous.\n• Mail ou SMS prêt à copier.\n• Prochaine action concrète.\n\nPhrase prête à dire :\n« SmartTools ne remplace pas le logiciel métier. Il prépare les mots, les calculs et les décisions pour gagner du temps en rendez-vous. »`;\n}\nfunction formatAI(text){return `<h2>Réponse SmartTools IA</h2>${String(text).replace(/\\n/g,'<br>')}`}\nasync function promptDemo(t){\n  const prompt = document.getElementById('p_text')?.value || '';\n  const out = document.getElementById('p_out');\n  out.innerHTML = `<h2>${t}</h2>Génération en cours...`;\n  const text = await callSmartToolsAI(t, prompt);\n  out.innerHTML = formatAI(text);\n}\nasync function fakeAI(){\n  const prompt = document.getElementById('ai_prompt')?.value || '';\n  const out = document.getElementById('ai_out');\n  out.innerHTML = `<h2>SmartTools AI</h2>Génération en cours...`;\n  const text = await callSmartToolsAI('SmartTools AI', prompt);\n  out.innerHTML = formatAI(text);\n}\nasync function writer(){\n  const type = document.getElementById('w_type')?.value || 'Texte métier';\n  const ctx = document.getElementById('w_ctx')?.value || '';\n  const out = document.getElementById('w_out');\n  out.innerHTML = `<h2>${type}</h2>Rédaction en cours...`;\n  const text = await callSmartToolsAI('SmartWriter - '+type, ctx);\n  out.innerHTML = formatAI(text);\n}\nasync function manager(){\n  const ctx = document.getElementById('m_ctx')?.value || '';\n  const out = document.getElementById('m_out');\n  out.innerHTML = `<h2>SmartManager</h2>Analyse en cours...`;\n  const text = await callSmartToolsAI('SmartManager', ctx);\n  out.innerHTML = formatAI(text);\n}\n</script>\n
 </body>
 </html>
