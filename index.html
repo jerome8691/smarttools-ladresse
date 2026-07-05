@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>SmartTools V5.9.6 — IA front corrigée</title>
+<title>SmartTools V5.9.7 — accueil compact + SharePoint</title>
 <style>
 :root{
   --teal:#008985;
@@ -33,23 +33,23 @@ body{
 .hero{
   display:grid;
   grid-template-columns:1.25fr .75fr;
-  gap:24px;
+  gap:18px;
   color:white;
   background:linear-gradient(135deg,#082456 0%,#075977 48%,#008985 100%);
-  border-radius:28px;
-  padding:30px;
+  border-radius:22px;
+  padding:20px 22px;
   box-shadow:0 18px 45px rgba(7,25,71,.18);
 }
 .hero h1{
   margin:0;
-  font-size:40px;
+  font-size:32px;
   line-height:1.1;
   text-transform:uppercase;
   letter-spacing:.3px;
 }
 .hero p{
-  margin:24px 0 0;
-  font-size:20px;
+  margin:12px 0 0;
+  font-size:16px;
   line-height:1.45;
   color:#eaf6ff;
   max-width:820px;
@@ -57,29 +57,29 @@ body{
 .stats{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:14px;
+  gap:10px;
 }
 .stat{
   border:1px solid rgba(255,255,255,.24);
   background:rgba(255,255,255,.14);
-  border-radius:18px;
-  padding:20px;
-  min-height:112px;
+  border-radius:14px;
+  padding:13px;
+  min-height:78px;
 }
-.stat b{display:block;font-size:34px;margin-bottom:6px}
-.stat span{font-size:15px;text-transform:uppercase;color:#ecfbff}
+.stat b{display:block;font-size:27px;margin-bottom:4px}
+.stat span{font-size:13px;text-transform:uppercase;color:#ecfbff}
 .tabs{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin:22px 0;
+  margin:16px 0;
 }
 .tabs button{
   border:1px solid var(--line);
   background:white;
   color:var(--navy);
   border-radius:999px;
-  padding:13px 18px;
+  padding:11px 16px;
   font-weight:900;
   cursor:pointer;
   box-shadow:0 4px 12px rgba(7,25,71,.04);
@@ -199,9 +199,9 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 @media(max-width:680px){
   .app{padding:12px 12px 38px}
   .topline{margin-bottom:14px}
-  .hero{padding:20px;border-radius:22px}
-  .hero h1{font-size:30px}
-  .hero p{font-size:16px;margin-top:16px}
+  .hero{padding:16px;border-radius:18px}
+  .hero h1{font-size:26px}
+  .hero p{font-size:15px;margin-top:10px}
   .stats,.grid,.row{grid-template-columns:1fr}
   .card{min-height:0;padding:20px}
   .tabs{overflow:auto;flex-wrap:nowrap;padding-bottom:4px}
@@ -216,18 +216,18 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   <section class="hero">
     <div>
       <h1>Le cockpit opérationnel de l'agence</h1>
-      <p>Ce dashboard présente les grands sujets standards d'une agence immobilière transaction. L'objectif est de transformer chaque besoin terrain en module simple, rapide et utile en rendez-vous, en management ou en suivi de dossier.</p>
+      <p>Tous les outils essentiels de l'agence, réunis dans une interface simple : calculer, préparer, argumenter et décider plus vite.</p>
     </div>
     <div class="stats">
       <div class="stat"><b>12</b><span>familles d'outils métier</span></div>
       <div class="stat"><b>3</b><span>profils ciblés : négo, manager, direction</span></div>
       <div class="stat"><b>1</b><span>application commune</span></div>
-      <div class="stat"><b>IA</b><span>future couche d'assistance</span></div>
+      <div class="stat"><b>IA</b><span>assistance métier connectée</span></div>
     </div>
   </section>
 
   <nav class="tabs">
-    <button class="active" onclick="show('dashboard',this)">Vision</button>
+    <button class="active" onclick="show('dashboard',this)">Accueil</button>
     <button onclick="show('calculs',this)">SmartCalcul</button>
     <button onclick="show('assistants',this)">SmartAssistants</button>
     <button onclick="show('ai',this)">SmartTools AI</button>
@@ -249,7 +249,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 
       <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition simple ou avancée selon règles internes : entreur, sorteur, copro, droit de suite.</p><span class="pill">Interne</span></article>
       <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Documents à réunir selon maison, copropriété, terrain, SCI, succession.</p><span class="pill">Sécurisation</span></article>
-      <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Rappels par type de dossier : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">Dossier</span></article>
+      <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Accès au dossier SharePoint de l'agence : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">SharePoint</span></article>
       <article class="card" onclick="openModule('historique')"><div class="icon">⭐</div><h3>Historique</h3><p>Dernières simulations personnelles, favoris, export et reprise rapide.</p><span class="pill">À venir</span></article>
     </div>
 
@@ -343,6 +343,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 </div>
 
 <script>
+const SHAREPOINT_DOCUMENTS_URL = "https://adresseimmo.sharepoint.com/:f:/s/CONCEPTPREMIUM/IgBjgKvaI4ecTYwGHtLv66hNAcA4FO0ha2qaMwZUTeIW3AQ?e=LIITlQ";
 const euros=v=>Math.round(v).toLocaleString('fr-FR')+' €';
 const percent=v=>(Math.round(v*100)/100).toFixed(2).replace('.',',')+' %';
 const num=id=>Number(String(document.getElementById(id).value).replace(',','.'))||0;
@@ -382,7 +383,7 @@ function financeHTML(){return `<div class="split"><div class="panel"><h2>🏦 Sm
 <div class="row"><label>Prix du bien<input id="f_prix" value="320000"></label><label>Apport<input id="f_app" value="40000"></label></div>
 <div class="row"><label>Taux crédit %<input id="f_taux" value="3.8"></label><label>Durée années<input id="f_duree" value="25"></label></div>
 <label>Type<select id="f_type"><option value="ancien">Ancien</option><option value="neuf">Neuf</option></select></label>
-<div class="toolbar"><button class="btn" onclick="calcFinance()">Calculer</button><button class="btn secondary" onclick="show('dashboard',navBtnByText('Vision'))">Retour cockpit</button></div></div><div class="result" id="f_out">Résultat</div></div>`}
+<div class="toolbar"><button class="btn" onclick="calcFinance()">Calculer</button><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour cockpit</button></div></div><div class="result" id="f_out">Résultat</div></div>`}
 function honorairesHTML(){return `<div class="split"><div class="panel"><h2>🧮 SmartHonoraires</h2>
 <label>Prix FAI<input id="h_prix" value="361702"></label><label>Honoraires proposés<input id="h_fees" value="21702"></label>
 <div class="toolbar"><button class="btn" onclick="calcHonoraires()">Calculer</button><button class="btn secondary" onclick="document.getElementById('h_prix').value=361702;document.getElementById('h_fees').value=21702;calcHonoraires()">340 000 € net vendeur</button></div></div><div class="result" id="h_out">Résultat</div></div>`}
@@ -408,7 +409,8 @@ function commissionHTML(){return `<div class="split"><div class="panel"><h2>🤝
 <label>Part entrée %<input id="c_entree" value="50"></label>
 <label>Part sortie %<input id="c_sortie" value="50"></label>
 <button class="btn" onclick="calcCommission()">Répartir</button></div><div class="result" id="c_out">Résultat</div></div>`}
-function checklistHTML(title,text){return `<div class="panel"><h2>${title}</h2><div class="box">${text}<br><br>Ce module sera enrichi avec cases à cocher, exports et modèles prêts à copier.</div><button class="btn secondary" onclick="show('dashboard',navBtnByText('Vision'))">Retour cockpit</button></div>`}
+function checklistHTML(title,text){return `<div class="panel"><h2>${title}</h2><div class="box">${text}<br><br>Ce module sera enrichi avec cases à cocher, exports et modèles prêts à copier.</div><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour cockpit</button></div>`}
+function documentsHTML(){return `<div class="panel"><h2>📑 Documents obligatoires</h2><div class="box">Accédez au dossier SharePoint officiel de l'agence pour retrouver les documents à jour : diagnostics, pièces vendeur, copropriété, urbanisme et modèles internes.</div><div class="toolbar"><button class="btn" onclick="window.open(SHAREPOINT_DOCUMENTS_URL,'_blank','noopener,noreferrer')">Ouvrir le dossier SharePoint</button><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour accueil</button></div></div>`}
 function promptHTML(title,seed){return `<div class="split"><div class="panel"><h2>${title}</h2><label>Demande<textarea id="p_text">${seed}</textarea></label><button class="btn" onclick="promptDemo('${title.replace(/'/g,"")}')">Générer</button></div><div class="result" id="p_out">Résultat généré ici.</div></div>`}
 function testApiHTML(){return `<div class="split"><div class="panel"><h2>🧪 Test connexion IA</h2><label>Demande test<textarea id="p_text">Réponds en une phrase très courte : test SmartTools IA ${new Date().toLocaleTimeString('fr-FR')}</textarea></label><button class="btn" onclick="promptDemo('Test IA')">Tester l'IA</button><div class="box">Si la vraie IA fonctionne, la réponse change selon ta demande. Si tu vois MODE DÉMO ou ERREUR API, la clé OpenAI / le modèle / le redéploiement Vercel est à vérifier.</div></div><div class="result" id="p_out">Résultat du test ici.</div></div>`}
 function githubHTML(){return `<div class="panel"><h2>🔗 Calculettes GitHub originales</h2>
@@ -425,17 +427,6 @@ function calcRelais(){let v=num('r_val'),dec=num('r_dec'),crd=num('r_crd'),q=num
 function calcInvest(){let p=num('i_prix'),trav=num('i_trav'),loyer=num('i_loyer'),ch=num('i_ch'),tf=num('i_tf'),mens=num('i_mens'),cout=p+notaireVal(p,'ancien')+trav,brut=loyer*12/cout*100,net=(loyer*12-ch*12-tf)/cout*100,cf=loyer-ch-tf/12-mens;document.getElementById('i_out').innerHTML=`<h2>Investissement locatif</h2>Coût total estimé : ${euros(cout)}\nLoyers annuels : ${euros(loyer*12)}\nRentabilité brute : ${percent(brut)}\nRentabilité nette simplifiée : ${percent(net)}\nCash-flow mensuel : <span class="${cf>=0?'ok':'warn'}">${euros(cf)}</span>`}
 function calcBaisse(){let old=num('b_old'),nw=num('b_new'),fo=num('b_fee_old'),fn=num('b_fee_new'),netOld=old-fo,netNew=nw-fn;document.getElementById('b_out').innerHTML=`<h2>Baisse de prix</h2>Ancien prix FAI : ${euros(old)}\nNouveau prix FAI : ${euros(nw)}\nBaisse affichée : ${euros(old-nw)}\nAncien net vendeur : ${euros(netOld)}\nNouveau net vendeur : ${euros(netNew)}\nImpact net vendeur : <span class="warn">-${euros(netOld-netNew)}</span>\nImpact honoraires : <span class="warn">-${euros(fo-fn)}</span>\n\nPhrase terrain : mieux vaut une baisse maîtrisée qu'un bien qui s'use sur le marché.`}
 function calcCommission(){let total=num('c_total'),e=num('c_entree'),s=num('c_sortie');document.getElementById('c_out').innerHTML=`<h2>Répartition commission</h2>Commission totale : ${euros(total)}\nPart entrée ${e}% : ${euros(total*e/100)}\nPart sortie ${s}% : ${euros(total*s/100)}\n\nÀ adapter aux règles internes selon mandat, droit de suite, copro et arbitrage Direction.`}
-function documentsHTML(){
-  return `
-    <div class="panel">
-      <h2>📑 Documents obligatoires</h2>
-      <p>Accédez au dossier SharePoint de l'agence pour retrouver les documents à jour.</p>
-      <button class="btn" onclick="window.open('https://adresseimmo.sharepoint.com/:f:/s/CONCEPTPREMIUM/IgBjgKvaI4ecTYwGHtLv66hNAcA4FO0ha2qaMwZUTeIW3AQ?e=LIITlQ','_blank')">
-        Ouvrir le dossier SharePoint
-      </button>
-    </div>
-  `;
-}
 async function callSmartToolsAI(moduleName, promptText){
   const cleanPrompt = (promptText || '').trim();
   try{
