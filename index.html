@@ -364,7 +364,7 @@ function openModule(name){
     baisse: baisseHTML(),
     commission: commissionHTML(),
     compromis: checklistHTML('Check-list compromis','Maison, copropriété, terrain, SCI, succession : pièces à réclamer avant rédaction.'),
-    documents: checklistHTML('Documents obligatoires','Diagnostics, titre de propriété, TF, pièces identité, PV AG, règlement copropriété, urbanisme.'),
+    documents: documentsHTML(),
     historique: checklistHTML('Historique','Module à venir : dernières simulations, favoris, reprise rapide, export PDF.'),
     estimate: promptHTML('🏠 SmartEstimate','Prépare un rendez-vous estimation : questions vendeur, documents, arguments exclusivité, points de vigilance.'),
     negotiate: promptHTML('📉 SmartNegotiate','Prépare un argumentaire pour défendre les honoraires, la baisse de prix ou l’exclusivité.'),
@@ -425,6 +425,17 @@ function calcRelais(){let v=num('r_val'),dec=num('r_dec'),crd=num('r_crd'),q=num
 function calcInvest(){let p=num('i_prix'),trav=num('i_trav'),loyer=num('i_loyer'),ch=num('i_ch'),tf=num('i_tf'),mens=num('i_mens'),cout=p+notaireVal(p,'ancien')+trav,brut=loyer*12/cout*100,net=(loyer*12-ch*12-tf)/cout*100,cf=loyer-ch-tf/12-mens;document.getElementById('i_out').innerHTML=`<h2>Investissement locatif</h2>Coût total estimé : ${euros(cout)}\nLoyers annuels : ${euros(loyer*12)}\nRentabilité brute : ${percent(brut)}\nRentabilité nette simplifiée : ${percent(net)}\nCash-flow mensuel : <span class="${cf>=0?'ok':'warn'}">${euros(cf)}</span>`}
 function calcBaisse(){let old=num('b_old'),nw=num('b_new'),fo=num('b_fee_old'),fn=num('b_fee_new'),netOld=old-fo,netNew=nw-fn;document.getElementById('b_out').innerHTML=`<h2>Baisse de prix</h2>Ancien prix FAI : ${euros(old)}\nNouveau prix FAI : ${euros(nw)}\nBaisse affichée : ${euros(old-nw)}\nAncien net vendeur : ${euros(netOld)}\nNouveau net vendeur : ${euros(netNew)}\nImpact net vendeur : <span class="warn">-${euros(netOld-netNew)}</span>\nImpact honoraires : <span class="warn">-${euros(fo-fn)}</span>\n\nPhrase terrain : mieux vaut une baisse maîtrisée qu'un bien qui s'use sur le marché.`}
 function calcCommission(){let total=num('c_total'),e=num('c_entree'),s=num('c_sortie');document.getElementById('c_out').innerHTML=`<h2>Répartition commission</h2>Commission totale : ${euros(total)}\nPart entrée ${e}% : ${euros(total*e/100)}\nPart sortie ${s}% : ${euros(total*s/100)}\n\nÀ adapter aux règles internes selon mandat, droit de suite, copro et arbitrage Direction.`}
+function documentsHTML(){
+  return `
+    <div class="panel">
+      <h2>📑 Documents obligatoires</h2>
+      <p>Accédez au dossier SharePoint de l'agence pour retrouver les documents à jour.</p>
+      <button class="btn" onclick="window.open('TON_LIEN_SHAREPOINT_ICI','_blank')">
+        Ouvrir le dossier SharePoint
+      </button>
+    </div>
+  `;
+}
 async function callSmartToolsAI(moduleName, promptText){
   const cleanPrompt = (promptText || '').trim();
   try{
