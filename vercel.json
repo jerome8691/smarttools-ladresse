@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/api/ai",
-      "destination": "/api/ai.js"
+  "functions": {
+    "api/ai.js": {
+      "maxDuration": 30
     }
-  ]
+  }
 }

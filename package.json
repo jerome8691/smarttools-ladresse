@@ -1,6 +1,6 @@
 {
-  "name": "smarttools-ladresse-graal",
-  "version": "5.9.0",
+  "name": "smarttools-ladresse-cockpit-ia",
+  "version": "5.9.5",
   "private": true,
   "type": "module",
   "dependencies": {

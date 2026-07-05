@@ -2,157 +2,431 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SmartTools V5.9.3 — SmartCalcul consolidé</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SmartTools — Cockpit opérationnel de l'agence</title>
 <style>
-:root{--teal:#008985;--teal2:#0aa7a1;--navy:#071947;--bg:#f4f8fb;--card:#fff;--line:#d9e6ee;--muted:#5d6c82;--soft:#eaf8f7;--gold:#d8b45f;--red:#d71920;--orange:#d88600;--shadow:0 12px 30px rgba(7,25,71,.09)}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7fbff,#eef5f7);font-family:Arial,Helvetica,sans-serif;color:var(--navy)}
-.app{max-width:1280px;margin:auto;padding:22px}.hero{border-radius:30px;padding:30px;background:linear-gradient(135deg,#082456,#008985);color:white;box-shadow:var(--shadow);display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
-h1{margin:0;font-size:42px;line-height:1.05;text-transform:uppercase}.hero p{font-size:18px;line-height:1.45;color:#eaf6ff;max-width:720px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.13);border-radius:18px;padding:18px}.stat b{font-size:36px;display:block}.nav{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.nav button{border:1px solid var(--line);background:white;color:var(--navy);border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;box-shadow:0 4px 12px rgba(7,25,71,.04)}.nav button.on{background:var(--teal);color:white;border-color:var(--teal)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card,.panel,.result{background:white;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:22px}.card{min-height:170px;cursor:pointer}.card:hover{transform:translateY(-2px)}.icon{font-size:34px}.card h3{font-size:24px;margin:12px 0 8px}.card p{color:var(--muted);line-height:1.45}.tag{display:inline-block;margin-top:10px;background:var(--soft);border:1px solid #bde4e2;color:#006e6b;border-radius:999px;padding:8px 12px;font-weight:900;font-size:13px}.section{display:none}.section.active{display:block}.split{display:grid;grid-template-columns:.85fr 1.15fr;gap:16px}label{display:block;font-weight:900;margin:12px 0 6px}input,select,textarea{width:100%;border:1px solid #cbd9e4;border-radius:12px;padding:12px 13px;font-size:16px;color:var(--navy);background:white}textarea{min-height:100px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;background:linear-gradient(135deg,var(--teal),var(--teal2));color:white;border-radius:13px;padding:13px 16px;font-weight:900;cursor:pointer;margin-top:14px}.btn2{background:#edf5f7;color:var(--navy);border:1px solid var(--line)}.result{white-space:pre-line;line-height:1.55;min-height:300px}.result h3{margin-top:0}.ok{color:var(--teal);font-weight:900}.bad{color:var(--red);font-weight:900}.warn{color:var(--orange);font-weight:900}.sourcebox{margin-top:16px;background:#fffaf0;border:1px solid #ecd89e;border-radius:18px;padding:16px}.sourcebox a{color:var(--teal);font-weight:900}.iframebox{display:none;margin-top:16px}.iframebox iframe{width:100%;height:760px;border:1px solid var(--line);border-radius:18px;background:white}.mini{font-size:13px;color:var(--muted)}
-@media(max-width:900px){.app{padding:14px}.hero{grid-template-columns:1fr;padding:22px}h1{font-size:30px}.grid,.split,.row,.stats{grid-template-columns:1fr}.card{min-height:auto}.iframebox iframe{height:720px}}
+:root{
+  --teal:#008985;
+  --teal2:#0aa7a1;
+  --navy:#071947;
+  --navy2:#0c315c;
+  --bg:#f3f7fa;
+  --card:#ffffff;
+  --line:#d6e2ec;
+  --muted:#5f7088;
+  --soft:#eaf8f7;
+  --gold:#d8b45f;
+  --red:#d71920;
+  --orange:#d88600;
+  --shadow:0 14px 32px rgba(7,25,71,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(180deg,#f8fbfd,#eef4f7);
+  color:var(--navy);
+}
+.app{max-width:1320px;margin:auto;padding:18px 22px 50px}
+.topline{height:5px;background:var(--teal);border-radius:0 0 8px 8px;margin-bottom:22px}
+.hero{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:24px;
+  color:white;
+  background:linear-gradient(135deg,#082456 0%,#075977 48%,#008985 100%);
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 18px 45px rgba(7,25,71,.18);
+}
+.hero h1{
+  margin:0;
+  font-size:40px;
+  line-height:1.1;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+}
+.hero p{
+  margin:24px 0 0;
+  font-size:20px;
+  line-height:1.45;
+  color:#eaf6ff;
+  max-width:820px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.stat{
+  border:1px solid rgba(255,255,255,.24);
+  background:rgba(255,255,255,.14);
+  border-radius:18px;
+  padding:20px;
+  min-height:112px;
+}
+.stat b{display:block;font-size:34px;margin-bottom:6px}
+.stat span{font-size:15px;text-transform:uppercase;color:#ecfbff}
+.tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:22px 0;
+}
+.tabs button{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  border-radius:999px;
+  padding:13px 18px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(7,25,71,.04);
+}
+.tabs button.active{background:var(--teal);color:white;border-color:var(--teal)}
+.block-title{margin:22px 0 12px}
+.block-title h2{margin:0 0 6px;font-size:26px;text-transform:uppercase}
+.block-title p{margin:0;color:var(--muted);font-size:17px}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:22px;
+  min-height:225px;
+  cursor:pointer;
+  transition:.15s transform,.15s box-shadow;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(7,25,71,.12)}
+.icon{font-size:34px;margin-bottom:18px}
+.card h3{margin:0 0 14px;font-size:23px}
+.card p{margin:0;color:var(--muted);font-size:16px;line-height:1.42}
+.pill{
+  display:inline-block;
+  margin-top:20px;
+  background:var(--soft);
+  border:1px solid #bde3e1;
+  color:#006e6b;
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:900;
+}
+.section{display:none}
+.section.active{display:block}
+.panel,.result{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:22px;
+}
+.split{
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+  gap:18px;
+}
+.panel h2,.result h2{margin-top:0;font-size:28px}
+.result{
+  min-height:360px;
+  white-space:pre-line;
+  line-height:1.55;
+  font-size:16px;
+}
+label{
+  display:block;
+  margin:13px 0 7px;
+  font-weight:900;
+}
+input,select,textarea{
+  width:100%;
+  border:1px solid #cbd9e4;
+  border-radius:12px;
+  padding:12px 13px;
+  background:white;
+  color:var(--navy);
+  font-size:16px;
+}
+textarea{min-height:110px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{
+  border:0;
+  border-radius:13px;
+  background:linear-gradient(135deg,var(--teal),var(--teal2));
+  color:white;
+  padding:14px 17px;
+  font-weight:900;
+  cursor:pointer;
+  margin-top:15px;
+}
+.btn.secondary{
+  background:#edf5f7;
+  color:var(--navy);
+  border:1px solid var(--line);
+}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+.ok{color:var(--teal);font-weight:900}
+.bad{color:var(--red);font-weight:900}
+.warn{color:var(--orange);font-weight:900}
+.box{
+  background:#f8fbfd;
+  border:1px dashed #c5d4de;
+  border-radius:16px;
+  padding:16px;
+  margin-top:14px;
+}
+.source{
+  background:#fffaf0;
+  border:1px solid #ecd89e;
+  border-radius:16px;
+  padding:16px;
+  margin-top:14px;
+}
+.source a{color:var(--teal);font-weight:900}
+.copybtn{float:right;margin-top:0}
+footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
+@media(max-width:1050px){
+  .hero{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .split{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+  .app{padding:12px 12px 38px}
+  .topline{margin-bottom:14px}
+  .hero{padding:20px;border-radius:22px}
+  .hero h1{font-size:30px}
+  .hero p{font-size:16px;margin-top:16px}
+  .stats,.grid,.row{grid-template-columns:1fr}
+  .card{min-height:0;padding:20px}
+  .tabs{overflow:auto;flex-wrap:nowrap;padding-bottom:4px}
+  .tabs button{white-space:nowrap}
+}
 </style>
 </head>
 <body>
 <div class="app">
+  <div class="topline"></div>
+
   <section class="hero">
     <div>
-      <h1>SmartTools<br>SmartCalcul consolidé</h1>
-      <p>Une interface claire pour retrouver au même endroit les calculettes déjà créées : financement, honoraires, frais de notaire, prêt relais, investissement locatif et capacité acquéreur.</p>
+      <h1>Le cockpit opérationnel de l'agence</h1>
+      <p>Ce dashboard présente les grands sujets standards d'une agence immobilière transaction. L'objectif est de transformer chaque besoin terrain en module simple, rapide et utile en rendez-vous, en management ou en suivi de dossier.</p>
     </div>
     <div class="stats">
-      <div class="stat"><b>6</b> calculettes intégrées</div>
-      <div class="stat"><b>2</b> outils GitHub repris</div>
-      <div class="stat"><b>1</b> cockpit unique</div>
-      <div class="stat"><b>IA</b> prête à brancher</div>
+      <div class="stat"><b>12</b><span>familles d'outils métier</span></div>
+      <div class="stat"><b>3</b><span>profils ciblés : négo, manager, direction</span></div>
+      <div class="stat"><b>1</b><span>application commune</span></div>
+      <div class="stat"><b>IA</b><span>future couche d'assistance</span></div>
     </div>
   </section>
 
-  <div class="nav" id="nav">
-    <button class="on" onclick="show('home',this)">Accueil</button>
-    <button onclick="show('finance',this)">SmartFinance</button>
-    <button onclick="show('honoraires',this)">SmartHonoraires</button>
-    <button onclick="show('notaire',this)">Frais de notaire</button>
-    <button onclick="show('relais',this)">Prêt relais</button>
-    <button onclick="show('invest',this)">Investissement locatif</button>
-    <button onclick="show('github',this)">Calc. GitHub originales</button>
-  </div>
+  <nav class="tabs">
+    <button class="active" onclick="show('dashboard',this)">Vision</button>
+    <button onclick="show('calculs',this)">SmartCalcul</button>
+    <button onclick="show('assistants',this)">SmartAssistants</button>
+    <button onclick="show('ai',this)">SmartTools AI</button>
+    <button onclick="show('writer',this)">SmartWriter</button>
+    <button onclick="show('manager',this)">SmartManager</button>
+    <button onclick="show('roadmap',this)">Roadmap</button>
+  </nav>
 
-  <section id="home" class="section active">
+  <section id="dashboard" class="section active">
+    <div class="block-title">
+      <h2>Outils transaction prioritaires</h2>
+      <p>Ce sont les modules à forte valeur immédiate pour les négociateurs.</p>
+    </div>
     <div class="grid">
-      <div class="card" onclick="go('finance')"><div class="icon">🏦</div><h3>SmartFinance</h3><p>Faisabilité acquéreur : prix, apport, notaire, mensualité, taux d’endettement, reste à vivre.</p><span class="tag">Courtier agence</span></div>
-      <div class="card" onclick="go('honoraires')"><div class="icon">💰</div><h3>SmartHonoraires</h3><p>Barème, honoraires proposés, net vendeur, minimum 6 %, validation Direction.</p><span class="tag">Barème L’Adresse</span></div>
-      <div class="card" onclick="go('notaire')"><div class="icon">🧾</div><h3>Frais de notaire</h3><p>Calcul automatique en ancien ou neuf, avec coût total et montant à financer.</p><span class="tag">Automatique</span></div>
-      <div class="card" onclick="go('relais')"><div class="icon">🌉</div><h3>Prêt relais</h3><p>Valeur prudente, CRD, quotité bancaire, relais net et besoin de trésorerie.</p><span class="tag">Vente + achat</span></div>
-      <div class="card" onclick="go('invest')"><div class="icon">🏢</div><h3>Investissement locatif</h3><p>Rentabilité brute, nette, cash-flow mensuel et lecture commerciale simple.</p><span class="tag">Investisseur</span></div>
-      <div class="card" onclick="go('github')"><div class="icon">🔗</div><h3>Calc. GitHub originales</h3><p>Accès aux calculettes déjà publiées séparément dans tes repositories.</p><span class="tag">Outils repris</span></div>
+      <article class="card" onclick="openModule('honoraires')"><div class="icon">🧮</div><h3>Honoraires</h3><p>Barème, minimum 6 %, délégation négociateur, validation Direction, taux réel, net vendeur.</p><span class="pill">Priorité haute</span></article>
+      <article class="card" onclick="openModule('baisse')"><div class="icon">📉</div><h3>Baisse de prix</h3><p>Comparer ancien prix, nouveau prix, impact net vendeur et impact honoraires.</p><span class="pill">Rdv vendeur</span></article>
+      <article class="card" onclick="openModule('notaire')"><div class="icon">💰</div><h3>Frais de notaire</h3><p>Estimation ancien / neuf / terrain et budget total acquéreur.</p><span class="pill">Acquéreur</span></article>
+      <article class="card" onclick="openModule('finance')"><div class="icon">🏦</div><h3>Financement</h3><p>Mensualité, capacité, durée, taux, apport et scénarios de budget.</p><span class="pill">Visite / offre</span></article>
+
+      <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition simple ou avancée selon règles internes : entreur, sorteur, copro, droit de suite.</p><span class="pill">Interne</span></article>
+      <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Documents à réunir selon maison, copropriété, terrain, SCI, succession.</p><span class="pill">Sécurisation</span></article>
+      <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Rappels par type de dossier : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">Dossier</span></article>
+      <article class="card" onclick="openModule('historique')"><div class="icon">⭐</div><h3>Historique</h3><p>Dernières simulations personnelles, favoris, export et reprise rapide.</p><span class="pill">À venir</span></article>
+    </div>
+
+    <div class="block-title">
+      <h2>Outils de pilotage et d'assistance</h2>
+      <p>Les assistants qui transforment SmartTools en copilote métier.</p>
+    </div>
+    <div class="grid">
+      <article class="card" onclick="openModule('estimate')"><div class="icon">🏠</div><h3>SmartEstimate</h3><p>Prépare un rendez-vous estimation : questions, documents, objections, exclusivité.</p><span class="pill">Vendeur</span></article>
+      <article class="card" onclick="openModule('negotiate')"><div class="icon">📉</div><h3>SmartNegotiate</h3><p>Défend honoraires, baisse de prix, offre ou exclusivité.</p><span class="pill">Négociation</span></article>
+      <article class="card" onclick="openModule('prospect')"><div class="icon">☎️</div><h3>SmartProspect</h3><p>Scripts téléphone, porte-à-porte, copropriété, DPE.</p><span class="pill">Prospection</span></article>
+      <article class="card" onclick="openModule('news')"><div class="icon">📰</div><h3>SmartNews</h3><p>Actualité immo du jour : impact terrain, phrase commerciale, action du jour.</p><span class="pill">Quotidien</span></article>
     </div>
   </section>
 
-  <section id="finance" class="section">
+  <section id="calculs" class="section">
+    <div class="block-title">
+      <h2>SmartCalcul — toutes les calculettes</h2>
+      <p>Les outils de calcul regroupés dans SmartTools, avec les versions originales GitHub conservées.</p>
+    </div>
+    <div class="grid">
+      <article class="card" onclick="openModule('finance')"><div class="icon">🏦</div><h3>SmartFinance</h3><p>Faisabilité courtier, mensualité, endettement, reste à vivre.</p><span class="pill">Calcul intégré</span></article>
+      <article class="card" onclick="openModule('honoraires')"><div class="icon">🧮</div><h3>SmartHonoraires</h3><p>Barème, net vendeur, minimum 6 %, validation Direction.</p><span class="pill">Calcul intégré</span></article>
+      <article class="card" onclick="openModule('notaire')"><div class="icon">💰</div><h3>Frais de notaire</h3><p>Ancien, neuf, coût total acquéreur, montant à financer.</p><span class="pill">Calcul intégré</span></article>
+      <article class="card" onclick="openModule('relais')"><div class="icon">🌉</div><h3>Prêt relais</h3><p>Valeur prudente, CRD, relais net, besoin de trésorerie.</p><span class="pill">Calcul intégré</span></article>
+      <article class="card" onclick="openModule('invest')"><div class="icon">🏢</div><h3>Investissement locatif</h3><p>Rentabilité brute, nette, cash-flow mensuel simplifié.</p><span class="pill">Calcul intégré</span></article>
+      <article class="card" onclick="openModule('baisse')"><div class="icon">📉</div><h3>Baisse de prix</h3><p>Effet sur net vendeur, honoraires et positionnement marché.</p><span class="pill">Calcul intégré</span></article>
+      <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition interne entreur / sorteur / mandat / droit de suite.</p><span class="pill">Calcul intégré</span></article>
+      <article class="card" onclick="openModule('github')"><div class="icon">🔗</div><h3>Versions GitHub</h3><p>Accès aux calculettes publiées individuellement.</p><span class="pill">Originales</span></article>
+    </div>
+  </section>
+
+  <section id="assistants" class="section">
+    <div class="block-title"><h2>SmartAssistants</h2><p>Les assistants métier prêts pour l'IA.</p></div>
+    <div class="grid">
+      <article class="card" onclick="openModule('estimate')"><div class="icon">🏠</div><h3>SmartEstimate</h3><p>Prépare un rendez-vous estimation complet.</p><span class="pill">Vendeur</span></article>
+      <article class="card" onclick="openModule('negotiate')"><div class="icon">🗣️</div><h3>SmartNegotiate</h3><p>Objections honoraires, baisse de prix, exclusivité.</p><span class="pill">Argumentaire</span></article>
+      <article class="card" onclick="openModule('prospect')"><div class="icon">☎️</div><h3>SmartProspect</h3><p>Scripts de prospection et relances.</p><span class="pill">Prospection</span></article>
+      <article class="card" onclick="openModule('news')"><div class="icon">📰</div><h3>SmartNews</h3><p>Brief immobilier quotidien.</p><span class="pill">Actualités</span></article>
+    </div>
+  </section>
+
+  <section id="ai" class="section">
     <div class="split">
       <div class="panel">
-        <h2>🏦 SmartFinance — faisabilité acquéreur</h2>
-        <div class="row"><label>Revenus nets mensuels<input id="f_rev" value="5200"></label><label>Charges mensuelles<input id="f_ch" value="450"></label></div>
-        <div class="row"><label>Prix du bien<input id="f_prix" value="320000"></label><label>Apport<input id="f_app" value="40000"></label></div>
-        <div class="row"><label>Taux crédit %<input id="f_taux" value="3.8"></label><label>Durée années<input id="f_duree" value="25"></label></div>
-        <label>Type de projet<select id="f_type"><option value="ancien">Ancien</option><option value="neuf">Neuf</option></select></label>
-        <button class="btn" onclick="calcFinance()">Calculer la faisabilité</button>
+        <h2>🤖 SmartTools AI</h2>
+        <p>Démo locale : l'IA réelle sera branchée côté serveur en Cloud/API.</p>
+        <label>Demande métier<textarea id="ai_prompt">Je pars en estimation à Melun et le vendeur trouve les honoraires trop élevés. Prépare mon argumentaire.</textarea></label>
+        <button class="btn" onclick="fakeAI()">Générer une réponse métier</button>
       </div>
-      <div class="result" id="f_out"><h3>Résultat</h3>Renseigne le dossier puis clique sur calculer.</div>
+      <div class="result" id="ai_out">Résultat IA métier ici.</div>
     </div>
   </section>
 
-  <section id="honoraires" class="section">
+  <section id="writer" class="section">
     <div class="split">
       <div class="panel">
-        <h2>💰 SmartHonoraires</h2>
-        <label>Prix FAI<input id="h_prix" value="361702"></label>
-        <label>Honoraires proposés<input id="h_fees" value="21702"></label>
-        <button class="btn" onclick="calcHonoraires()">Calculer</button>
-        <button class="btn btn2" onclick="document.getElementById('h_prix').value=361702;document.getElementById('h_fees').value=21702;calcHonoraires()">Scénario 340 000 € net vendeur</button>
+        <h2>✍️ SmartWriter</h2>
+        <label>Type de texte<select id="w_type"><option>Compte-rendu vendeur</option><option>SMS de relance</option><option>Mail baisse de prix</option><option>Réponse avis Google</option></select></label>
+        <label>Contexte<textarea id="w_ctx">3 visites, retours positifs sur luminosité, frein principal : prix trop élevé.</textarea></label>
+        <button class="btn" onclick="writer()">Générer</button>
       </div>
-      <div class="result" id="h_out"><h3>Résultat</h3>Calcul du barème, du net vendeur et du seuil de validation.</div>
+      <div class="result" id="w_out">Texte généré ici.</div>
     </div>
   </section>
 
-  <section id="notaire" class="section">
+  <section id="manager" class="section">
     <div class="split">
       <div class="panel">
-        <h2>🧾 Frais de notaire</h2>
-        <label>Prix d’acquisition<input id="n_prix" value="300000"></label>
-        <label>Type<select id="n_type"><option value="ancien">Ancien — estimation 7,8 %</option><option value="neuf">Neuf — estimation 2,5 %</option></select></label>
-        <label>Apport<input id="n_app" value="30000"></label>
-        <button class="btn" onclick="calcNotaire()">Calculer</button>
+        <h2>👔 SmartManager</h2>
+        <label>Situation collaborateur<textarea id="m_ctx">12 estimations, 3 mandats, 0 exclusivité, relances irrégulières.</textarea></label>
+        <button class="btn" onclick="manager()">Créer un plan d'action</button>
       </div>
-      <div class="result" id="n_out"><h3>Résultat</h3>Frais estimés, coût total et montant à financer.</div>
+      <div class="result" id="m_out">Plan manager ici.</div>
     </div>
   </section>
 
-  <section id="relais" class="section">
-    <div class="split">
-      <div class="panel">
-        <h2>🌉 Prêt relais</h2>
-        <div class="row"><label>Valeur du bien à vendre<input id="r_val" value="420000"></label><label>Décote prudence %<input id="r_dec" value="10"></label></div>
-        <div class="row"><label>Capital restant dû<input id="r_crd" value="160000"></label><label>Quotité relais %<input id="r_quot" value="70"></label></div>
-        <div class="row"><label>Nouveau projet achat<input id="r_achat" value="520000"></label><label>Apport disponible hors relais<input id="r_app" value="30000"></label></div>
-        <button class="btn" onclick="calcRelais()">Calculer le relais</button>
-      </div>
-      <div class="result" id="r_out"><h3>Résultat</h3>Relais brut, relais net et besoin restant.</div>
-    </div>
-  </section>
-
-  <section id="invest" class="section">
-    <div class="split">
-      <div class="panel">
-        <h2>🏢 Investissement locatif</h2>
-        <div class="row"><label>Prix du bien<input id="i_prix" value="180000"></label><label>Travaux<input id="i_trav" value="12000"></label></div>
-        <div class="row"><label>Loyer mensuel HC<input id="i_loyer" value="850"></label><label>Charges non récup. mensuelles<input id="i_ch" value="80"></label></div>
-        <div class="row"><label>Taxe foncière annuelle<input id="i_tf" value="1200"></label><label>Mensualité crédit<input id="i_mens" value="950"></label></div>
-        <button class="btn" onclick="calcInvest()">Calculer l’investissement</button>
-      </div>
-      <div class="result" id="i_out"><h3>Résultat</h3>Rentabilité brute, nette et cash-flow.</div>
-    </div>
-  </section>
-
-  <section id="github" class="section">
+  <section id="roadmap" class="section">
     <div class="panel">
-      <h2>🔗 Calculettes originales retrouvées dans GitHub</h2>
-      <p>J’ai prévu ici les accès aux outils que nous avions déjà créés séparément. Ces liens servent à conserver les versions originales, tandis que SmartCalcul ci-dessus regroupe les fonctions dans SmartTools.</p>
-      <div class="sourcebox">
-        <b>Simulateur crédit agence</b><br>
-        Repository : <span class="mini">jerome8691/simulateur-credit-agence</span><br>
-        <a target="_blank" href="https://jerome8691.github.io/simulateur-credit-agence/">Ouvrir la version GitHub Pages</a>
-        <button class="btn btn2" onclick="toggleFrame('frame1')">Afficher dans SmartTools</button>
-        <div class="iframebox" id="frame1"><iframe src="https://jerome8691.github.io/simulateur-credit-agence/"></iframe></div>
-      </div>
-      <div class="sourcebox">
-        <b>Barème honoraires</b><br>
-        Repository : <span class="mini">jerome8691/Bareme-Honoraires</span><br>
-        <a target="_blank" href="https://jerome8691.github.io/Bareme-Honoraires/">Ouvrir la version GitHub Pages</a>
-        <button class="btn btn2" onclick="toggleFrame('frame2')">Afficher dans SmartTools</button>
-        <div class="iframebox" id="frame2"><iframe src="https://jerome8691.github.io/Bareme-Honoraires/"></iframe></div>
-      </div>
+      <h2>🧭 Roadmap Graal</h2>
+      <div class="box">✅ Interface cockpit claire et reposante<br>✅ Calculettes intégrées dans SmartCalcul<br>✅ Accès aux versions GitHub originales<br>✅ SmartWriter / SmartManager / SmartNews en démonstration<br>🔜 Déploiement propre GitHub Pages<br>✅ Pack Vercel/API prêt à déposer<br>🔜 Ajouter la clé OpenAI dans Vercel<br>🔜 Comptes utilisateurs et historique</div>
     </div>
   </section>
+
+  <section id="module" class="section">
+    <div id="moduleContent"></div>
+  </section>
+
+  <footer>SmartTools — le logiciel métier gère les dossiers, SmartTools fait gagner les rendez-vous.</footer>
 </div>
 
 <script>
-const €=v=>Math.round(v).toLocaleString('fr-FR')+' €';
-const pc=v=>(Math.round(v*100)/100).toFixed(2).replace('.',',')+' %';
-const val=id=>Number(String(document.getElementById(id).value).replace(',','.'))||0;
-function show(id,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');scrollTo({top:0,behavior:'smooth'})}
-function go(id){show(id,[...document.querySelectorAll('.nav button')].find(b=>b.textContent.toLowerCase().includes(id==='github'?'github':id)))}
-function mens(cap,taux,ans){let r=taux/100/12,n=ans*12;return r?cap*r/(1-Math.pow(1+r,-n)):cap/n}
-function bar(prix){return Math.max(4900,Math.min(prix,100000)*.095+Math.max(0,Math.min(prix,300000)-100000)*.06+Math.max(0,prix-300000)*.05)}
-function notaire(prix,type){return prix*(type==='neuf'?0.025:0.078)}
-function calcFinance(){let rev=val('f_rev'),ch=val('f_ch'),prix=val('f_prix'),app=val('f_app'),t=val('f_taux'),d=val('f_duree'),n=notaire(prix,document.getElementById('f_type').value),cap=Math.max(0,prix+n-app),m=mens(cap,t,d),end=(m+ch)/rev*100,rav=rev-ch-m,ok=end<=35;document.getElementById('f_out').innerHTML=`<h3>Résultat SmartFinance</h3>Prix projet : ${€(prix)}\nFrais de notaire estimés : ${€(n)}\nMontant à financer : ${€(cap)}\nMensualité estimée : ${€(m)}\nTaux d'endettement : <span class="${ok?'ok':'bad'}">${pc(end)}</span>\nReste à vivre : ${€(rav)}\n\nDécision : <span class="${ok?'ok':'warn'}">${ok?'Faisabilité favorable':'Dossier à sécuriser avant offre'}</span>\n\nPhrase terrain : le bon prix est aussi celui que les acquéreurs peuvent financer.`}
-function calcHonoraires(){let p=val('h_prix'),f=val('h_fees')||bar(p),b=bar(p),min=p*.06,net=p-f,ok=f>=min;document.getElementById('h_out').innerHTML=`<h3>Résultat SmartHonoraires</h3>Prix FAI : ${€(p)}\nBarème indicatif : ${€(b)}\nHonoraires proposés : ${€(f)}\nNet vendeur : ${€(net)}\nTaux réel : ${pc(f/p*100)}\nMinimum 6 % : ${€(min)}\n\nDécision : <span class="${ok?'ok':'bad'}">${ok?'Délégation possible':'Validation Direction obligatoire'}</span>`}
-function calcNotaire(){let p=val('n_prix'),app=val('n_app'),n=notaire(p,document.getElementById('n_type').value),total=p+n,fin=total-app;document.getElementById('n_out').innerHTML=`<h3>Frais de notaire</h3>Prix : ${€(p)}\nFrais estimés : ${€(n)}\nCoût total : ${€(total)}\nApport : ${€(app)}\nMontant à financer : ${€(fin)}`}
-function calcRelais(){let v=val('r_val'),dec=val('r_dec'),crd=val('r_crd'),q=val('r_quot'),achat=val('r_achat'),app=val('r_app'),prud=v*(1-dec/100),brut=prud*q/100,net=Math.max(0,brut-crd),besoin=Math.max(0,achat-app-net);document.getElementById('r_out').innerHTML=`<h3>Prêt relais</h3>Valeur prudente après décote : ${€(prud)}\nRelais brut possible : ${€(brut)}\nCapital restant dû : ${€(crd)}\nRelais net disponible : ${€(net)}\nBesoin restant sur nouveau projet : ${€(besoin)}\n\nLecture : ${besoin>0?'prévoir financement complémentaire ou apport':'relais suffisant sur ces hypothèses'}.`}
-function calcInvest(){let p=val('i_prix'),trav=val('i_trav'),loyer=val('i_loyer'),ch=val('i_ch'),tf=val('i_tf'),mensu=val('i_mens'),cout=p+notaire(p,'ancien')+trav,brut=loyer*12/cout*100,net=(loyer*12-ch*12-tf)/cout*100,cf=loyer-ch-tf/12-mensu;document.getElementById('i_out').innerHTML=`<h3>Investissement locatif</h3>Coût total estimé : ${€(cout)}\nLoyers annuels : ${€(loyer*12)}\nRentabilité brute : ${pc(brut)}\nRentabilité nette simplifiée : ${pc(net)}\nCash-flow mensuel estimé : <span class="${cf>=0?'ok':'warn'}">${€(cf)}</span>\n\nLecture : ${cf>=0?'opération équilibrée ou positive':'effort d’épargne mensuel à anticiper'}.`}
-function toggleFrame(id){let e=document.getElementById(id);e.style.display=e.style.display==='block'?'none':'block'}
-calcFinance();calcHonoraires();
+const euros=v=>Math.round(v).toLocaleString('fr-FR')+' €';
+const percent=v=>(Math.round(v*100)/100).toFixed(2).replace('.',',')+' %';
+const num=id=>Number(String(document.getElementById(id).value).replace(',','.'))||0;
+function navBtnByText(t){return [...document.querySelectorAll('.tabs button')].find(b=>b.textContent.includes(t))}
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function openModule(name){
+  const html={
+    finance: financeHTML(),
+    honoraires: honorairesHTML(),
+    notaire: notaireHTML(),
+    relais: relaisHTML(),
+    invest: investHTML(),
+    baisse: baisseHTML(),
+    commission: commissionHTML(),
+    compromis: checklistHTML('Check-list compromis','Maison, copropriété, terrain, SCI, succession : pièces à réclamer avant rédaction.'),
+    documents: checklistHTML('Documents obligatoires','Diagnostics, titre de propriété, TF, pièces identité, PV AG, règlement copropriété, urbanisme.'),
+    historique: checklistHTML('Historique','Module à venir : dernières simulations, favoris, reprise rapide, export PDF.'),
+    estimate: promptHTML('🏠 SmartEstimate','Prépare un rendez-vous estimation : questions vendeur, documents, arguments exclusivité, points de vigilance.'),
+    negotiate: promptHTML('📉 SmartNegotiate','Prépare un argumentaire pour défendre les honoraires, la baisse de prix ou l’exclusivité.'),
+    prospect: promptHTML('☎️ SmartProspect','Prépare un script de prospection copropriété / DPE / ancien client / voisinage.'),
+    news: promptHTML('📰 SmartNews Immo Quotidien','Actualité → impact terrain → phrase commerciale → action du jour.'),
+    github: githubHTML()
+  }[name] || checklistHTML('Module','Module en préparation.');
+  document.getElementById('moduleContent').innerHTML=html;
+  show('module',null);
+  setTimeout(()=>{ if(name==='finance')calcFinance(); if(name==='honoraires')calcHonoraires(); },50);
+}
+function financeHTML(){return `<div class="split"><div class="panel"><h2>🏦 SmartFinance</h2>
+<div class="row"><label>Revenus nets mensuels<input id="f_rev" value="5200"></label><label>Charges mensuelles<input id="f_ch" value="450"></label></div>
+<div class="row"><label>Prix du bien<input id="f_prix" value="320000"></label><label>Apport<input id="f_app" value="40000"></label></div>
+<div class="row"><label>Taux crédit %<input id="f_taux" value="3.8"></label><label>Durée années<input id="f_duree" value="25"></label></div>
+<label>Type<select id="f_type"><option value="ancien">Ancien</option><option value="neuf">Neuf</option></select></label>
+<div class="toolbar"><button class="btn" onclick="calcFinance()">Calculer</button><button class="btn secondary" onclick="show('dashboard',navBtnByText('Vision'))">Retour cockpit</button></div></div><div class="result" id="f_out">Résultat</div></div>`}
+function honorairesHTML(){return `<div class="split"><div class="panel"><h2>🧮 SmartHonoraires</h2>
+<label>Prix FAI<input id="h_prix" value="361702"></label><label>Honoraires proposés<input id="h_fees" value="21702"></label>
+<div class="toolbar"><button class="btn" onclick="calcHonoraires()">Calculer</button><button class="btn secondary" onclick="document.getElementById('h_prix').value=361702;document.getElementById('h_fees').value=21702;calcHonoraires()">340 000 € net vendeur</button></div></div><div class="result" id="h_out">Résultat</div></div>`}
+function notaireHTML(){return `<div class="split"><div class="panel"><h2>💰 Frais de notaire</h2>
+<label>Prix<input id="n_prix" value="300000"></label><label>Type<select id="n_type"><option value="ancien">Ancien 7,8 %</option><option value="neuf">Neuf 2,5 %</option><option value="terrain">Terrain 8 %</option></select></label><label>Apport<input id="n_app" value="30000"></label>
+<button class="btn" onclick="calcNotaire()">Calculer</button></div><div class="result" id="n_out">Résultat</div></div>`}
+function relaisHTML(){return `<div class="split"><div class="panel"><h2>🌉 Prêt relais</h2>
+<div class="row"><label>Valeur bien vendu<input id="r_val" value="420000"></label><label>Décote prudence %<input id="r_dec" value="10"></label></div>
+<div class="row"><label>Capital restant dû<input id="r_crd" value="160000"></label><label>Quotité relais %<input id="r_quot" value="70"></label></div>
+<div class="row"><label>Nouveau projet<input id="r_achat" value="520000"></label><label>Apport hors relais<input id="r_app" value="30000"></label></div>
+<button class="btn" onclick="calcRelais()">Calculer</button></div><div class="result" id="r_out">Résultat</div></div>`}
+function investHTML(){return `<div class="split"><div class="panel"><h2>🏢 Investissement locatif</h2>
+<div class="row"><label>Prix<input id="i_prix" value="180000"></label><label>Travaux<input id="i_trav" value="12000"></label></div>
+<div class="row"><label>Loyer mensuel<input id="i_loyer" value="850"></label><label>Charges non récup.<input id="i_ch" value="80"></label></div>
+<div class="row"><label>Taxe foncière annuelle<input id="i_tf" value="1200"></label><label>Mensualité crédit<input id="i_mens" value="950"></label></div>
+<button class="btn" onclick="calcInvest()">Calculer</button></div><div class="result" id="i_out">Résultat</div></div>`}
+function baisseHTML(){return `<div class="split"><div class="panel"><h2>📉 Baisse de prix</h2>
+<div class="row"><label>Ancien prix FAI<input id="b_old" value="340000"></label><label>Nouveau prix FAI<input id="b_new" value="320000"></label></div>
+<div class="row"><label>Honoraires actuels<input id="b_fee_old" value="20000"></label><label>Honoraires nouveaux<input id="b_fee_new" value="19000"></label></div>
+<button class="btn" onclick="calcBaisse()">Calculer l'impact</button></div><div class="result" id="b_out">Résultat</div></div>`}
+function commissionHTML(){return `<div class="split"><div class="panel"><h2>🤝 Commission</h2>
+<label>Commission agence HT/TTC à répartir<input id="c_total" value="20000"></label>
+<label>Part entrée %<input id="c_entree" value="50"></label>
+<label>Part sortie %<input id="c_sortie" value="50"></label>
+<button class="btn" onclick="calcCommission()">Répartir</button></div><div class="result" id="c_out">Résultat</div></div>`}
+function checklistHTML(title,text){return `<div class="panel"><h2>${title}</h2><div class="box">${text}<br><br>Ce module sera enrichi avec cases à cocher, exports et modèles prêts à copier.</div><button class="btn secondary" onclick="show('dashboard',navBtnByText('Vision'))">Retour cockpit</button></div>`}
+function promptHTML(title,seed){return `<div class="split"><div class="panel"><h2>${title}</h2><label>Demande<textarea id="p_text">${seed}</textarea></label><button class="btn" onclick="promptDemo('${title.replace(/'/g,"")}')">Générer</button></div><div class="result" id="p_out">Résultat généré ici.</div></div>`}
+function githubHTML(){return `<div class="panel"><h2>🔗 Calculettes GitHub originales</h2>
+<div class="source"><b>Simulateur crédit agence</b><br><a target="_blank" href="https://jerome8691.github.io/simulateur-credit-agence/">Ouvrir la version originale</a></div>
+<div class="source"><b>Barème honoraires</b><br><a target="_blank" href="https://jerome8691.github.io/Bareme-Honoraires/">Ouvrir la version originale</a></div>
+<div class="box">Ces versions restent accessibles, mais SmartTools regroupe les principales fonctions dans SmartCalcul.</div></div>`}
+function notaireVal(prix,type){return prix*(type==='neuf'?0.025:type==='terrain'?0.08:0.078)}
+function mensualite(cap,taux,ans){let r=taux/100/12,n=ans*12;return r?cap*r/(1-Math.pow(1+r,-n)):cap/n}
+function bareme(p){return Math.max(4900,Math.min(p,100000)*.095+Math.max(0,Math.min(p,300000)-100000)*.06+Math.max(0,p-300000)*.05)}
+function calcFinance(){let rev=num('f_rev'),ch=num('f_ch'),p=num('f_prix'),app=num('f_app'),t=num('f_taux'),d=num('f_duree'),n=notaireVal(p,document.getElementById('f_type').value),cap=Math.max(0,p+n-app),m=mensualite(cap,t,d),end=(m+ch)/rev*100,rav=rev-ch-m,ok=end<=35;document.getElementById('f_out').innerHTML=`<h2>Résultat SmartFinance</h2>Prix du bien : ${euros(p)}\nFrais de notaire : ${euros(n)}\nMontant à financer : ${euros(cap)}\nMensualité estimée : ${euros(m)}\nEndettement : <span class="${ok?'ok':'bad'}">${percent(end)}</span>\nReste à vivre : ${euros(rav)}\n\nDécision : <span class="${ok?'ok':'warn'}">${ok?'Faisabilité favorable':'Dossier à sécuriser'}</span>\n\nPhrase terrain : le bon prix est aussi celui que les acquéreurs peuvent financer.`}
+function calcHonoraires(){let p=num('h_prix'),f=num('h_fees')||bareme(p),b=bareme(p),min=p*.06,net=p-f,ok=f>=min;document.getElementById('h_out').innerHTML=`<h2>Résultat SmartHonoraires</h2>Prix FAI : ${euros(p)}\nBarème indicatif : ${euros(b)}\nHonoraires proposés : ${euros(f)}\nNet vendeur : ${euros(net)}\nTaux réel : ${percent(f/p*100)}\nMinimum 6 % : ${euros(min)}\n\nDécision : <span class="${ok?'ok':'bad'}">${ok?'Délégation possible':'Validation Direction obligatoire'}</span>`}
+function calcNotaire(){let p=num('n_prix'),type=document.getElementById('n_type').value,app=num('n_app'),n=notaireVal(p,type),total=p+n,fin=total-app;document.getElementById('n_out').innerHTML=`<h2>Frais de notaire</h2>Prix : ${euros(p)}\nFrais estimés : ${euros(n)}\nCoût total : ${euros(total)}\nApport : ${euros(app)}\nMontant à financer : ${euros(fin)}`}
+function calcRelais(){let v=num('r_val'),dec=num('r_dec'),crd=num('r_crd'),q=num('r_quot'),achat=num('r_achat'),app=num('r_app'),prud=v*(1-dec/100),brut=prud*q/100,net=Math.max(0,brut-crd),besoin=Math.max(0,achat-app-net);document.getElementById('r_out').innerHTML=`<h2>Prêt relais</h2>Valeur prudente : ${euros(prud)}\nRelais brut possible : ${euros(brut)}\nCapital restant dû : ${euros(crd)}\nRelais net disponible : ${euros(net)}\nBesoin restant : ${euros(besoin)}\n\nLecture : ${besoin>0?'prévoir financement complémentaire ou apport':'relais suffisant sur ces hypothèses'}.`}
+function calcInvest(){let p=num('i_prix'),trav=num('i_trav'),loyer=num('i_loyer'),ch=num('i_ch'),tf=num('i_tf'),mens=num('i_mens'),cout=p+notaireVal(p,'ancien')+trav,brut=loyer*12/cout*100,net=(loyer*12-ch*12-tf)/cout*100,cf=loyer-ch-tf/12-mens;document.getElementById('i_out').innerHTML=`<h2>Investissement locatif</h2>Coût total estimé : ${euros(cout)}\nLoyers annuels : ${euros(loyer*12)}\nRentabilité brute : ${percent(brut)}\nRentabilité nette simplifiée : ${percent(net)}\nCash-flow mensuel : <span class="${cf>=0?'ok':'warn'}">${euros(cf)}</span>`}
+function calcBaisse(){let old=num('b_old'),nw=num('b_new'),fo=num('b_fee_old'),fn=num('b_fee_new'),netOld=old-fo,netNew=nw-fn;document.getElementById('b_out').innerHTML=`<h2>Baisse de prix</h2>Ancien prix FAI : ${euros(old)}\nNouveau prix FAI : ${euros(nw)}\nBaisse affichée : ${euros(old-nw)}\nAncien net vendeur : ${euros(netOld)}\nNouveau net vendeur : ${euros(netNew)}\nImpact net vendeur : <span class="warn">-${euros(netOld-netNew)}</span>\nImpact honoraires : <span class="warn">-${euros(fo-fn)}</span>\n\nPhrase terrain : mieux vaut une baisse maîtrisée qu'un bien qui s'use sur le marché.`}
+function calcCommission(){let total=num('c_total'),e=num('c_entree'),s=num('c_sortie');document.getElementById('c_out').innerHTML=`<h2>Répartition commission</h2>Commission totale : ${euros(total)}\nPart entrée ${e}% : ${euros(total*e/100)}\nPart sortie ${s}% : ${euros(total*s/100)}\n\nÀ adapter aux règles internes selon mandat, droit de suite, copro et arbitrage Direction.`}
+function promptDemo(t){document.getElementById('p_out').innerHTML=`<h2>${t}</h2>Analyse : situation classique à traiter avec méthode.\n\nArguments terrain :\n• Reformuler le besoin du client.\n• Donner un élément factuel : prix, financement, délai, concurrence.\n• Proposer une action simple et datée.\n\nPhrase prête à dire :\n« Mon rôle est de sécuriser votre projet, pas simplement de publier une annonce. On ajuste la stratégie pour obtenir un vrai résultat. »\n\nAction : envoyer un compte-rendu clair et programmer une relance.`}
+function fakeAI(){document.getElementById('ai_out').innerHTML=`<h2>Réponse SmartTools AI</h2>Pour défendre les honoraires, ne pars pas du prix de la commission. Pars du risque évité et de la valeur créée : estimation juste, stratégie de vente, qualification acquéreur, négociation, sécurité juridique.\n\nPhrase : « Nos honoraires ne rémunèrent pas une annonce, ils rémunèrent la sécurisation complète de votre vente. »`}
+function writer(){let type=document.getElementById('w_type').value,ctx=document.getElementById('w_ctx').value;document.getElementById('w_out').innerHTML=`<h2>${type}</h2>Bonjour,\n\nSuite aux derniers retours, les visites confirment l'intérêt pour le bien, notamment sur ses points forts. En revanche, le prix ressort comme le principal frein à la décision.\n\nJe vous propose que nous ajustions ensemble la stratégie afin de relancer l'intérêt et provoquer de nouvelles visites qualifiées.\n\nBien cordialement,\n\nContexte pris en compte : ${ctx}`}
+function manager(){let ctx=document.getElementById('m_ctx').value;document.getElementById('m_out').innerHTML=`<h2>Plan d'action manager</h2>Diagnostic : activité présente mais transformation insuffisante.\n\nActions :\n1. Revoir les R2 estimation et la défense de l'exclusivité.\n2. Mettre un point hebdomadaire sur les relances vendeurs.\n3. Travailler un script honoraires / exclusivité.\n4. Mesurer sur 30 jours : estimations, mandats, exclusifs, relances.\n\nSituation analysée : ${ctx}`}
 </script>
+\n<script>\nasync function callSmartToolsAI(moduleName, promptText){\n  const cleanPrompt = (promptText || '').trim();\n  try{\n    const response = await fetch('/api/ai', {\n      method:'POST',\n      headers:{'Content-Type':'application/json'},\n      body:JSON.stringify({module: moduleName, prompt: cleanPrompt})\n    });\n    if(!response.ok) throw new Error('API indisponible');\n    const data = await response.json();\n    return data.text || fallbackSmartToolsAI(moduleName, cleanPrompt);\n  }catch(e){\n    return fallbackSmartToolsAI(moduleName, cleanPrompt);\n  }\n}\nfunction fallbackSmartToolsAI(moduleName, promptText){\n  return `MODE DÉMO — ${moduleName}\n\nLa vraie IA sera active quand SmartTools sera déployé sur Vercel avec OPENAI_API_KEY.\n\nDemande prise en compte :\n${promptText}\n\nRéponse métier exemple :\n• Diagnostic terrain clair.\n• Argumentaire commercial utilisable en rendez-vous.\n• Mail ou SMS prêt à copier.\n• Prochaine action concrète.\n\nPhrase prête à dire :\n« SmartTools ne remplace pas le logiciel métier. Il prépare les mots, les calculs et les décisions pour gagner du temps en rendez-vous. »`;\n}\nfunction formatAI(text){return `<h2>Réponse SmartTools IA</h2>${String(text).replace(/\\n/g,'<br>')}`}\nasync function promptDemo(t){\n  const prompt = document.getElementById('p_text')?.value || '';\n  const out = document.getElementById('p_out');\n  out.innerHTML = `<h2>${t}</h2>Génération en cours...`;\n  const text = await callSmartToolsAI(t, prompt);\n  out.innerHTML = formatAI(text);\n}\nasync function fakeAI(){\n  const prompt = document.getElementById('ai_prompt')?.value || '';\n  const out = document.getElementById('ai_out');\n  out.innerHTML = `<h2>SmartTools AI</h2>Génération en cours...`;\n  const text = await callSmartToolsAI('SmartTools AI', prompt);\n  out.innerHTML = formatAI(text);\n}\nasync function writer(){\n  const type = document.getElementById('w_type')?.value || 'Texte métier';\n  const ctx = document.getElementById('w_ctx')?.value || '';\n  const out = document.getElementById('w_out');\n  out.innerHTML = `<h2>${type}</h2>Rédaction en cours...`;\n  const text = await callSmartToolsAI('SmartWriter - '+type, ctx);\n  out.innerHTML = formatAI(text);\n}\nasync function manager(){\n  const ctx = document.getElementById('m_ctx')?.value || '';\n  const out = document.getElementById('m_out');\n  out.innerHTML = `<h2>SmartManager</h2>Analyse en cours...`;\n  const text = await callSmartToolsAI('SmartManager', ctx);\n  out.innerHTML = formatAI(text);\n}\n</script>\n
 </body>
 </html>

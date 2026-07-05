@@ -1,23 +1,25 @@
-# SmartTools V5.9 — Graal Candidate Finale
+# SmartTools V5.9.5 — Cockpit + IA Vercel
 
-## Objectif
-Version candidate finale de présentation + pack prêt pour déploiement cloud.
+Cette version garde la présentation cockpit opérationnel validée, puis ajoute la couche Cloud/API.
 
-## Démo immédiate
-Ouvrir `index.html` directement dans le navigateur.
+## Fonctionne sans Vercel
+- Interface cockpit
+- Toutes les calculettes locales
+- Mode démonstration IA
 
-## GitHub Pages
-1. Renommer / garder `index.html` à la racine.
-2. Déposer le fichier dans le repo `smarttools-ladresse`.
-3. Settings > Pages > Deploy from a branch > main / root.
+## Fonctionne avec Vercel
+- SmartTools AI réel
+- SmartWriter réel
+- SmartManager réel
+- SmartEstimate / SmartNegotiate / SmartProspect avec IA réelle
+- Clé OpenAI protégée côté serveur
 
-## Vercel + IA réelle
-1. Importer le repo GitHub dans Vercel.
-2. Ajouter les variables d'environnement :
-   - `OPENAI_API_KEY`
-   - `OPENAI_MODEL`
-3. Déployer.
+## Variables Vercel
+OPENAI_API_KEY = votre clé API OpenAI
+OPENAI_MODEL = gpt-5.5
 
-## Important
-Ne jamais mettre une clé API dans le fichier `index.html`.
-La clé doit rester côté serveur / variables Vercel.
+## Déploiement
+1. Déposer tous les fichiers dans GitHub
+2. Connecter le repository à Vercel
+3. Ajouter les variables d'environnement
+4. Déployer
