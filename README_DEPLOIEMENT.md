@@ -1,30 +1,19 @@
-# SmartTools V5.10.3 — IA gratuite / multi-moteurs
+# SmartTools V5.10.4 — Gemini corrigé
 
-Cette version ajoute un serveur IA multi-fournisseurs.
+Correction :
+- le moteur Gemini utilise maintenant le SDK officiel `@google/genai` ;
+- la lecture de la réponse Gemini est corrigée ;
+- l'erreur « Gemini : réponse vide » doit disparaître si la clé et le modèle sont valides.
 
-Ordre de fonctionnement par défaut (`AI_PROVIDER=auto`) :
-1. OpenAI si `OPENAI_API_KEY` fonctionne
-2. Gemini si `GEMINI_API_KEY` fonctionne
-3. Groq si `GROQ_API_KEY` fonctionne
-4. Mode test dynamique si aucun moteur ne répond
-
-Variables Vercel à ajouter :
-- `AI_PROVIDER` = `auto`
+Variables Vercel recommandées :
+- `AI_PROVIDER` = `gemini`
 - `GEMINI_API_KEY` = votre clé Google AI Studio
 - `GEMINI_MODEL` = `gemini-3.5-flash`
-- optionnel : `GROQ_API_KEY`
-- optionnel : `GROQ_MODEL` = `llama-3.1-8b-instant`
 
-Pour forcer Gemini :
-- `AI_PROVIDER` = `gemini`
-
-Pour forcer Groq :
-- `AI_PROVIDER` = `groq`
-
-Fichiers à déposer dans GitHub :
-- `index.html`
+Fichiers à remplacer dans GitHub :
 - `api/ai.js`
 - `package.json`
+- `index.html`
 - `vercel.json`
 
-Puis redéployer dans Vercel.
+Puis faire un Redeploy Vercel.
