@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.10.5 Gemini rapide</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.10.6 SmartPublish</title>
 <style>
 :root{
   --teal:#008985;
@@ -302,6 +302,22 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 .ai-actions .btn{padding:10px 12px;font-size:13px}
 .ai-note{background:#fff7e6;border:1px solid #f0cf86;color:#5d4300;border-radius:14px;padding:12px;margin:10px 0;font-weight:700}
 
+
+/* V5.10.6 — SmartPublish */
+.publish-preview{
+  background:#ffffff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin-top:12px;
+}
+.small-help{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+  margin-top:8px;
+}
+
 </style>
 </head>
 <body>
@@ -327,6 +343,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
     <button onclick="show('assistants',this)">SmartAssistants</button>
     <button onclick="show('ai',this)">SmartTools AI</button>
     <button onclick="show('writer',this)">SmartWriter</button>
+    <button onclick="show('publish',this)">SmartPublish</button>
     <button onclick="show('manager',this)">SmartManager</button>
     <button onclick="show('roadmap',this)">Roadmap</button>
   </nav>
@@ -346,6 +363,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
       <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Documents à réunir selon maison, copropriété, terrain, SCI, succession.</p><span class="pill">Sécurisation</span></article>
       <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Accès au dossier SharePoint de L'Adresse CONCEPT PREMIUM : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">SharePoint</span></article>
       <article class="card" onclick="openModule('aiConfig')"><div class="icon">⚙️</div><h3>Configuration IA</h3><p>Voir les moteurs disponibles : OpenAI, Gemini gratuit, Groq gratuit et mode test.</p><span class="pill">Réglages</span></article>
+      <article class="card" onclick="show('publish',navBtnByText('SmartPublish'))"><div class="icon">📣</div><h3>SmartPublish</h3><p>Créer un post Facebook, un article court, un script vidéo ou un message WhatsApp prêt à publier.</p><span class="pill">Communication</span></article>
       <article class="card" onclick="openCongesTool()"><div class="icon">🌴</div><h3>Congés & absences</h3><p>Accéder à l’outil de suivi ou de règles des congés de l’agence.</p><span class="pill">Ressource interne</span></article>
       <article class="card" onclick="openModule('historique')"><div class="icon">⭐</div><h3>Historique</h3><p>Dernières simulations personnelles, favoris, export et reprise rapide.</p><span class="pill">À venir</span></article>
     </div>
@@ -414,6 +432,58 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
     </div>
   </section>
 
+
+  <section id="publish" class="section">
+    <div class="split">
+      <div class="panel">
+        <h2>📣 SmartPublish</h2>
+        <p>Prépare les contenus de communication de l'agence. La publication directe Facebook/Meta sera branchée dans une étape suivante après validation.</p>
+
+        <div class="row">
+          <label>Canal
+            <select id="pub_channel">
+              <option>Facebook agence</option>
+              <option>WhatsApp équipe</option>
+              <option>WhatsApp client</option>
+              <option>LinkedIn</option>
+              <option>Article court</option>
+              <option>Script vidéo</option>
+            </select>
+          </label>
+          <label>Objectif
+            <select id="pub_goal">
+              <option>Valoriser l'agence</option>
+              <option>Mettre en avant un bien</option>
+              <option>Bien vendu</option>
+              <option>Estimation offerte</option>
+              <option>Conseil vendeur</option>
+              <option>Recrutement</option>
+              <option>Vie d'agence</option>
+              <option>Marché immobilier local</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Contexte
+          <textarea id="pub_ctx">Créer un post Facebook pour L'Adresse CONCEPT PREMIUM afin de rappeler que l'agence accompagne les vendeurs avec estimation, stratégie de prix, visibilité et suivi régulier.</textarea>
+        </label>
+
+        <div class="toolbar">
+          <button class="btn" onclick="publishGenerate()">Générer le contenu</button>
+          <button class="btn secondary" onclick="copyPublishBrief()">Copier le brief</button>
+        </div>
+
+        <div class="small-help">
+          Pour l'instant SmartPublish prépare le texte, le script ou l'article. Ensuite on copie/colle dans Facebook, WhatsApp ou LinkedIn.
+          La publication directe sur la page Facebook pourra être ajoutée plus tard avec une connexion Meta officielle.
+        </div>
+      </div>
+
+      <div class="result" id="pub_out">Résultat SmartPublish ici.</div>
+    </div>
+  </section>
+
+
   <section id="manager" class="section">
     <div class="split">
       <div class="panel">
@@ -428,7 +498,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   <section id="roadmap" class="section">
     <div class="panel">
       <h2>🧭 Roadmap Graal</h2>
-      <div class="box">✅ Interface cockpit claire et reposante<br>✅ Calculettes intégrées dans SmartCalcul<br>✅ Accès aux versions GitHub originales<br>✅ SmartWriter / SmartManager / SmartNews en démonstration<br>🔜 Déploiement propre GitHub Pages<br>🔜 Vercel + API OpenAI réelle côté serveur<br>🔜 Comptes utilisateurs et historique</div>
+      <div class="box">✅ Interface cockpit claire et reposante<br>✅ Calculettes intégrées dans SmartCalcul<br>✅ Accès aux versions GitHub originales<br>✅ SmartWriter / SmartManager / SmartNews en démonstration<br>✅ SmartPublish : posts Facebook, scripts vidéo, WhatsApp, LinkedIn<br>🔜 Déploiement propre GitHub Pages<br>🔜 Vercel + API OpenAI réelle côté serveur<br>🔜 Connexion Facebook/Meta pour publication directe<br>🔜 Comptes utilisateurs et historique</div>
     </div>
   </section>
 
@@ -701,6 +771,51 @@ async function writer(){
   const moduleName = 'SmartWriter - ' + type;
   const text = await callSmartToolsAI(moduleName, ctx);
   if(out) out.innerHTML = renderAI(text) + aiActionButtons(moduleName, ctx, text);
+}
+
+
+let lastPublishResponse = "";
+
+function buildPublishBrief(){
+  const channel = document.getElementById('pub_channel')?.value || 'Facebook agence';
+  const goal = document.getElementById('pub_goal')?.value || 'Valoriser l’agence';
+  const ctx = document.getElementById('pub_ctx')?.value || '';
+  return `Canal : ${channel}
+Objectif : ${goal}
+
+Contexte :
+${ctx}
+
+Consigne :
+Prépare un contenu professionnel pour L'Adresse CONCEPT PREMIUM.
+Adapte le style au canal.
+Pour Facebook : titre accrocheur, texte court, 3 à 5 hashtags, appel à l'action.
+Pour WhatsApp : message court, direct, prêt à envoyer.
+Pour LinkedIn : ton professionnel et valorisant.
+Pour article : structure avec titre, sous-titres et conclusion.
+Pour script vidéo : hook d'ouverture, déroulé en 4 points, phrase de fin.`;
+}
+
+function copyPublishBrief(){
+  copyToClipboard(buildChatGPTPrompt('SmartPublish', buildPublishBrief()));
+}
+
+function publishCopyButtons(text){
+  const safe = String(text || '').replace(/`/g, "\\`");
+  return `<div class="ai-actions">
+    <button class="btn secondary" onclick="copyToClipboard(\`${safe}\`)">Copier le contenu</button>
+    <button class="btn secondary" onclick="copyToClipboard(buildChatGPTPrompt('SmartPublish', buildPublishBrief()))">Copier prompt ChatGPT</button>
+  </div>`;
+}
+
+async function publishGenerate(){
+  const channel = document.getElementById('pub_channel')?.value || 'Facebook agence';
+  const out = document.getElementById('pub_out');
+  const brief = buildPublishBrief();
+  if(out) out.innerHTML = `<h2>SmartPublish</h2>Génération en cours pour ${channel}...`;
+  const text = await callSmartToolsAI('SmartPublish - ' + channel, brief);
+  lastPublishResponse = text;
+  if(out) out.innerHTML = renderAI(text) + publishCopyButtons(text);
 }
 
 async function manager(){

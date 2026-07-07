@@ -1,19 +1,25 @@
-# SmartTools V5.10.4 — Gemini corrigé
+# SmartTools V5.10.6 — SmartPublish
 
-Correction :
-- le moteur Gemini utilise maintenant le SDK officiel `@google/genai` ;
-- la lecture de la réponse Gemini est corrigée ;
-- l'erreur « Gemini : réponse vide » doit disparaître si la clé et le modèle sont valides.
+Nouveauté :
+- ajout de l'onglet SmartPublish ;
+- génération de contenus pour :
+  - Facebook agence ;
+  - WhatsApp équipe ;
+  - WhatsApp client ;
+  - LinkedIn ;
+  - article court ;
+  - script vidéo ;
+- boutons de copie : contenu et prompt ChatGPT ;
+- préparation technique pour une future connexion Facebook/Meta.
 
-Variables Vercel recommandées :
-- `AI_PROVIDER` = `gemini`
-- `GEMINI_API_KEY` = votre clé Google AI Studio
-- `GEMINI_MODEL` = `gemini-3.5-flash`
+Important :
+- cette version ne publie pas encore directement sur Facebook ;
+- elle prépare le contenu prêt à copier/coller ;
+- la publication directe nécessitera plus tard une application Meta, un Page ID et un Page Access Token dans Vercel.
 
-Fichiers à remplacer dans GitHub :
-- `api/ai.js`
-- `package.json`
-- `index.html`
-- `vercel.json`
-
-Puis faire un Redeploy Vercel.
+Base conservée :
+- Gemini rapide / anti-timeout ;
+- logo agence ;
+- SharePoint ;
+- profil Assistante ;
+- Congés & absences.
