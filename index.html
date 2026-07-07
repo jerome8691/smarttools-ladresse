@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.10.7 SmartPublish image</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.0 modules intégrés</title>
 <style>
 :root{
   --teal:#008985;
@@ -357,6 +357,140 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   font-weight:700;
 }
 
+
+/* V5.10.9 — intégration modules intégrés */
+.external-tool-wrap{
+  display:grid;
+  gap:12px;
+}
+.external-tool-head{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+}
+.external-tool-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+.external-frame{
+  width:100%;
+  min-height:820px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:white;
+  box-shadow:0 10px 30px rgba(15,38,70,.08);
+}
+@media(max-width:760px){
+  .external-frame{min-height:760px;}
+}
+
+
+/* V5.11.0 — modules financiers intégrés */
+.integrated-tool .tool-head{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.integrated-tool .tool-grid{
+  display:grid;
+  grid-template-columns:1.04fr .96fr;
+  gap:16px;
+}
+.integrated-tool .tool-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(15,38,70,.08);
+  overflow:hidden;
+}
+.integrated-tool .tool-card h3{
+  margin:0;
+  padding:15px 16px;
+  border-bottom:1px solid var(--line);
+  background:#fbfcff;
+  font-size:18px;
+}
+.integrated-tool .tool-body{padding:16px;}
+.integrated-tool .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.integrated-tool .tab{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  border-radius:999px;
+  padding:9px 12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.integrated-tool .tab.active{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy);
+}
+.integrated-tool .section-mini{
+  font-weight:900;
+  color:var(--navy);
+  margin:16px 0 8px;
+  border-left:4px solid var(--gold, #c9a646);
+  padding-left:9px;
+}
+.integrated-tool .field{margin-bottom:10px;}
+.integrated-tool .field label{
+  display:block;
+  margin-bottom:5px;
+  color:#26384e;
+  font-size:13px;
+  font-weight:800;
+}
+.integrated-tool input,.integrated-tool select{
+  width:100%;
+  padding:11px 10px;
+  border:1px solid #cbd6e5;
+  border-radius:11px;
+  font-size:15px;
+  background:white;
+}
+.integrated-tool .row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;}
+.integrated-tool .row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;}
+.integrated-tool .mod{display:none;}
+.integrated-tool .mod.active{display:block;}
+.integrated-tool .badge{
+  border-radius:18px;
+  padding:18px;
+  color:white;
+  margin-bottom:12px;
+}
+.integrated-tool .badge h3{padding:0;border:0;background:transparent;margin:0 0 4px;font-size:23px;color:white;}
+.integrated-tool .badge p{margin:0;font-size:14px;}
+.integrated-tool .green{background:linear-gradient(135deg,#0f7d47,#1da567);}
+.integrated-tool .orange{background:linear-gradient(135deg,#c96b00,#e79c32);}
+.integrated-tool .red{background:linear-gradient(135deg,#a92820,#d74a41);}
+.integrated-tool .grey{background:linear-gradient(135deg,#4b5b70,#738196);}
+.integrated-tool .metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px;}
+.integrated-tool .metric{border:1px solid var(--line);border-radius:15px;padding:12px;background:#fbfcff;}
+.integrated-tool .metric span{display:block;color:var(--muted);font-size:12px;font-weight:800;}
+.integrated-tool .metric strong{font-size:20px;color:var(--navy);}
+.integrated-tool .analysis{margin-top:14px;}
+.integrated-tool .analysis ul{margin:8px 0 0;padding-left:18px;}
+.integrated-tool .analysis li{margin:6px 0;}
+.integrated-tool .printBox{margin-top:14px;border:1px dashed #aebbd0;border-radius:15px;padding:13px;background:#fcfdff;white-space:normal;}
+.integrated-tool .warnBox{border-left:5px solid #c9a646;background:#fff8df;padding:12px;border-radius:12px;margin-top:12px;font-size:13px;}
+.integrated-tool .result-line{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);}
+.integrated-tool .value{font-size:19px;font-weight:900;color:var(--navy);text-align:right;}
+.integrated-tool .proposed{background:#eaf8f7;margin:10px -12px 0;padding:13px 12px;border-radius:10px;font-weight:900;}
+.integrated-tool .copybox{margin-top:14px;padding:12px;border-radius:12px;background:#f7fafc;border:1px dashed #bbcbd8;color:#33445b;white-space:pre-line;font-size:13px;}
+.integrated-tool .mini-help{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.35;}
+@media(max-width:900px){
+  .integrated-tool .tool-grid{grid-template-columns:1fr;}
+  .integrated-tool .row2,.integrated-tool .row3,.integrated-tool .metrics{grid-template-columns:1fr;}
+  .integrated-tool .result-line{grid-template-columns:1fr;gap:4px;}
+  .integrated-tool .value{text-align:left;}
+}
+
 </style>
 </head>
 <body>
@@ -389,20 +523,16 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 
   <section id="dashboard" class="section active">
     <div class="block-title">
-      <h2>Outils transaction prioritaires</h2>
-      <p>Ce sont les modules à forte valeur immédiate pour les négociateurs.</p>
+      <h2>Modules principaux</h2>
+      <p>SmartCalcul devient l'entrée prioritaire pour tous les calculs financiers et commerciaux.</p>
     </div>
     <div class="grid">
-      <article class="card" onclick="openModule('honoraires')"><div class="icon">🧮</div><h3>Honoraires</h3><p>Barème, minimum 6 %, délégation négociateur, validation Direction, taux réel, net vendeur.</p><span class="pill">Priorité haute</span></article>
-      <article class="card" onclick="openModule('baisse')"><div class="icon">📉</div><h3>Baisse de prix</h3><p>Comparer ancien prix, nouveau prix, impact net vendeur et impact honoraires.</p><span class="pill">Rdv vendeur</span></article>
-      <article class="card" onclick="openModule('notaire')"><div class="icon">💰</div><h3>Frais de notaire</h3><p>Estimation ancien / neuf / terrain et budget total acquéreur.</p><span class="pill">Acquéreur</span></article>
-      <article class="card" onclick="openModule('finance')"><div class="icon">🏦</div><h3>Financement</h3><p>Mensualité, capacité, durée, taux, apport et scénarios de budget.</p><span class="pill">Visite / offre</span></article>
-
-      <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition simple ou avancée selon règles internes : entreur, sorteur, copro, droit de suite.</p><span class="pill">Interne</span></article>
+      <article class="card" onclick="show('calculs',navBtnByText('SmartCalcul'))"><div class="icon">🧮</div><h3>SmartCalcul</h3><p>Accéder à tous les modules financiers : simulateur de faisabilité, barème honoraires complet, frais de notaire, prêt relais, simulateur crédit.</p><span class="pill">Module prioritaire</span></article>
+      <article class="card" onclick="show('publish',navBtnByText('SmartPublish'))"><div class="icon">📣</div><h3>SmartPublish</h3><p>Créer un post Facebook, un article court, un script vidéo ou un message WhatsApp prêt à publier.</p><span class="pill">Communication</span></article>
       <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Documents à réunir selon maison, copropriété, terrain, SCI, succession.</p><span class="pill">Sécurisation</span></article>
       <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Accès au dossier SharePoint de L'Adresse CONCEPT PREMIUM : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">SharePoint</span></article>
-      <article class="card" onclick="openModule('aiConfig')"><div class="icon">⚙️</div><h3>Configuration IA</h3><p>Voir les moteurs disponibles : OpenAI, Gemini gratuit, Groq gratuit et mode test.</p><span class="pill">Réglages</span></article>
-      <article class="card" onclick="show('publish',navBtnByText('SmartPublish'))"><div class="icon">📣</div><h3>SmartPublish</h3><p>Créer un post Facebook, un article court, un script vidéo ou un message WhatsApp prêt à publier.</p><span class="pill">Communication</span></article>
+      <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition simple ou avancée selon règles internes : entreur, sorteur, copro, droit de suite.</p><span class="pill">Interne</span></article>
+      <article class="card" onclick="openModule('aiConfig')"><div class="icon">⚙️</div><h3>Configuration IA</h3><p>Voir les moteurs disponibles : OpenAI, Gemini, Groq et mode test.</p><span class="pill">Réglages</span></article>
       <article class="card" onclick="openCongesTool()"><div class="icon">🌴</div><h3>Congés & absences</h3><p>Accéder à l’outil de suivi ou de règles des congés de l’agence.</p><span class="pill">Ressource interne</span></article>
       <article class="card" onclick="openModule('historique')"><div class="icon">⭐</div><h3>Historique</h3><p>Dernières simulations personnelles, favoris, export et reprise rapide.</p><span class="pill">À venir</span></article>
     </div>
@@ -422,18 +552,18 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 
   <section id="calculs" class="section">
     <div class="block-title">
-      <h2>SmartCalcul — toutes les calculettes</h2>
-      <p>Les outils de calcul regroupés dans SmartTools, avec les versions originales GitHub conservées.</p>
+      <h2>SmartCalcul — modules financiers</h2>
+      <p>Toutes les simulations financières de l'agence sont regroupées ici. Les anciennes “calculettes GitHub originales” sont remplacées par ces modules intégrés.</p>
     </div>
     <div class="grid">
-      <article class="card" onclick="openModule('finance')"><div class="icon">🏦</div><h3>SmartFinance</h3><p>Faisabilité courtier, mensualité, endettement, reste à vivre.</p><span class="pill">Calcul intégré</span></article>
-      <article class="card" onclick="openModule('honoraires')"><div class="icon">🧮</div><h3>SmartHonoraires</h3><p>Barème, net vendeur, minimum 6 %, validation Direction.</p><span class="pill">Calcul intégré</span></article>
-      <article class="card" onclick="openModule('notaire')"><div class="icon">💰</div><h3>Frais de notaire</h3><p>Ancien, neuf, coût total acquéreur, montant à financer.</p><span class="pill">Calcul intégré</span></article>
-      <article class="card" onclick="openModule('relais')"><div class="icon">🌉</div><h3>Prêt relais</h3><p>Valeur prudente, CRD, relais net, besoin de trésorerie.</p><span class="pill">Calcul intégré</span></article>
-      <article class="card" onclick="openModule('invest')"><div class="icon">🏢</div><h3>Investissement locatif</h3><p>Rentabilité brute, nette, cash-flow mensuel simplifié.</p><span class="pill">Calcul intégré</span></article>
-      <article class="card" onclick="openModule('baisse')"><div class="icon">📉</div><h3>Baisse de prix</h3><p>Effet sur net vendeur, honoraires et positionnement marché.</p><span class="pill">Calcul intégré</span></article>
-      <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition interne entreur / sorteur / mandat / droit de suite.</p><span class="pill">Calcul intégré</span></article>
-      <article class="card" onclick="openModule('github')"><div class="icon">🔗</div><h3>Versions GitHub</h3><p>Accès aux calculettes publiées individuellement.</p><span class="pill">Originales</span></article>
+      <article class="card" onclick="openModule('finance')"><div class="icon">🏦</div><h3>Simulateur de faisabilité</h3><p>Ouvre directement le simulateur complet intégré dans SmartTools : résidence principale, investissement locatif et prêt relais.</p><span class="pill">Module intégré</span></article>
+      <article class="card" onclick="openModule('credit')"><div class="icon">📆</div><h3>Simulateur crédit</h3><p>Mensualité, coût total du crédit, intérêts, assurance et capital finançable.</p><span class="pill">Crédit</span></article>
+      <article class="card" onclick="openModule('honoraires')"><div class="icon">🧾</div><h3>Barème honoraires</h3><p>Ouvre directement le barème honoraires complet intégré dans SmartTools.</p><span class="pill">Module intégré</span></article>
+      <article class="card" onclick="openModule('notaire')"><div class="icon">💰</div><h3>Frais de notaire</h3><p>Ancien, neuf, terrain, coût total acquéreur et montant à financer.</p><span class="pill">Acquéreur</span></article>
+      <article class="card" onclick="openModule('relais')"><div class="icon">🌉</div><h3>Prêt relais</h3><p>Valeur prudente, capital restant dû, relais net et besoin complémentaire.</p><span class="pill">Relais</span></article>
+      <article class="card" onclick="openModule('invest')"><div class="icon">🏢</div><h3>Investissement locatif</h3><p>Rentabilité brute, rentabilité nette simplifiée et cash-flow mensuel.</p><span class="pill">Investisseur</span></article>
+      <article class="card" onclick="openModule('baisse')"><div class="icon">📉</div><h3>Baisse de prix</h3><p>Effet sur le prix affiché, le net vendeur, les honoraires et l'argumentaire.</p><span class="pill">Rdv vendeur</span></article>
+      <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition interne entreur / sorteur / mandat / droit de suite.</p><span class="pill">Interne</span></article>
     </div>
   </section>
 
@@ -696,6 +826,7 @@ function show(id,btn){
 function openModule(name){
   const html={
     finance: financeHTML(),
+    credit: creditHTML(),
     honoraires: honorairesHTML(),
     notaire: notaireHTML(),
     relais: relaisHTML(),
@@ -711,21 +842,185 @@ function openModule(name){
     news: promptHTML('📰 SmartNews Immo Quotidien','Actualité → impact terrain → phrase commerciale → action du jour.'),
     testapi: testApiHTML(),
     aiConfig: aiConfigHTML(),
-    github: githubHTML()
   }[name] || checklistHTML('Module','Module en préparation.');
   document.getElementById('moduleContent').innerHTML=html;
   show('module',null);
-  setTimeout(()=>{ if(name==='finance')calcFinance(); if(name==='honoraires')calcHonoraires(); },50);
+  setTimeout(()=>{ if(name==='credit')calcCredit(); if(name==='finance')setTimeout(sfCalculate,50); },50);
 }
-function financeHTML(){return `<div class="split"><div class="panel"><h2>🏦 SmartFinance</h2>
-<div class="row"><label>Revenus nets mensuels<input id="f_rev" value="5200"></label><label>Charges mensuelles<input id="f_ch" value="450"></label></div>
-<div class="row"><label>Prix du bien<input id="f_prix" value="320000"></label><label>Apport<input id="f_app" value="40000"></label></div>
-<div class="row"><label>Taux crédit %<input id="f_taux" value="3.8"></label><label>Durée années<input id="f_duree" value="25"></label></div>
-<label>Type<select id="f_type"><option value="ancien">Ancien</option><option value="neuf">Neuf</option></select></label>
-<div class="toolbar"><button class="btn" onclick="calcFinance()">Calculer</button><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour cockpit</button></div></div><div class="result" id="f_out">Résultat</div></div>`}
-function honorairesHTML(){return `<div class="split"><div class="panel"><h2>🧮 SmartHonoraires</h2>
-<label>Prix FAI<input id="h_prix" value="361702"></label><label>Honoraires proposés<input id="h_fees" value="21702"></label>
-<div class="toolbar"><button class="btn" onclick="calcHonoraires()">Calculer</button><button class="btn secondary" onclick="document.getElementById('h_prix').value=361702;document.getElementById('h_fees').value=21702;calcHonoraires()">340 000 € net vendeur</button></div></div><div class="result" id="h_out">Résultat</div></div>`}
+
+
+function financeHTML(){return `<div class="integrated-tool" id="simfi">
+  <div class="tool-head">
+    <h2>🏦 Simulateur de faisabilité financement immobilier</h2>
+    <p>Module intégré directement dans SmartTools : résidence principale, investissement locatif et prêt relais. Outil indicatif avant validation courtier ou banque.</p>
+  </div>
+  <div class="tool-grid">
+    <div class="tool-card">
+      <h3>1. Saisie du dossier</h3>
+      <div class="tool-body">
+        <div class="tabs">
+          <button class="tab active" data-simtab="rp" onclick="simfiTab('rp',this)">Résidence principale</button>
+          <button class="tab" data-simtab="loc" onclick="simfiTab('loc',this)">Investissement locatif</button>
+          <button class="tab" data-simtab="relais" onclick="simfiTab('relais',this)">Prêt relais</button>
+        </div>
+
+        <div class="section-mini">Client & revenus</div>
+        <div class="row3">
+          <div class="field"><label>Nom client</label><input id="sf_client" placeholder="Ex. M. Dupont"></div>
+          <div class="field"><label>Revenus nets mensuels foyer</label><input id="sf_revenus" type="number" value="4500"></div>
+          <div class="field"><label>Charges crédits existants / pensions</label><input id="sf_charges" type="number" value="450"></div>
+        </div>
+        <div class="row3">
+          <div class="field"><label>Personnes au foyer</label><input id="sf_foyer" type="number" value="2"></div>
+          <div class="field"><label>Apport disponible</label><input id="sf_apport" type="number" value="30000"></div>
+          <div class="field"><label>Épargne conservée après projet</label><input id="sf_epargne" type="number" value="5000"></div>
+        </div>
+
+        <div class="section-mini">Paramètres crédit</div>
+        <div class="row3">
+          <div class="field"><label>Taux nominal annuel</label><input id="sf_taux" type="number" step="0.01" value="3.45"></div>
+          <div class="field"><label>Assurance annuelle</label><input id="sf_ass" type="number" step="0.01" value="0.34"><div class="mini-help">En % du capital emprunté.</div></div>
+          <div class="field"><label>Durée</label><input id="sf_duree" type="number" value="25"><div class="mini-help">Repère souvent 25 ans max.</div></div>
+        </div>
+
+        <div id="sf_rp" class="mod active">
+          <div class="section-mini">Projet résidence principale</div>
+          <div class="row3">
+            <div class="field"><label>Prix d'achat FAI</label><input id="sf_rp_prix" type="number" value="300000" oninput="sfUpdateNotaireAll()"></div>
+            <div class="field"><label>Type de bien / frais</label><select id="sf_rp_type" onchange="sfUpdateNotaireAll()"><option value="ancien78">Ancien standard ≈ 7,8 %</option><option value="ancien83">Ancien prudent ≈ 8,3 %</option><option value="neuf25">Neuf / VEFA ≈ 2,5 %</option><option value="custom">Taux personnalisé</option></select></div>
+            <div class="field"><label>Frais de notaire calculés</label><input id="sf_rp_notaire" type="number" value="23400" readonly></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Taux personnalisé frais notaire</label><input id="sf_rp_notaire_pct" type="number" step="0.1" value="7.8" oninput="sfUpdateNotaireAll()"></div>
+            <div class="field"><label>Travaux / mobilier / divers</label><input id="sf_rp_travaux" type="number" value="0"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Mensualité actuelle logement</label><input id="sf_rp_loyer" type="number" value="1000"></div>
+            <div class="field"><label>Mensualité souhaitée max client</label><input id="sf_rp_mens_max" type="number" value="1300"></div>
+          </div>
+        </div>
+
+        <div id="sf_loc" class="mod">
+          <div class="section-mini">Projet investissement locatif</div>
+          <div class="row3">
+            <div class="field"><label>Prix d'achat FAI</label><input id="sf_loc_prix" type="number" value="180000" oninput="sfUpdateNotaireAll()"></div>
+            <div class="field"><label>Type de bien / frais</label><select id="sf_loc_type" onchange="sfUpdateNotaireAll()"><option value="ancien78">Ancien standard ≈ 7,8 %</option><option value="ancien83">Ancien prudent ≈ 8,3 %</option><option value="neuf25">Neuf / VEFA ≈ 2,5 %</option><option value="custom">Taux personnalisé</option></select></div>
+            <div class="field"><label>Frais de notaire calculés</label><input id="sf_loc_notaire" type="number" value="14040" readonly></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Taux personnalisé frais notaire</label><input id="sf_loc_notaire_pct" type="number" step="0.1" value="7.8" oninput="sfUpdateNotaireAll()"></div>
+            <div class="field"><label>Travaux / ameublement</label><input id="sf_loc_travaux" type="number" value="8000"></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label>Loyer mensuel estimé HC</label><input id="sf_loc_loyer" type="number" value="850"></div>
+            <div class="field"><label>Loyer retenu banque</label><input id="sf_loc_retenu" type="number" value="70"></div>
+            <div class="field"><label>Charges non récup. + TF / mois</label><input id="sf_loc_charges" type="number" value="180"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Frais gestion / vacance / PNO / mois</label><input id="sf_loc_gestion" type="number" value="80"></div>
+            <div class="field"><label>Régime fiscal simplifié</label><select id="sf_loc_fiscal"><option>Nu</option><option>LMNP</option><option>SCI IS</option><option>À arbitrer</option></select></div>
+          </div>
+        </div>
+
+        <div id="sf_relais" class="mod">
+          <div class="section-mini">Bien à vendre & relais</div>
+          <div class="row3">
+            <div class="field"><label>Valeur de vente estimée</label><input id="sf_rel_valeur" type="number" value="320000"></div>
+            <div class="field"><label>Décote prudence</label><input id="sf_rel_decote" type="number" value="5"></div>
+            <div class="field"><label>Capital restant dû</label><input id="sf_rel_crd" type="number" value="120000"></div>
+          </div>
+          <div class="row3">
+            <div class="field"><label>% relais sur valeur nette</label><input id="sf_rel_pct" type="number" value="70"></div>
+            <div class="field"><label>Taux relais annuel</label><input id="sf_rel_taux" type="number" step="0.01" value="3.80"></div>
+            <div class="field"><label>Mensualité prêt actuel conservée</label><input id="sf_rel_mens_actuelle" type="number" value="850"></div>
+          </div>
+          <div class="section-mini">Nouveau projet</div>
+          <div class="row3">
+            <div class="field"><label>Prix achat FAI</label><input id="sf_rel_prix" type="number" value="420000" oninput="sfUpdateNotaireAll()"></div>
+            <div class="field"><label>Type de bien / frais</label><select id="sf_rel_type" onchange="sfUpdateNotaireAll()"><option value="ancien78">Ancien standard ≈ 7,8 %</option><option value="ancien83">Ancien prudent ≈ 8,3 %</option><option value="neuf25">Neuf / VEFA ≈ 2,5 %</option><option value="custom">Taux personnalisé</option></select></div>
+            <div class="field"><label>Frais de notaire calculés</label><input id="sf_rel_notaire" type="number" value="32760" readonly></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Taux personnalisé frais notaire</label><input id="sf_rel_notaire_pct" type="number" step="0.1" value="7.8" oninput="sfUpdateNotaireAll()"></div>
+            <div class="field"><label>Travaux / divers</label><input id="sf_rel_travaux" type="number" value="0"></div>
+          </div>
+          <div class="mini-help"><strong>Décote prudence :</strong> elle sert à éviter de surestimer le relais. Exemple : bien estimé 320 000 €, décote 5 % = valeur prudente 304 000 €.</div>
+        </div>
+
+        <div class="toolbar">
+          <button class="btn" onclick="sfCalculate()">Calculer la faisabilité</button>
+          <button class="btn secondary" onclick="window.print()">Imprimer / PDF</button>
+          <button class="btn secondary" onclick="sfReset()">Réinitialiser cet onglet</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <h3>2. Résultat & synthèse courtier</h3>
+      <div class="tool-body">
+        <div id="sf_status" class="badge grey"><h3>Dossier à saisir</h3><p>Renseigne les champs puis clique sur Calculer.</p></div>
+        <div class="metrics" id="sf_metrics"></div>
+        <div class="analysis" id="sf_analysis"></div>
+        <div class="printBox" id="sf_summary"><strong>Synthèse imprimable</strong><br>La synthèse apparaîtra ici après calcul.</div>
+        <div class="warnBox"><strong>Important conformité :</strong> outil de préqualification commerciale indicative. Ne constitue ni une offre de prêt, ni une validation de financement. Dossier à confirmer par courtier ou banque.</div>
+      </div>
+    </div>
+  </div>
+</div>`}
+
+function creditHTML(){return `<div class="split"><div class="panel"><h2>📆 Simulateur crédit</h2>
+<div class="row"><label>Prix du bien<input id="cr_prix" value="300000"></label><label>Apport<input id="cr_app" value="30000"></label></div>
+<div class="row"><label>Frais de notaire estimés<input id="cr_notaire" value="23400"></label><label>Travaux / enveloppe<input id="cr_trav" value="0"></label></div>
+<div class="row"><label>Taux crédit %<input id="cr_taux" value="3.8"></label><label>Durée années<input id="cr_duree" value="25"></label></div>
+<div class="row"><label>Assurance % / an<input id="cr_ass" value="0.34"></label><label>Frais dossier / garantie<input id="cr_frais" value="3000"></label></div>
+<div class="toolbar"><button class="btn" onclick="calcCredit()">Simuler le crédit</button><button class="btn secondary" onclick="document.getElementById('cr_notaire').value=Math.round(notaireVal(num('cr_prix'),'ancien'));calcCredit()">Auto frais notaire ancien</button></div>
+</div><div class="result" id="cr_out">Résultat</div></div>`}
+
+
+function honorairesHTML(){return `<div class="integrated-tool" id="honmod">
+  <div class="tool-head">
+    <h2>🧾 Barème honoraires</h2>
+    <p>Module intégré directement dans SmartTools, repris du barème honoraires : calcul par tranches, minimum, net vendeur et honoraires proposés.</p>
+  </div>
+  <div class="tool-grid">
+    <div class="tool-card">
+      <h3>1. Informations</h3>
+      <div class="tool-body">
+        <div class="field"><label>Mode de calcul</label><select id="hon_mode" onchange="honModeChange()"><option value="vente">Je saisis le prix de vente</option><option value="net">Je saisis le net vendeur cible</option></select></div>
+        <div class="field"><label id="hon_label_prix">Prix de vente TTC (€)</label><input id="hon_prix" type="text" inputmode="decimal" placeholder="Ex : 300000"></div>
+        <div class="section-mini">Négociation</div>
+        <div class="field"><label>Honoraires TTC proposés (€)</label><input id="hon_propose" type="text" inputmode="decimal" placeholder="Laisser vide = honoraires barème"></div>
+        <div class="warnBox"><strong>Honoraires TTC minimum autorisés : 6 %</strong><br>Ce montant est calculé automatiquement sur le prix de vente.</div>
+        <div class="toolbar">
+          <button class="btn" onclick="honCalculer()">Calculer</button>
+          <button class="btn secondary" onclick="honCopier()">Copier</button>
+          <button class="btn secondary" onclick="window.print()">Imprimer</button>
+          <button class="btn secondary" onclick="honReset()">Effacer</button>
+        </div>
+        <div class="mini-help">Saisies acceptées : 300000, 300 000 ou 300.000.</div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <h3>2. Résultats</h3>
+      <div class="tool-body">
+        <div id="hon_placeholder" class="printBox"><strong>Vos résultats s'afficheront ici</strong><br>Saisissez les informations puis cliquez sur Calculer.</div>
+        <div id="hon_results" style="display:none">
+          <div class="result-line"><span>Prix de vente TTC</span><span class="value" id="hon_prixVente">— €</span></div>
+          <div class="result-line"><span>Net vendeur estimé</span><span class="value" id="hon_netVendeur">— €</span></div>
+          <div class="result-line"><span><strong>Honoraires barème TTC</strong></span><span class="value" id="hon_bareme">— €</span></div>
+          <div class="result-line"><span>Taux barème réel</span><span class="value" id="hon_tauxBareme">— %</span></div>
+          <div class="result-line"><span><strong>Honoraires TTC minimum autorisés</strong><br><small>Base : 6 % TTC du prix de vente</small></span><span class="value" id="hon_minimum">— €</span></div>
+          <div class="result-line proposed"><span>Honoraires TTC proposés</span><span class="value" id="hon_honoraires">— €</span></div>
+          <div class="result-line"><span>Écart avec le minimum</span><span class="value" id="hon_ecart">— €</span></div>
+          <div class="result-line"><span>Taux réel proposé</span><span class="value" id="hon_tauxPropose">— %</span></div>
+          <div class="warnBox" id="hon_alert">Le niveau de validation s'affichera ici.</div>
+          <div id="hon_copybox" class="copybox">Résultat prêt à copier.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`}
+
 function notaireHTML(){return `<div class="split"><div class="panel"><h2>💰 Frais de notaire</h2>
 <label>Prix<input id="n_prix" value="300000"></label><label>Type<select id="n_type"><option value="ancien">Ancien 7,8 %</option><option value="neuf">Neuf 2,5 %</option><option value="terrain">Terrain 8 %</option></select></label><label>Apport<input id="n_app" value="30000"></label>
 <button class="btn" onclick="calcNotaire()">Calculer</button></div><div class="result" id="n_out">Résultat</div></div>`}
@@ -764,15 +1059,37 @@ Pour tester gratuitement, le plus simple est d'ajouter une clé <b>GEMINI_API_KE
 <div class="toolbar">
 <button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour accueil</button>
 </div></div>`}
-function githubHTML(){return `<div class="panel"><h2>🔗 Calculettes GitHub originales</h2>
-<div class="source"><b>Simulateur crédit agence</b><br><a target="_blank" href="https://jerome8691.github.io/simulateur-credit-agence/">Ouvrir la version originale</a></div>
-<div class="source"><b>Barème honoraires</b><br><a target="_blank" href="https://jerome8691.github.io/Bareme-Honoraires/">Ouvrir la version originale</a></div>
-<div class="box">Ces versions restent accessibles, mais SmartTools regroupe les principales fonctions dans SmartCalcul.</div></div>`}
 function notaireVal(prix,type){return prix*(type==='neuf'?0.025:type==='terrain'?0.08:0.078)}
 function mensualite(cap,taux,ans){let r=taux/100/12,n=ans*12;return r?cap*r/(1-Math.pow(1+r,-n)):cap/n}
 function bareme(p){return Math.max(4900,Math.min(p,100000)*.095+Math.max(0,Math.min(p,300000)-100000)*.06+Math.max(0,p-300000)*.05)}
-function calcFinance(){let rev=num('f_rev'),ch=num('f_ch'),p=num('f_prix'),app=num('f_app'),t=num('f_taux'),d=num('f_duree'),n=notaireVal(p,document.getElementById('f_type').value),cap=Math.max(0,p+n-app),m=mensualite(cap,t,d),end=(m+ch)/rev*100,rav=rev-ch-m,ok=end<=35;document.getElementById('f_out').innerHTML=`<h2>Résultat SmartFinance</h2>Prix du bien : ${euros(p)}\nFrais de notaire : ${euros(n)}\nMontant à financer : ${euros(cap)}\nMensualité estimée : ${euros(m)}\nEndettement : <span class="${ok?'ok':'bad'}">${percent(end)}</span>\nReste à vivre : ${euros(rav)}\n\nDécision : <span class="${ok?'ok':'warn'}">${ok?'Faisabilité favorable':'Dossier à sécuriser'}</span>\n\nPhrase terrain : le bon prix est aussi celui que les acquéreurs peuvent financer.`}
-function calcHonoraires(){let p=num('h_prix'),f=num('h_fees')||bareme(p),b=bareme(p),min=p*.06,net=p-f,ok=f>=min;document.getElementById('h_out').innerHTML=`<h2>Résultat SmartHonoraires</h2>Prix FAI : ${euros(p)}\nBarème indicatif : ${euros(b)}\nHonoraires proposés : ${euros(f)}\nNet vendeur : ${euros(net)}\nTaux réel : ${percent(f/p*100)}\nMinimum 6 % : ${euros(min)}\n\nDécision : <span class="${ok?'ok':'bad'}">${ok?'Délégation possible':'Validation Direction obligatoire'}</span>`}
+
+function calcCredit(){
+  let prix=num('cr_prix'),app=num('cr_app'),notaire=num('cr_notaire'),trav=num('cr_trav'),t=num('cr_taux'),d=num('cr_duree'),ass=num('cr_ass'),frais=num('cr_frais');
+  let cap=Math.max(0,prix+notaire+trav+frais-app);
+  let mensHorsAss=mensualite(cap,t,d);
+  let assMens=cap*(ass/100)/12;
+  let mens=mensHorsAss+assMens;
+  let total=mens*d*12;
+  let coutCredit=Math.max(0,total-cap);
+  document.getElementById('cr_out').innerHTML=`<h2>Résultat simulateur crédit</h2>Prix du bien : ${euros(prix)}
+Frais de notaire : ${euros(notaire)}
+Travaux / enveloppe : ${euros(trav)}
+Frais dossier / garantie : ${euros(frais)}
+Apport : ${euros(app)}
+
+Capital à financer : <b>${euros(cap)}</b>
+Mensualité hors assurance : ${euros(mensHorsAss)}
+Assurance estimée : ${euros(assMens)}
+Mensualité totale estimée : <b>${euros(mens)}</b>
+
+Coût total estimé sur ${d} ans : ${euros(total)}
+Coût du crédit estimé : ${euros(coutCredit)}
+
+Phrase terrain : cette simulation donne un ordre de grandeur ; la banque ou le courtier validera le taux, l'assurance et les frais réels.`;
+}
+
+function calcFinance(){let rev=num('f_rev'),ch=num('f_ch'),p=num('f_prix'),app=num('f_app'),t=num('f_taux'),d=num('f_duree'),n=notaireVal(p,document.getElementById('f_type').value),cap=Math.max(0,p+n-app),m=mensualite(cap,t,d),end=(m+ch)/rev*100,rav=rev-ch-m,ok=end<=35;document.getElementById('f_out').innerHTML=`<h2>Résultat simulation courtier</h2>Prix du bien : ${euros(p)}\nFrais de notaire : ${euros(n)}\nMontant à financer : ${euros(cap)}\nMensualité estimée : ${euros(m)}\nEndettement : <span class="${ok?'ok':'bad'}">${percent(end)}</span>\nReste à vivre : ${euros(rav)}\n\nDécision : <span class="${ok?'ok':'warn'}">${ok?'Faisabilité favorable':'Dossier à sécuriser'}</span>\n\nPhrase terrain : le bon prix est aussi celui que les acquéreurs peuvent financer.`}
+function calcHonoraires(){let p=num('h_prix'),f=num('h_fees')||bareme(p),b=bareme(p),min=p*.06,net=p-f,ok=f>=min;document.getElementById('h_out').innerHTML=`<h2>Résultat barème honoraires</h2>Prix FAI : ${euros(p)}\nBarème indicatif : ${euros(b)}\nHonoraires proposés : ${euros(f)}\nNet vendeur : ${euros(net)}\nTaux réel : ${percent(f/p*100)}\nMinimum 6 % : ${euros(min)}\n\nDécision : <span class="${ok?'ok':'bad'}">${ok?'Délégation possible':'Validation Direction obligatoire'}</span>`}
 function calcNotaire(){let p=num('n_prix'),type=document.getElementById('n_type').value,app=num('n_app'),n=notaireVal(p,type),total=p+n,fin=total-app;document.getElementById('n_out').innerHTML=`<h2>Frais de notaire</h2>Prix : ${euros(p)}\nFrais estimés : ${euros(n)}\nCoût total : ${euros(total)}\nApport : ${euros(app)}\nMontant à financer : ${euros(fin)}`}
 function calcRelais(){let v=num('r_val'),dec=num('r_dec'),crd=num('r_crd'),q=num('r_quot'),achat=num('r_achat'),app=num('r_app'),prud=v*(1-dec/100),brut=prud*q/100,net=Math.max(0,brut-crd),besoin=Math.max(0,achat-app-net);document.getElementById('r_out').innerHTML=`<h2>Prêt relais</h2>Valeur prudente : ${euros(prud)}\nRelais brut possible : ${euros(brut)}\nCapital restant dû : ${euros(crd)}\nRelais net disponible : ${euros(net)}\nBesoin restant : ${euros(besoin)}\n\nLecture : ${besoin>0?'prévoir financement complémentaire ou apport':'relais suffisant sur ces hypothèses'}.`}
 function calcInvest(){let p=num('i_prix'),trav=num('i_trav'),loyer=num('i_loyer'),ch=num('i_ch'),tf=num('i_tf'),mens=num('i_mens'),cout=p+notaireVal(p,'ancien')+trav,brut=loyer*12/cout*100,net=(loyer*12-ch*12-tf)/cout*100,cf=loyer-ch-tf/12-mens;document.getElementById('i_out').innerHTML=`<h2>Investissement locatif</h2>Coût total estimé : ${euros(cout)}\nLoyers annuels : ${euros(loyer*12)}\nRentabilité brute : ${percent(brut)}\nRentabilité nette simplifiée : ${percent(net)}\nCash-flow mensuel : <span class="${cf>=0?'ok':'warn'}">${euros(cf)}</span>`}
@@ -915,6 +1232,198 @@ async function manager(){
   const text = await callSmartToolsAI('SmartManager', ctx);
   if(out) out.innerHTML = renderAI(text) + aiActionButtons('SmartManager', ctx, text);
 }
+
+/* V5.11.0 — logique modules intégrés */
+let sfCurrent = 'rp';
+let honDernierTexte = '';
+
+function sfVal(id){return parseFloat(document.getElementById(id)?.value)||0}
+function sfEuro(n){return Math.round(n).toLocaleString('fr-FR')+' €'}
+function sfPct(n){return (Math.round(n*10)/10).toLocaleString('fr-FR')+' %'}
+function sfMens(cap,tauxAnnuel,dureeAnnees){let n=dureeAnnees*12;let r=tauxAnnuel/100/12;if(cap<=0)return 0;if(r===0)return cap/n;return cap*r/(1-Math.pow(1+r,-n));}
+function sfNotaireRate(prefix){
+  let type=document.getElementById('sf_'+prefix+'_type')?.value||'ancien78';
+  if(type==='ancien83') return 8.3;
+  if(type==='neuf25') return 2.5;
+  if(type==='custom') return sfVal('sf_'+prefix+'_notaire_pct');
+  return 7.8;
+}
+function sfUpdateNotaire(prefix){
+  let prix=sfVal('sf_'+prefix+'_prix');
+  let input=document.getElementById('sf_'+prefix+'_notaire');
+  if(input) input.value=Math.round(prix*sfNotaireRate(prefix)/100);
+}
+function sfUpdateNotaireAll(){['rp','loc','rel'].forEach(sfUpdateNotaire);}
+function simfiTab(tab,btn){
+  sfCurrent=tab;
+  document.querySelectorAll('#simfi .tab').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.querySelectorAll('#simfi .mod').forEach(m=>m.classList.remove('active'));
+  const target = tab==='relais' ? 'sf_relais' : 'sf_'+tab;
+  document.getElementById(target)?.classList.add('active');
+  sfUpdateNotaireAll();
+  sfCalculate();
+}
+function sfScore(te,reste,foyer,duree,apport,besoin){
+  let minRav=foyer<=1?850:foyer==2?1500:1500+(foyer-2)*350;
+  let notes=[];let level='green', title='Faisabilité favorable', msg='Dossier a priori présentable, sous réserve des justificatifs et de la validation courtier/banque.';
+  if(te>35){level='red';title='Faisabilité fragile / bloquante';msg='Le taux d’effort dépasse le seuil usuel de 35 %. À retravailler avant présentation client.'}
+  else if(te>33){level='orange';title='Faisabilité à sécuriser';msg='Le dossier est proche de la limite. À faire valider rapidement par un courtier.'}
+  if(reste<minRav){level = level==='red'?'red':'orange';notes.push('Reste à vivre faible au regard du foyer : '+sfEuro(reste)+' vs repère '+sfEuro(minRav)+'.')}
+  if(duree>25){level='red';notes.push('Durée supérieure à 25 ans : point sensible HCSF.')}
+  if(apport<0){level='red';notes.push('Apport insuffisant : le plan de financement n’est pas couvert.')}
+  if(besoin>0 && apport<besoin*0.03){notes.push('Apport très faible : prévoir frais annexes, garantie, banque et marge de sécurité.')}
+  return {level,title,msg,notes};
+}
+function sfRender(status, metrics, bullets, summary){
+  let st=document.getElementById('sf_status');
+  if(!st) return;
+  st.className='badge '+status.level;
+  st.innerHTML='<h3>'+status.title+'</h3><p>'+status.msg+'</p>';
+  document.getElementById('sf_metrics').innerHTML=metrics.map(m=>'<div class="metric"><span>'+m[0]+'</span><strong>'+m[1]+'</strong></div>').join('');
+  let all=[...bullets,...status.notes];
+  document.getElementById('sf_analysis').innerHTML='<strong>Analyse automatique</strong><ul>'+all.map(b=>'<li>'+b+'</li>').join('')+'</ul><div>'+['À confirmer courtier','Justificatifs revenus','Relevés comptes','Simulation bancaire'].map(x=>'<span class="pill">'+x+'</span>').join('')+'</div>';
+  document.getElementById('sf_summary').innerHTML='<strong>Synthèse imprimable</strong><br>'+summary;
+}
+function sfCommon(){
+  return {revenus:sfVal('sf_revenus'),charges:sfVal('sf_charges'),apport:sfVal('sf_apport'),foyer:sfVal('sf_foyer'),taux:sfVal('sf_taux'),ass:sfVal('sf_ass'),duree:sfVal('sf_duree'),client:document.getElementById('sf_client')?.value||'Client'};
+}
+function sfCalculate(){
+  if(!document.getElementById('simfi')) return;
+  sfUpdateNotaireAll();
+  let c=sfCommon();
+  if(sfCurrent==='rp') sfCalcRP(c);
+  if(sfCurrent==='loc') sfCalcLOC(c);
+  if(sfCurrent==='relais') sfCalcRelais(c);
+}
+function sfCalcRP(c){
+  let cout=sfVal('sf_rp_prix')+sfVal('sf_rp_notaire')+sfVal('sf_rp_travaux');
+  let pret=Math.max(0,cout-c.apport);
+  let m=sfMens(pret,c.taux,c.duree)+(pret*c.ass/100/12);
+  let te=(c.charges+m)/c.revenus*100;
+  let reste=c.revenus-c.charges-m;
+  let saut=m-sfVal('sf_rp_loyer');
+  let st=sfScore(te,reste,c.foyer,c.duree,c.apport,cout);
+  let bullets=['Frais de notaire retenus : '+sfEuro(sfVal('sf_rp_notaire'))+' ('+sfPct(sfNotaireRate('rp'))+').','Besoin total projet : '+sfEuro(cout)+'.','Montant estimatif à financer : '+sfEuro(pret)+'.','Mensualité crédit estimée assurance incluse : '+sfEuro(m)+'.','Saut de charge estimé : '+sfEuro(saut)+' par mois.'];
+  if(m>sfVal('sf_rp_mens_max')) bullets.push('Mensualité supérieure au souhait client : '+sfEuro(m)+' vs '+sfEuro(sfVal('sf_rp_mens_max'))+'.');
+  sfRender(st,[['Taux d’effort',sfPct(te)],['Reste à vivre',sfEuro(reste)],['Mensualité estimée',sfEuro(m)],['Montant prêt',sfEuro(pret)]],bullets,`${c.client} — résidence principale : projet ${sfEuro(cout)}, apport ${sfEuro(c.apport)}, prêt estimé ${sfEuro(pret)}, mensualité ${sfEuro(m)}, taux d’effort ${sfPct(te)}, reste à vivre ${sfEuro(reste)}.`);
+}
+function sfCalcLOC(c){
+  let cout=sfVal('sf_loc_prix')+sfVal('sf_loc_notaire')+sfVal('sf_loc_travaux');
+  let pret=Math.max(0,cout-c.apport);
+  let m=sfMens(pret,c.taux,c.duree)+(pret*c.ass/100/12);
+  let loyer=sfVal('sf_loc_loyer'), retenu=loyer*sfVal('sf_loc_retenu')/100;
+  let chLoc=sfVal('sf_loc_charges')+sfVal('sf_loc_gestion');
+  let revenusRetenus=c.revenus+retenu;
+  let chargesRetenues=c.charges+m+chLoc;
+  let te=chargesRetenues/revenusRetenus*100;
+  let reste=c.revenus+loyer-c.charges-m-chLoc;
+  let cash=loyer-m-chLoc;
+  let rentaBrute=loyer*12/sfVal('sf_loc_prix')*100;
+  let st=sfScore(te,reste,c.foyer,c.duree,c.apport,cout);
+  let bullets=['Frais de notaire retenus : '+sfEuro(sfVal('sf_loc_notaire'))+' ('+sfPct(sfNotaireRate('loc'))+').','Besoin total projet : '+sfEuro(cout)+'.','Loyer retenu banque simulé : '+sfEuro(retenu)+' / mois.','Cash-flow avant fiscalité : '+sfEuro(cash)+' / mois.','Rentabilité brute estimée : '+sfPct(rentaBrute)+'.','Fiscalité indiquée : '+(document.getElementById('sf_loc_fiscal')?.value||'—')+'.'];
+  if(cash<0) bullets.push('Effort d’épargne mensuel estimé : '+sfEuro(Math.abs(cash))+'.');
+  sfRender(st,[['Taux d’effort retenu',sfPct(te)],['Cash-flow avant fiscalité',sfEuro(cash)],['Mensualité estimée',sfEuro(m)],['Rentabilité brute',sfPct(rentaBrute)]],bullets,`${c.client} — investissement locatif : projet ${sfEuro(cout)}, prêt estimé ${sfEuro(pret)}, loyer ${sfEuro(loyer)}, loyer retenu ${sfEuro(retenu)}, mensualité ${sfEuro(m)}, cash-flow avant fiscalité ${sfEuro(cash)}, taux d’effort ${sfPct(te)}.`);
+}
+function sfCalcRelais(c){
+  let valeurPrud=sfVal('sf_rel_valeur')*(1-sfVal('sf_rel_decote')/100);
+  let netVente=Math.max(0,valeurPrud-sfVal('sf_rel_crd'));
+  let montantRelais=Math.max(0,netVente*sfVal('sf_rel_pct')/100);
+  let cout=sfVal('sf_rel_prix')+sfVal('sf_rel_notaire')+sfVal('sf_rel_travaux');
+  let pretLong=Math.max(0,cout-c.apport-montantRelais);
+  let mLong=sfMens(pretLong,c.taux,c.duree)+(pretLong*c.ass/100/12);
+  let interetsRelais=montantRelais*sfVal('sf_rel_taux')/100/12;
+  let transition=sfVal('sf_rel_mens_actuelle')+mLong+interetsRelais;
+  let te=(c.charges+transition)/c.revenus*100;
+  let reste=c.revenus-c.charges-transition;
+  let st=sfScore(te,reste,c.foyer,c.duree,c.apport,cout);
+  let bullets=['Frais de notaire retenus sur le nouveau projet : '+sfEuro(sfVal('sf_rel_notaire'))+' ('+sfPct(sfNotaireRate('rel'))+').','Valeur prudente du bien à vendre : '+sfEuro(valeurPrud)+'.','Net vendeur prudent après CRD : '+sfEuro(netVente)+'.','Montant relais simulé : '+sfEuro(montantRelais)+'.','Nouveau prêt long terme estimé : '+sfEuro(pretLong)+'.','Charge de transition estimée : '+sfEuro(transition)+' / mois.'];
+  if(netVente<=0) bullets.push('Attention : valeur nette après remboursement insuffisante pour sécuriser un relais.');
+  if(sfVal('sf_rel_decote')<5) bullets.push('Décote prudente faible : prévoir scénario de baisse de prix ou délai de vente.');
+  sfRender(st,[['Taux d’effort transition',sfPct(te)],['Charge transition',sfEuro(transition)],['Relais simulé',sfEuro(montantRelais)],['Prêt complémentaire',sfEuro(pretLong)]],bullets,`${c.client} — achat-revente / relais : valeur prudente ${sfEuro(valeurPrud)}, CRD ${sfEuro(sfVal('sf_rel_crd'))}, relais estimé ${sfEuro(montantRelais)}, prêt complémentaire ${sfEuro(pretLong)}, charge de transition ${sfEuro(transition)}, taux d’effort transition ${sfPct(te)}.`);
+}
+function sfReset(){
+  if(!document.getElementById('simfi')) return;
+  const keepIds=new Set(['sf_taux','sf_ass','sf_duree','sf_rp_type','sf_rp_notaire_pct','sf_loc_type','sf_loc_notaire_pct','sf_loc_retenu','sf_rel_type','sf_rel_notaire_pct','sf_rel_decote','sf_rel_pct','sf_rel_taux']);
+  const commonIds=['sf_client','sf_revenus','sf_charges','sf_foyer','sf_apport','sf_epargne'];
+  const active = sfCurrent==='relais' ? 'sf_relais' : 'sf_'+sfCurrent;
+  const activeInputs=[...document.querySelectorAll('#'+active+' input, #'+active+' select')];
+  const commonInputs=commonIds.map(id=>document.getElementById(id)).filter(Boolean);
+  [...commonInputs,...activeInputs].forEach(el=>{if(!el || keepIds.has(el.id)) return; if(el.tagName==='SELECT') el.selectedIndex=0; else el.value='';});
+  sfUpdateNotaireAll();
+  document.getElementById('sf_status').className='badge grey';
+  document.getElementById('sf_status').innerHTML='<h3>Dossier à saisir</h3><p>Renseigne les champs puis clique sur Calculer.</p>';
+  document.getElementById('sf_metrics').innerHTML='';
+  document.getElementById('sf_analysis').innerHTML='';
+  document.getElementById('sf_summary').innerHTML='<strong>Synthèse imprimable</strong><br>La synthèse apparaîtra ici après calcul.';
+}
+
+function honParse(v){v=String(v||'').replace(/€/g,'').replace(/\u00A0/g,'').replace(/\s/g,'').replace(/\./g,'').replace(',','.');let n=parseFloat(v);return isNaN(n)?0:n;}
+function honFmt(n){return Math.round(n).toLocaleString('fr-FR')+' €'}
+function honPct(n){return (Math.round(n*100)/100).toFixed(2).replace('.',',')+' %'}
+function honBareme(prix){
+  var b1=Math.min(prix,100000);
+  var b2=Math.max(0,Math.min(prix,300000)-100000);
+  var b3=Math.max(0,prix-300000);
+  return Math.max(b1*.095+b2*.06+b3*.05,prix>0?4900:0);
+}
+function honPrixDepuisNet(net){
+  var lo=net,hi=net+100000;
+  while(hi-honBareme(hi)<net) hi+=100000;
+  for(var i=0;i<70;i++){var mid=(lo+hi)/2;if(mid-honBareme(mid)<net)lo=mid;else hi=mid;}
+  return hi;
+}
+function honModeChange(){
+  const mode=document.getElementById('hon_mode')?.value;
+  const lab=document.getElementById('hon_label_prix');
+  if(lab) lab.textContent=mode==='net'?'Net vendeur cible (€)':'Prix de vente TTC (€)';
+  honReset();
+}
+function honCalculer(){
+  let mode=document.getElementById('hon_mode')?.value||'vente';
+  let saisie=honParse(document.getElementById('hon_prix')?.value);
+  let proposeTexte=document.getElementById('hon_propose')?.value||'';
+  if(!saisie || saisie<=0){alert('Veuillez saisir un montant valide.');return;}
+  let prix=mode==='net'?honPrixDepuisNet(saisie):saisie;
+  let bareme=honBareme(prix);
+  let minimum=prix*.06;
+  let propose=String(proposeTexte).trim()===''?bareme:Math.max(0,honParse(proposeTexte));
+  let net=prix-propose;
+  let ecart=propose-minimum;
+  let ok=propose>=minimum;
+  document.getElementById('hon_placeholder').style.display='none';
+  document.getElementById('hon_results').style.display='block';
+  document.getElementById('hon_prixVente').textContent=honFmt(prix);
+  document.getElementById('hon_netVendeur').textContent=honFmt(net);
+  document.getElementById('hon_bareme').textContent=honFmt(bareme);
+  document.getElementById('hon_tauxBareme').textContent=honPct((bareme/prix)*100);
+  document.getElementById('hon_minimum').textContent=honFmt(minimum);
+  document.getElementById('hon_honoraires').textContent=honFmt(propose);
+  document.getElementById('hon_ecart').textContent=(ecart>=0?'+ ':'- ')+honFmt(Math.abs(ecart));
+  document.getElementById('hon_tauxPropose').textContent=honPct((propose/prix)*100);
+  let alertBox=document.getElementById('hon_alert');
+  alertBox.innerHTML = ok
+    ? '<strong>Zone autorisée</strong><br>Minimum autorisé : <b>'+honFmt(minimum)+'</b> soit <b>6 % TTC</b> du prix de vente.<br>Honoraires proposés : <b>'+honFmt(propose)+'</b> soit <b>'+honPct((propose/prix)*100)+'</b>.'
+    : '<strong>Validation direction obligatoire</strong><br>Les honoraires proposés sont inférieurs au minimum autorisé de 6 %.';
+  honDernierTexte="Simulation honoraires L'Adresse\\nPrix de vente TTC : "+honFmt(prix)+"\\nNet vendeur estimé : "+honFmt(net)+"\\nHonoraires barème TTC : "+honFmt(bareme)+"\\nHonoraires TTC minimum autorisés 6 % : "+honFmt(minimum)+"\\nHonoraires TTC proposés : "+honFmt(propose)+"\\nÉcart avec minimum : "+(ecart>=0?"+ ":"- ")+honFmt(Math.abs(ecart))+"\\nTaux réel proposé : "+honPct((propose/prix)*100)+"\\nValidation : "+(ok?"Zone autorisée":"Validation Direction obligatoire");
+  document.getElementById('hon_copybox').textContent=honDernierTexte;
+}
+function honCopier(){
+  if(!honDernierTexte){alert("Veuillez d'abord cliquer sur Calculer.");return;}
+  copyToClipboard(honDernierTexte);
+}
+function honReset(){
+  const p=document.getElementById('hon_prix');
+  const pr=document.getElementById('hon_propose');
+  if(p) p.value='';
+  if(pr) pr.value='';
+  const ph=document.getElementById('hon_placeholder');
+  const rs=document.getElementById('hon_results');
+  if(ph) ph.style.display='block';
+  if(rs) rs.style.display='none';
+  honDernierTexte='';
+}
+
 </script>
 </body>
 </html>

@@ -1,22 +1,32 @@
-# SmartTools V5.10.7 — SmartPublish avec image/photo
+# SmartTools V5.11.0 — modules financiers intégrés directement
 
-Nouveauté :
-- ajout d'un bouton de sélection photo/image dans SmartPublish ;
-- aperçu de l'image sélectionnée ;
-- nom de l'image ajouté automatiquement dans le brief envoyé à l'IA ;
-- bouton pour retirer l'image ;
-- génération de texte adaptée au canal et à l'image.
+Correction demandée :
+- le Barème honoraires n'est plus chargé par lien externe ou iframe ;
+- le Simulateur de faisabilité financement immobilier n'est plus chargé par lien externe ou iframe ;
+- les deux outils sont maintenant intégrés directement dans le code `index.html` de SmartTools.
 
-Important :
-- cette version ne publie pas encore automatiquement l'image sur Facebook ;
-- l'image reste locale dans le navigateur ;
-- il faut copier le texte généré puis ajouter manuellement l'image dans Facebook/WhatsApp/LinkedIn.
-- la publication directe texte + image nécessitera une connexion Meta officielle.
+Barème honoraires intégré :
+- saisie prix de vente ou net vendeur cible ;
+- honoraires barème ;
+- honoraires proposés ;
+- minimum 6 % ;
+- taux réel ;
+- copie du résultat.
+
+Simulateur de faisabilité intégré :
+- résidence principale ;
+- investissement locatif ;
+- prêt relais / achat-revente ;
+- frais de notaire automatiques ;
+- taux d'effort ;
+- reste à vivre ;
+- synthèse courtier.
 
 Base conservée :
 - Gemini rapide / anti-timeout ;
+- SmartPublish avec image ;
+- SmartCalcul prioritaire ;
 - logo agence ;
 - SharePoint ;
 - profil Assistante ;
-- Congés & absences ;
-- SmartPublish texte/article/script vidéo.
+- Congés & absences.
