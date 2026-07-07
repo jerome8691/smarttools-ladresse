@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — Portail SmartTools V5.10.1</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.10.3 IA gratuite</title>
 <style>
 :root{
   --teal:#008985;
@@ -296,6 +296,12 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   }
 }
 
+
+/* V5.10.2 — test IA sans abonnement API */
+.ai-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 0}
+.ai-actions .btn{padding:10px 12px;font-size:13px}
+.ai-note{background:#fff7e6;border:1px solid #f0cf86;color:#5d4300;border-radius:14px;padding:12px;margin:10px 0;font-weight:700}
+
 </style>
 </head>
 <body>
@@ -311,7 +317,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
       <div class="stat"><b>12</b><span>familles d'outils métier</span></div>
       <div class="stat"><b>4</b><span>profils ciblés : commercial, assistante, manager, direction</span></div>
       <div class="stat"><b>1</b><span>application commune</span></div>
-      <div class="stat"><b>IA</b><span>assistance métier connectée</span></div>
+      <div class="stat"><b>IA</b><span>IA gratuite + secours</span></div>
     </div>
   </section>
 
@@ -339,6 +345,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
       <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition simple ou avancée selon règles internes : entreur, sorteur, copro, droit de suite.</p><span class="pill">Interne</span></article>
       <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Documents à réunir selon maison, copropriété, terrain, SCI, succession.</p><span class="pill">Sécurisation</span></article>
       <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Accès au dossier SharePoint de L'Adresse CONCEPT PREMIUM : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">SharePoint</span></article>
+      <article class="card" onclick="openModule('aiConfig')"><div class="icon">⚙️</div><h3>Configuration IA</h3><p>Voir les moteurs disponibles : OpenAI, Gemini gratuit, Groq gratuit et mode test.</p><span class="pill">Réglages</span></article>
       <article class="card" onclick="openCongesTool()"><div class="icon">🌴</div><h3>Congés & absences</h3><p>Accéder à l’outil de suivi ou de règles des congés de l’agence.</p><span class="pill">Ressource interne</span></article>
       <article class="card" onclick="openModule('historique')"><div class="icon">⭐</div><h3>Historique</h3><p>Dernières simulations personnelles, favoris, export et reprise rapide.</p><span class="pill">À venir</span></article>
     </div>
@@ -433,6 +440,106 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 </div>
 
 <script>
+
+function buildChatGPTPrompt(moduleName, promptText){
+  return `Tu es SmartTools, copilote métier de l'agence L'Adresse CONCEPT PREMIUM.
+
+Module : ${moduleName}
+
+Demande utilisateur :
+${promptText}
+
+Réponds en français, de façon concrète et exploitable en agence immobilière.
+Structure ta réponse ainsi :
+1. Diagnostic terrain
+2. Arguments ou calculs à expliquer simplement
+3. Mail / SMS / script prêt à copier si pertinent
+4. Prochaine action concrète
+
+Ne fais pas une réponse théorique. Donne une réponse utilisable directement par un commercial, une assistante ou un manager.`;
+}
+async function copyToClipboard(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    alert("Copié. Tu peux maintenant coller dans ChatGPT, un mail, WhatsApp ou le CRM.");
+  }catch(e){
+    const ta=document.createElement('textarea');
+    ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    alert("Copié.");
+  }
+}
+function localSmartToolsTest(moduleName, promptText){
+  const p=(promptText||"").toLowerCase();
+  const hasBaisse=p.includes("baisse")||p.includes("prix")||p.includes("trop cher");
+  const hasVendeur=p.includes("vendeur")||p.includes("propriétaire")||p.includes("mandat");
+  const hasAcq=p.includes("acquéreur")||p.includes("acheteur")||p.includes("financement")||p.includes("prêt");
+  const hasMail=p.includes("mail")||p.includes("email")||p.includes("courriel");
+  const hasSms=p.includes("sms")||p.includes("whatsapp");
+  const hasManager=p.includes("équipe")||p.includes("commercial")||p.includes("manager")||moduleName.toLowerCase().includes("manager");
+  let diagnostic="La demande doit être transformée en action terrain simple, avec un message court, clair et sécurisant.";
+  let argumentsList=[
+    "Repartir du besoin réel du client et non uniquement de son ressenti.",
+    "S'appuyer sur des faits : délai, demandes, visites, retours, concurrence et financement.",
+    "Conclure par une prochaine action datée."
+  ];
+  let readyText="Bonjour, je vous propose de faire un point rapide pour transformer la situation en décision concrète et efficace. L'objectif est de sécuriser la suite et d'éviter de perdre du temps.";
+  let action="Faire un point court, valider une décision, puis envoyer un écrit récapitulatif.";
+  if(hasBaisse){
+    diagnostic="Le sujet principal est une baisse de prix. Il faut éviter de la présenter comme un échec et la présenter comme une décision stratégique pour relancer la demande.";
+    argumentsList=["Un bien qui ne déclenche pas assez de visites est souvent en décalage avec le marché réel.","La baisse doit être lisible pour créer un nouvel effet d'appel sur les portails.","Mieux vaut une correction assumée maintenant qu'une usure lente du mandat."];
+    readyText="Bonjour, après analyse des retours et du niveau de demandes, je pense qu'il faut repositionner le prix pour retrouver de la visibilité. Ce n'est pas une sanction, c'est une stratégie pour recréer de l'intérêt et provoquer de nouvelles visites qualifiées.";
+    action="Proposer un rendez-vous vendeur avec 2 scénarios : maintien risqué ou repositionnement offensif.";
+  }
+  if(hasAcq){
+    diagnostic="Le sujet principal est la faisabilité acquéreur. Il faut vérifier la cohérence entre budget, apport, mensualité, taux d'endettement et reste à vivre.";
+    argumentsList=["Le bon projet est celui que la banque peut suivre.","L'apport doit couvrir idéalement une partie des frais et sécuriser le dossier.","Avant une offre, il faut clarifier le financement pour éviter une perte de temps vendeur/acquéreur."];
+    readyText="Avant d'avancer, je vous propose de valider la faisabilité financière du projet. Cela nous permettra de présenter une offre crédible et de rassurer le vendeur.";
+    action="Demander revenus, charges, apport, accord bancaire ou simulation courtier.";
+  }
+  if(hasVendeur && !hasBaisse){
+    diagnostic="Le sujet concerne un vendeur ou un mandat. Il faut rassurer, cadrer la méthode et montrer la valeur ajoutée de l'agence.";
+    argumentsList=["Un vendeur attend de la clarté, pas seulement une estimation.","La stratégie doit être expliquée : prix, visibilité, suivi, relances et compte-rendu.","L'exclusivité se défend par la méthode et l'engagement, pas par la pression."];
+    readyText="Notre rôle est de vous apporter une méthode claire : un prix cohérent, une présentation valorisante, un suivi régulier et des actions mesurables. L'objectif est de défendre votre projet tout en restant aligné avec le marché.";
+    action="Préparer un plan d'action vendeur sur 7 jours avec point de suivi.";
+  }
+  if(hasManager){
+    diagnostic="Le sujet est managérial. Il faut transformer l'information en priorités d'équipe et en décisions concrètes.";
+    argumentsList=["Identifier ce qui bloque : activité, méthode, prix, suivi ou organisation.","Prioriser peu d'actions mais les suivre réellement.","Faire ressortir qui fait quoi, pour quand, avec quel résultat attendu."];
+    readyText="L'objectif du point équipe est simple : identifier les dossiers prioritaires, décider des actions à mener et vérifier que chacun repart avec une mission claire.";
+    action="Faire une liste de 3 priorités, 3 responsables, 3 échéances.";
+  }
+  const format = hasSms ? "SMS / WhatsApp prêt à copier" : hasMail ? "Mail prêt à copier" : "Phrase prête à dire";
+  return `MODE TEST SANS API — simulation dynamique
+
+Ce mode permet de tester SmartTools sans abonnement OpenAI API. Ce n'est pas une vraie réponse IA cloud, mais la réponse change selon ta demande pour tester les modules avec l'équipe.
+
+Module : ${moduleName}
+
+1. Diagnostic terrain
+${diagnostic}
+
+2. Arguments simples
+• ${argumentsList[0]}
+• ${argumentsList[1]}
+• ${argumentsList[2]}
+
+3. ${format}
+${readyText}
+
+4. Prochaine action concrète
+${action}
+
+Pour tester avec la vraie qualité ChatGPT sans payer l'API pour l'instant : clique sur « Copier prompt ChatGPT », colle le texte dans ton ChatGPT Plus, puis copie la réponse dans ton usage métier.`;
+}
+function aiActionButtons(moduleName, promptText, answerText){
+  const prompt = buildChatGPTPrompt(moduleName, promptText).replace(/`/g,"\\`");
+  const answer = String(answerText||"").replace(/`/g,"\\`");
+  return `<div class="ai-actions">
+    <button class="btn secondary" onclick="copyToClipboard(\`${prompt}\`)">Copier prompt ChatGPT</button>
+    <button class="btn secondary" onclick="copyToClipboard(\`${answer}\`)">Copier la réponse</button>
+  </div>`;
+}
+
 const CONGES_TOOL_URL = "A_COMPLETER_LIEN_OUTIL_CONGES";
 const SHAREPOINT_DOCUMENTS_URL = "https://adresseimmo.sharepoint.com/:f:/s/CONCEPTPREMIUM/IgBjgKvaI4ecTYwGHtLv66hNAcA4FO0ha2qaMwZUTeIW3AQ?e=LIITlQ";
 const euros=v=>Math.round(v).toLocaleString('fr-FR')+' €';
@@ -478,6 +585,7 @@ function openModule(name){
     prospect: promptHTML('☎️ SmartProspect','Prépare un script de prospection copropriété / DPE / ancien client / voisinage.'),
     news: promptHTML('📰 SmartNews Immo Quotidien','Actualité → impact terrain → phrase commerciale → action du jour.'),
     testapi: testApiHTML(),
+    aiConfig: aiConfigHTML(),
     github: githubHTML()
   }[name] || checklistHTML('Module','Module en préparation.');
   document.getElementById('moduleContent').innerHTML=html;
@@ -519,6 +627,18 @@ function checklistHTML(title,text){return `<div class="panel"><h2>${title}</h2><
 function documentsHTML(){return `<div class="panel"><h2>📑 Documents obligatoires</h2><div class="box">Accédez au dossier SharePoint officiel de L'Adresse CONCEPT PREMIUM pour retrouver les documents à jour : diagnostics, pièces vendeur, copropriété, urbanisme et modèles internes.</div><div class="toolbar"><button class="btn" onclick="window.open(SHAREPOINT_DOCUMENTS_URL,'_blank','noopener,noreferrer')">Ouvrir le dossier SharePoint</button><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour accueil</button></div></div>`}
 function promptHTML(title,seed){return `<div class="split"><div class="panel"><h2>${title}</h2><label>Demande<textarea id="p_text">${seed}</textarea></label><button class="btn" onclick="promptDemo('${title.replace(/'/g,"")}')">Générer</button></div><div class="result" id="p_out">Résultat généré ici.</div></div>`}
 function testApiHTML(){return `<div class="split"><div class="panel"><h2>🧪 Test connexion IA</h2><label>Demande test<textarea id="p_text">Réponds en une phrase très courte : test SmartTools IA ${new Date().toLocaleTimeString('fr-FR')}</textarea></label><button class="btn" onclick="promptDemo('Test IA')">Tester l'IA</button><div class="box">Si la vraie IA fonctionne, la réponse change selon ta demande. Si tu vois MODE DÉMO ou ERREUR API, la clé OpenAI / le modèle / le redéploiement Vercel est à vérifier.</div></div><div class="result" id="p_out">Résultat du test ici.</div></div>`}
+function aiConfigHTML(){return `<div class="panel"><h2>⚙️ Configuration IA gratuite</h2>
+<div class="box">
+SmartTools peut maintenant essayer plusieurs moteurs IA dans cet ordre :<br><br>
+<b>1. OpenAI</b> si OPENAI_API_KEY est disponible.<br>
+<b>2. Gemini</b> si GEMINI_API_KEY est disponible.<br>
+<b>3. Groq</b> si GROQ_API_KEY est disponible.<br>
+<b>4. Mode test dynamique</b> si aucune clé ne répond.<br><br>
+Pour tester gratuitement, le plus simple est d'ajouter une clé <b>GEMINI_API_KEY</b> ou <b>GROQ_API_KEY</b> dans Vercel, puis de redéployer.
+</div>
+<div class="toolbar">
+<button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour accueil</button>
+</div></div>`}
 function githubHTML(){return `<div class="panel"><h2>🔗 Calculettes GitHub originales</h2>
 <div class="source"><b>Simulateur crédit agence</b><br><a target="_blank" href="https://jerome8691.github.io/simulateur-credit-agence/">Ouvrir la version originale</a></div>
 <div class="source"><b>Barème honoraires</b><br><a target="_blank" href="https://jerome8691.github.io/Bareme-Honoraires/">Ouvrir la version originale</a></div>
@@ -543,12 +663,14 @@ async function callSmartToolsAI(moduleName, promptText){
     });
     let data = {};
     try { data = await response.json(); } catch(e) {}
-    if(!response.ok){
-      return `ERREUR API (${response.status})\n\n${data.text || data.error || 'La fonction /api/ai répond mais signale une erreur.'}\n\nÀ vérifier dans Vercel :\n• OPENAI_API_KEY\n• OPENAI_MODEL\n• redéploiement après changement de variable`;
+    if(!response.ok){ return localSmartToolsTest(moduleName, cleanPrompt); }
+    const text = data.text || "";
+    if(text.toLowerCase().includes("exceeded your current quota") || text.toLowerCase().includes("quota") || text.toLowerCase().includes("billing")){
+      return localSmartToolsTest(moduleName, cleanPrompt);
     }
-    return data.text || fallbackSmartToolsAI(moduleName, cleanPrompt);
+    return (data.provider && data.provider !== "demo" ? `Moteur IA utilisé : ${data.provider}\n\n${text}` : text) || localSmartToolsTest(moduleName, cleanPrompt);
   }catch(e){
-    return fallbackSmartToolsAI(moduleName, cleanPrompt);
+    return localSmartToolsTest(moduleName, cleanPrompt);
   }
 }
 function fallbackSmartToolsAI(moduleName, promptText){
@@ -560,33 +682,34 @@ async function promptDemo(t){
   const out = document.getElementById('p_out');
   if(out) out.innerHTML = `<h2>${t}</h2>Génération IA en cours...`;
   const text = await callSmartToolsAI(t, prompt);
-  if(out) out.innerHTML = renderAI(text);
+  if(out) out.innerHTML = renderAI(text) + aiActionButtons(t, prompt, text);
 }
+
 async function fakeAI(){
   const prompt = document.getElementById('ai_prompt')?.value || '';
   const out = document.getElementById('ai_out');
   if(out) out.innerHTML = `<h2>SmartTools AI</h2>Génération IA en cours...`;
   const text = await callSmartToolsAI('SmartTools AI', prompt);
-  if(out) out.innerHTML = renderAI(text);
+  if(out) out.innerHTML = renderAI(text) + aiActionButtons('SmartTools AI', prompt, text);
 }
+
 async function writer(){
   const type = document.getElementById('w_type')?.value || 'Texte métier';
   const ctx = document.getElementById('w_ctx')?.value || '';
   const out = document.getElementById('w_out');
   if(out) out.innerHTML = `<h2>${type}</h2>Rédaction IA en cours...`;
-  const text = await callSmartToolsAI('SmartWriter - ' + type, ctx);
-  if(out) out.innerHTML = renderAI(text);
+  const moduleName = 'SmartWriter - ' + type;
+  const text = await callSmartToolsAI(moduleName, ctx);
+  if(out) out.innerHTML = renderAI(text) + aiActionButtons(moduleName, ctx, text);
 }
+
 async function manager(){
   const ctx = document.getElementById('m_ctx')?.value || '';
   const out = document.getElementById('m_out');
   if(out) out.innerHTML = `<h2>SmartManager</h2>Analyse IA en cours...`;
   const text = await callSmartToolsAI('SmartManager', ctx);
-  if(out) out.innerHTML = renderAI(text);
+  if(out) out.innerHTML = renderAI(text) + aiActionButtons('SmartManager', ctx, text);
 }
-
-
-
 </script>
 </body>
 </html>
