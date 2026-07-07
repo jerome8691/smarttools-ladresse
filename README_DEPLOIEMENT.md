@@ -1,25 +1,22 @@
-# SmartTools V5.10.6 — SmartPublish
+# SmartTools V5.10.7 — SmartPublish avec image/photo
 
 Nouveauté :
-- ajout de l'onglet SmartPublish ;
-- génération de contenus pour :
-  - Facebook agence ;
-  - WhatsApp équipe ;
-  - WhatsApp client ;
-  - LinkedIn ;
-  - article court ;
-  - script vidéo ;
-- boutons de copie : contenu et prompt ChatGPT ;
-- préparation technique pour une future connexion Facebook/Meta.
+- ajout d'un bouton de sélection photo/image dans SmartPublish ;
+- aperçu de l'image sélectionnée ;
+- nom de l'image ajouté automatiquement dans le brief envoyé à l'IA ;
+- bouton pour retirer l'image ;
+- génération de texte adaptée au canal et à l'image.
 
 Important :
-- cette version ne publie pas encore directement sur Facebook ;
-- elle prépare le contenu prêt à copier/coller ;
-- la publication directe nécessitera plus tard une application Meta, un Page ID et un Page Access Token dans Vercel.
+- cette version ne publie pas encore automatiquement l'image sur Facebook ;
+- l'image reste locale dans le navigateur ;
+- il faut copier le texte généré puis ajouter manuellement l'image dans Facebook/WhatsApp/LinkedIn.
+- la publication directe texte + image nécessitera une connexion Meta officielle.
 
 Base conservée :
 - Gemini rapide / anti-timeout ;
 - logo agence ;
 - SharePoint ;
 - profil Assistante ;
-- Congés & absences.
+- Congés & absences ;
+- SmartPublish texte/article/script vidéo.

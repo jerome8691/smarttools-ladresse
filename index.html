@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.10.6 SmartPublish</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.10.7 SmartPublish image</title>
 <style>
 :root{
   --teal:#008985;
@@ -318,6 +318,45 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   margin-top:8px;
 }
 
+
+/* V5.10.7 — SmartPublish image/photo */
+.file-zone{
+  border:1px dashed var(--line);
+  background:#f8fbfd;
+  border-radius:16px;
+  padding:14px;
+  margin-top:12px;
+}
+.file-zone input[type="file"]{
+  width:100%;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px;
+}
+.image-preview{
+  margin-top:12px;
+  display:none;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px;
+}
+.image-preview img{
+  display:block;
+  width:100%;
+  max-height:260px;
+  object-fit:contain;
+  border-radius:12px;
+  background:#f3f7fa;
+}
+.image-preview .meta{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
 </style>
 </head>
 <body>
@@ -468,13 +507,29 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
           <textarea id="pub_ctx">Créer un post Facebook pour L'Adresse CONCEPT PREMIUM afin de rappeler que l'agence accompagne les vendeurs avec estimation, stratégie de prix, visibilité et suivi régulier.</textarea>
         </label>
 
+        <div class="file-zone">
+          <label>Photo / image à associer au post
+            <input id="pub_file" type="file" accept="image/*" onchange="publishImagePreview(event)">
+          </label>
+          <div class="small-help">
+            L'image est utilisée pour prévisualiser et préparer le texte. Pour l'instant, elle n'est pas publiée automatiquement : il faudra l'ajouter manuellement dans Facebook avec le texte généré.
+          </div>
+          <div id="pub_img_preview" class="image-preview">
+            <img id="pub_img" alt="Aperçu image SmartPublish">
+            <div id="pub_img_meta" class="meta"></div>
+            <div class="toolbar">
+              <button class="btn secondary" onclick="clearPublishImage()">Retirer l'image</button>
+            </div>
+          </div>
+        </div>
+
         <div class="toolbar">
           <button class="btn" onclick="publishGenerate()">Générer le contenu</button>
           <button class="btn secondary" onclick="copyPublishBrief()">Copier le brief</button>
         </div>
 
         <div class="small-help">
-          Pour l'instant SmartPublish prépare le texte, le script ou l'article. Ensuite on copie/colle dans Facebook, WhatsApp ou LinkedIn.
+          Pour l'instant SmartPublish prépare le texte, le script ou l'article. Si une photo est sélectionnée, elle est prévisualisée ici ; ensuite on copie/colle le texte et on ajoute l'image manuellement dans Facebook, WhatsApp ou LinkedIn.
           La publication directe sur la page Facebook pourra être ajoutée plus tard avec une connexion Meta officielle.
         </div>
       </div>
@@ -776,15 +831,50 @@ async function writer(){
 
 let lastPublishResponse = "";
 
+
+let publishImageName = "";
+
+function publishImagePreview(event){
+  const file = event.target.files && event.target.files[0];
+  const preview = document.getElementById('pub_img_preview');
+  const img = document.getElementById('pub_img');
+  const meta = document.getElementById('pub_img_meta');
+
+  if(!file){
+    clearPublishImage();
+    return;
+  }
+
+  publishImageName = file.name;
+  const url = URL.createObjectURL(file);
+  img.src = url;
+  meta.textContent = `Image sélectionnée : ${file.name} — ${(file.size/1024/1024).toFixed(2)} Mo`;
+  preview.style.display = 'block';
+}
+
+function clearPublishImage(){
+  const input = document.getElementById('pub_file');
+  const preview = document.getElementById('pub_img_preview');
+  const img = document.getElementById('pub_img');
+  const meta = document.getElementById('pub_img_meta');
+
+  if(input) input.value = "";
+  if(img) img.removeAttribute('src');
+  if(meta) meta.textContent = "";
+  if(preview) preview.style.display = 'none';
+  publishImageName = "";
+}
+
 function buildPublishBrief(){
   const channel = document.getElementById('pub_channel')?.value || 'Facebook agence';
   const goal = document.getElementById('pub_goal')?.value || 'Valoriser l’agence';
   const ctx = document.getElementById('pub_ctx')?.value || '';
+  const imageInfo = publishImageName ? `\nImage associée : ${publishImageName}. Prévoir une légende cohérente avec cette image.` : '\nImage associée : aucune image sélectionnée.';
   return `Canal : ${channel}
 Objectif : ${goal}
 
 Contexte :
-${ctx}
+${ctx}${imageInfo}
 
 Consigne :
 Prépare un contenu professionnel pour L'Adresse CONCEPT PREMIUM.
