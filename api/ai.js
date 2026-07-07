@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 
 const systemPrompt = `
 Tu es SmartTools, copilote métier pour l'agence immobilière L'Adresse CONCEPT PREMIUM.
@@ -22,12 +23,13 @@ function fallback(module, prompt, errors = []) {
 Module : ${module}
 Demande : ${prompt}
 
-SmartTools a essayé les moteurs disponibles mais aucun n'a répondu avec les variables actuelles.
+SmartTools a essayé les moteurs disponibles mais aucun n'a répondu.
 
-Pour obtenir une vraie réponse IA gratuite ou très économique :
-1. Ajoutez GEMINI_API_KEY dans Vercel
-2. ou ajoutez GROQ_API_KEY dans Vercel
-3. Redéployez le projet
+À vérifier :
+1. Variables Vercel en Production
+2. Redéploiement Vercel après ajout des variables
+3. AI_PROVIDER = gemini
+4. GEMINI_MODEL = gemini-3.5-flash
 
 Réponse exemple :
 1. Diagnostic terrain
@@ -62,34 +64,57 @@ async function tryOpenAI(module, prompt) {
   return { provider: "OpenAI", text };
 }
 
+function extractGeminiText(interaction) {
+  if (interaction?.output_text && String(interaction.output_text).trim()) {
+    return String(interaction.output_text).trim();
+  }
+
+  if (interaction?.text && String(interaction.text).trim()) {
+    return String(interaction.text).trim();
+  }
+
+  const found = [];
+  const walk = (obj, depth = 0) => {
+    if (!obj || depth > 8) return;
+    if (Array.isArray(obj)) {
+      obj.forEach(x => walk(x, depth + 1));
+      return;
+    }
+    if (typeof obj === "object") {
+      for (const [k, v] of Object.entries(obj)) {
+        if ((k === "text" || k === "output_text" || k === "outputText") && typeof v === "string" && v.trim()) {
+          found.push(v.trim());
+        } else {
+          walk(v, depth + 1);
+        }
+      }
+    }
+  };
+  walk(interaction);
+  return found.join("\n").trim();
+}
+
 async function tryGemini(module, prompt) {
   if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY absente");
 
   const model = process.env.GEMINI_MODEL || "gemini-3.5-flash";
-  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
-    method: "POST",
-    headers: {
-      "x-goog-api-key": process.env.GEMINI_API_KEY,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model,
-      system_instruction: systemPrompt,
-      input: buildUserPrompt(module, prompt),
-      generation_config: {
-        temperature: 0.4,
-        thinking_level: "low"
-      }
-    })
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+  const interaction = await ai.interactions.create({
+    model,
+    system_instruction: systemPrompt,
+    input: buildUserPrompt(module, prompt),
+    generation_config: {
+      temperature: 0.4,
+      thinking_level: "low"
+    }
   });
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(`Gemini ${response.status} : ${data?.error?.message || "erreur API"}`);
+  const text = extractGeminiText(interaction);
+  if (!text.trim()) {
+    throw new Error(`Gemini : réponse vide avec ${model}. Essayez GEMINI_MODEL=gemini-3.5-flash ou vérifiez l'accès au modèle dans Google AI Studio.`);
   }
 
-  const text = data.output_text || "";
-  if (!text.trim()) throw new Error("Gemini : réponse vide");
   return { provider: `Gemini (${model})`, text };
 }
 
@@ -115,9 +140,7 @@ async function tryGroq(module, prompt) {
   });
 
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(`Groq ${response.status} : ${data?.error?.message || "erreur API"}`);
-  }
+  if (!response.ok) throw new Error(`Groq ${response.status} : ${data?.error?.message || "erreur API"}`);
 
   const text = data?.choices?.[0]?.message?.content || "";
   if (!text.trim()) throw new Error("Groq : réponse vide");
@@ -149,8 +172,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ demo: true, provider: "demo", text: fallback(module, prompt) });
     }
 
-    const providers = ["openai", "gemini", "groq"];
-    for (const provider of providers) {
+    for (const provider of ["openai", "gemini", "groq"]) {
       try {
         const result = await runProvider(provider, module, prompt);
         return res.status(200).json({ demo: false, provider: result.provider, text: result.text });
