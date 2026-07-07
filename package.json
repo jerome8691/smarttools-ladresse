@@ -1,1 +1,9 @@
-{"name":"smarttools-ladresse-cockpit-ia","version":"5.9.6","private":true,"type":"module","dependencies":{"openai":"latest"}}
+{
+  "name": "smarttools-ladresse-concept-premium",
+  "version": "5.10.3",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "openai": "latest"
+  }
+}
