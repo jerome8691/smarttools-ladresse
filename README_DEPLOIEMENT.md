@@ -1,25 +1,30 @@
-# SmartTools V5.9.5 — Cockpit + IA Vercel
+# SmartTools V5.10.3 — IA gratuite / multi-moteurs
 
-Cette version garde la présentation cockpit opérationnel validée, puis ajoute la couche Cloud/API.
+Cette version ajoute un serveur IA multi-fournisseurs.
 
-## Fonctionne sans Vercel
-- Interface cockpit
-- Toutes les calculettes locales
-- Mode démonstration IA
+Ordre de fonctionnement par défaut (`AI_PROVIDER=auto`) :
+1. OpenAI si `OPENAI_API_KEY` fonctionne
+2. Gemini si `GEMINI_API_KEY` fonctionne
+3. Groq si `GROQ_API_KEY` fonctionne
+4. Mode test dynamique si aucun moteur ne répond
 
-## Fonctionne avec Vercel
-- SmartTools AI réel
-- SmartWriter réel
-- SmartManager réel
-- SmartEstimate / SmartNegotiate / SmartProspect avec IA réelle
-- Clé OpenAI protégée côté serveur
+Variables Vercel à ajouter :
+- `AI_PROVIDER` = `auto`
+- `GEMINI_API_KEY` = votre clé Google AI Studio
+- `GEMINI_MODEL` = `gemini-3.5-flash`
+- optionnel : `GROQ_API_KEY`
+- optionnel : `GROQ_MODEL` = `llama-3.1-8b-instant`
 
-## Variables Vercel
-OPENAI_API_KEY = votre clé API OpenAI
-OPENAI_MODEL = gpt-5.5
+Pour forcer Gemini :
+- `AI_PROVIDER` = `gemini`
 
-## Déploiement
-1. Déposer tous les fichiers dans GitHub
-2. Connecter le repository à Vercel
-3. Ajouter les variables d'environnement
-4. Déployer
+Pour forcer Groq :
+- `AI_PROVIDER` = `groq`
+
+Fichiers à déposer dans GitHub :
+- `index.html`
+- `api/ai.js`
+- `package.json`
+- `vercel.json`
+
+Puis redéployer dans Vercel.
