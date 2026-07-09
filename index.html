@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.6 SmartNews fix affichage</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.7 SmartNews affichage permuté</title>
 <style>
 :root{
   --teal:#008985;
@@ -617,6 +617,19 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   line-height:1.45;
 }
 
+
+/* V5.11.7 — SmartNews articles en haut */
+.news-top-note{
+  background:#eaf8f7;
+  border:1px solid #b8dfdc;
+  color:#006e6b;
+  border-radius:14px;
+  padding:11px;
+  margin-bottom:10px;
+  font-size:13px;
+  font-weight:800;
+}
+
 </style>
 </head>
 <body>
@@ -851,7 +864,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
           <button class="btn secondary" onclick="copyNewsBrief()">Copier le brief ChatGPT</button>
         </div>
 
-        <div id="news_status" class="news-status">Prêt — SmartNews V5.11.6. Clique sur “Chercher les articles du jour”. Le statut s’affichera ici immédiatement.</div>
+        <div id="news_status" class="news-status">Prêt — SmartNews V5.11.7. Clique sur “Chercher les articles du jour”. Le statut s’affichera ici immédiatement.</div>
 
         <div class="small-help">
           SmartNews affiche maintenant le moteur réellement utilisé, le nombre d’articles trouvés et les détails techniques. Il essaie GNews, NewsAPI, Tavily, puis un secours Google News RSS sans clé.
@@ -859,14 +872,14 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
       </div>
 
       <div class="result" id="news_ai_out">
-        <h2>Synthèse SmartNews</h2>
-        La synthèse apparaîtra ici après recherche.
+        <h2>Articles trouvés</h2>
+        Les articles avec leurs liens apparaîtront ici en premier.
       </div>
     </div>
 
     <div class="panel" style="margin-top:16px">
-      <h2>Articles trouvés</h2>
-      <div id="news_articles">Aucun article chargé pour l’instant.</div>
+      <h2>Synthèse SmartNews</h2>
+      <div id="news_articles">La synthèse IA apparaîtra ici après affichage des articles.</div>
     </div>
   </section>
 
@@ -1642,13 +1655,13 @@ function copyNewsBrief(){
 }
 
 function renderNewsArticles(articles){
-  const box = document.getElementById('news_articles');
+  const box = document.getElementById('news_ai_out');
   if(!box) return;
   if(!articles || !articles.length){
     box.innerHTML = "Aucun article trouvé.";
     return;
   }
-  box.innerHTML = articles.map((a,i)=>{
+  box.innerHTML = `<h2>Articles trouvés</h2><div class="news-top-note">Les articles et leurs liens sont affichés ici en premier. La synthèse IA se trouve dans le bloc du dessous.</div>` + articles.map((a,i)=>{
     const source = a.source || 'Source inconnue';
     const date = a.publishedAt ? new Date(a.publishedAt).toLocaleString('fr-FR') : '';
     const desc = a.description || a.content || '';
@@ -1701,16 +1714,16 @@ async function smartNewsTestAPI(){
 async function smartNewsLive(event){
   if(event && typeof event.preventDefault === 'function') event.preventDefault();
 
-  const out = document.getElementById('news_ai_out');
-  const articlesBox = document.getElementById('news_articles');
+  const out = document.getElementById('news_articles');
+  const articlesBox = document.getElementById('news_ai_out');
   const btn = document.getElementById('btn_smartnews_live');
   const q = buildNewsQuery();
   const limit = document.getElementById('news_limit')?.value || '12';
 
   if(btn){ btn.disabled = true; btn.textContent = 'Recherche articles...'; }
-  smartNewsSetStatus('loading', `<div class="news-step"><span class="news-spinner"></span><span>Étape 1/2 : recherche des articles pour <b>${escapeHTML(q)}</b>.<br>Délai maximum : 18 secondes.<br><small>Version SmartNews V5.11.6</small></span></div>`);
-  if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>On récupère d’abord les articles. La synthèse IA viendra ensuite.`;
-  if(articlesBox) articlesBox.innerHTML = "Recherche des articles en cours...";
+  smartNewsSetStatus('loading', `<div class="news-step"><span class="news-spinner"></span><span>Étape 1/2 : recherche des articles pour <b>${escapeHTML(q)}</b>.<br>Délai maximum : 18 secondes.<br><small>Version SmartNews V5.11.7</small></span></div>`);
+  if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>La synthèse IA apparaîtra ici après récupération des articles.`;
+  if(articlesBox) articlesBox.innerHTML = `<h2>Articles trouvés</h2>Recherche des articles en cours...`;
 
   try{
     const url = `/api/news?q=${encodeURIComponent(q)}&limit=${encodeURIComponent(limit)}`;
@@ -1739,7 +1752,7 @@ async function smartNewsLive(event){
 
     if(articlesBox) articlesBox.insertAdjacentHTML('afterbegin', diagnosticHTML);
 
-    smartNewsSetStatus('ok', `Articles récupérés : <b>${count}</b><br>Moteur utilisé : <b>${escapeHTML(provider)}</b><br>Les articles sont affichés. Synthèse IA en cours...`);
+    smartNewsSetStatus('ok', `Articles récupérés : <b>${count}</b><br>Moteur utilisé : <b>${escapeHTML(provider)}</b><br>Les articles sont affichés en haut. Synthèse IA en cours dans le bloc du dessous...`);
 
     const articleBrief = lastNewsArticles.map((a,i)=>`${i+1}. ${a.title}\nSource: ${a.source || ''}\nDate: ${a.publishedAt || ''}\nRésumé: ${a.description || a.content || ''}\nLien: ${a.url || ''}`).join('\n\n');
 
@@ -1766,7 +1779,7 @@ Réponse attendue :
 8. 5 idées de posts Facebook/LinkedIn
 9. Message court prêt à envoyer à l'équipe`;
 
-    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>${diagnosticHTML}<div class="news-step"><span class="news-spinner"></span><span>Synthèse IA en cours...</span></div>`;
+    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>${diagnosticHTML}<div class="news-step"><span class="news-spinner"></span><span>Synthèse IA en cours... Elle apparaîtra ici, sous la zone articles.</span></div>`;
 
     try{
       const synthese = await smartNewsAIWithTimeout('SmartNews Immo', prompt, 26000);
