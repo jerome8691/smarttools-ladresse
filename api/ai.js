@@ -13,7 +13,12 @@ Structure la réponse avec :
 `;
 
 function buildUserPrompt(module, prompt) {
-  return `[${module}]\n${prompt}\n\nRéponse attendue : maximum 450 mots, pas de théorie, uniquement exploitable en agence.`;
+  const isNews = String(module || "").toLowerCase().includes("smartnews");
+  const lengthInstruction = isNews
+    ? "Réponse attendue : synthèse approfondie entre 800 et 1200 mots si les sources le permettent, structurée, concrète et exploitable en agence."
+    : "Réponse attendue : maximum 450 mots, pas de théorie, uniquement exploitable en agence.";
+
+  return `[${module}]\n${prompt}\n\n${lengthInstruction}`;
 }
 
 function fallback(module, prompt, errors = []) {
@@ -64,7 +69,7 @@ async function tryOpenAI(module, prompt) {
       { role: "system", content: systemPrompt },
       { role: "user", content: buildUserPrompt(module, prompt) }
     ],
-    max_output_tokens: 900
+    max_output_tokens: 1800
   }), 22000, "OpenAI");
 
   const text = response.output_text || "";
@@ -104,7 +109,7 @@ async function tryGemini(module, prompt) {
     generation_config: {
       temperature: 0.3,
       thinking_level: "low",
-      max_output_tokens: 900
+      max_output_tokens: 1800
     }
   }), 22000, "Gemini");
 
