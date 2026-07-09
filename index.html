@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.5 SmartNews articles d'abord</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.6 SmartNews fix affichage</title>
 <style>
 :root{
   --teal:#008985;
@@ -851,7 +851,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
           <button class="btn secondary" onclick="copyNewsBrief()">Copier le brief ChatGPT</button>
         </div>
 
-        <div id="news_status" class="news-status">Prêt. Clique sur “Chercher les articles du jour”. Le statut s’affichera ici immédiatement.</div>
+        <div id="news_status" class="news-status">Prêt — SmartNews V5.11.6. Clique sur “Chercher les articles du jour”. Le statut s’affichera ici immédiatement.</div>
 
         <div class="small-help">
           SmartNews affiche maintenant le moteur réellement utilisé, le nombre d’articles trouvés et les détails techniques. Il essaie GNews, NewsAPI, Tavily, puis un secours Google News RSS sans clé.
@@ -1617,6 +1617,17 @@ function honReset(){
 
 
 
+
+/* V5.11.6 — sécurité affichage SmartNews */
+function escapeHTML(value){
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 let lastNewsArticles = [];
 
 function buildNewsQuery(){
@@ -1697,7 +1708,7 @@ async function smartNewsLive(event){
   const limit = document.getElementById('news_limit')?.value || '12';
 
   if(btn){ btn.disabled = true; btn.textContent = 'Recherche articles...'; }
-  smartNewsSetStatus('loading', `<div class="news-step"><span class="news-spinner"></span><span>Étape 1/2 : recherche des articles pour <b>${escapeHTML(q)}</b>.<br>Délai maximum : 18 secondes.</span></div>`);
+  smartNewsSetStatus('loading', `<div class="news-step"><span class="news-spinner"></span><span>Étape 1/2 : recherche des articles pour <b>${escapeHTML(q)}</b>.<br>Délai maximum : 18 secondes.<br><small>Version SmartNews V5.11.6</small></span></div>`);
   if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>On récupère d’abord les articles. La synthèse IA viendra ensuite.`;
   if(articlesBox) articlesBox.innerHTML = "Recherche des articles en cours...";
 
@@ -1768,13 +1779,29 @@ Réponse attendue :
 
   }catch(e){
     const msg = e.message || String(e);
-    smartNewsSetStatus('error', `<b>Erreur SmartNews :</b><br>${escapeHTML(msg)}<br><br>Comme /api/news répond en GET, le problème vient probablement de la recherche article ou de la clé NewsAPI.`);
+    smartNewsSetStatus('error', `<b>Erreur SmartNews :</b><br>${escapeHTML(msg)}<br><br>Comme /api/news répond en GET, le problème vient probablement de la recherche article, de la clé NewsAPI, ou d'une ancienne version index.html encore en cache.`);
     if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2><div class="warnBox"><b>SmartNews live indisponible.</b><br>${escapeHTML(msg)}</div>`;
     if(articlesBox) articlesBox.innerHTML = "Impossible de charger les articles live pour le moment.";
   } finally {
     if(btn){ btn.disabled = false; btn.textContent = 'Chercher les articles du jour'; }
   }
 }
+
+
+window.addEventListener('error', function(event){
+  const status = document.getElementById('news_status');
+  if(status && location.href){
+    status.className = 'news-status error';
+    status.innerHTML = '<b>Erreur JavaScript détectée :</b><br>' + escapeHTML(event.message || 'Erreur inconnue') + '<br><small>Fichier : ' + escapeHTML(event.filename || '') + ' ligne ' + escapeHTML(event.lineno || '') + '</small>';
+  }
+});
+window.addEventListener('unhandledrejection', function(event){
+  const status = document.getElementById('news_status');
+  if(status){
+    status.className = 'news-status error';
+    status.innerHTML = '<b>Erreur promise détectée :</b><br>' + escapeHTML((event.reason && event.reason.message) || event.reason || 'Erreur inconnue');
+  }
+});
 
 </script>
 </body>
