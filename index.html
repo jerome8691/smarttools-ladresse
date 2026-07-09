@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.2 SmartNews renforcé</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.3 SmartNews bouton corrigé</title>
 <style>
 :root{
   --teal:#008985;
@@ -559,6 +559,35 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   margin:0 5px 5px 0;
 }
 
+
+/* V5.11.3 — SmartNews bouton + retour immédiat */
+.news-status{
+  margin-top:12px;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:#f7fafc;
+  color:#405064;
+  font-size:13px;
+  line-height:1.45;
+}
+.news-status.loading{
+  background:#eaf8f7;
+  border-color:#b8dfdc;
+  color:#006e6b;
+  font-weight:800;
+}
+.news-status.error{
+  background:#fff3f1;
+  border-color:#f1b8ae;
+  color:#8b1d12;
+}
+.news-status.ok{
+  background:#f0fff7;
+  border-color:#b7e7c8;
+  color:#0f6938;
+}
+
 </style>
 </head>
 <body>
@@ -788,9 +817,11 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
         </label>
 
         <div class="toolbar">
-          <button class="btn" onclick="smartNewsLive()">Chercher les articles du jour</button>
+          <button id="btn_smartnews_live" type="button" class="btn" onclick="smartNewsLive(event)">Chercher les articles du jour</button>
           <button class="btn secondary" onclick="copyNewsBrief()">Copier le brief ChatGPT</button>
         </div>
+
+        <div id="news_status" class="news-status">Prêt. Clique sur “Chercher les articles du jour”. Le statut s’affichera ici immédiatement.</div>
 
         <div class="small-help">
           SmartNews affiche maintenant le moteur réellement utilisé, le nombre d’articles trouvés et les détails techniques. Il essaie GNews, NewsAPI, Tavily, puis un secours Google News RSS sans clé.
@@ -1587,12 +1618,18 @@ function renderNewsArticles(articles){
   }).join('');
 }
 
-async function smartNewsLive(){
+async function smartNewsLive(event){
+  if(event && typeof event.preventDefault === 'function') event.preventDefault();
+
   const out = document.getElementById('news_ai_out');
   const articlesBox = document.getElementById('news_articles');
+  const status = document.getElementById('news_status');
+  const btn = document.getElementById('btn_smartnews_live');
   const q = buildNewsQuery();
   const limit = document.getElementById('news_limit')?.value || '12';
 
+  if(btn){ btn.disabled = true; btn.textContent = 'Recherche en cours...'; }
+  if(status){ status.className = 'news-status loading'; status.innerHTML = `Recherche lancée sur internet pour : <b>${escapeHTML(q)}</b><br>Appel de l’API /api/news en cours...`; }
   if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>Recherche en cours sur internet : <b>${escapeHTML(q)}</b>...`;
   if(articlesBox) articlesBox.innerHTML = "Recherche des articles du jour en cours...";
 
@@ -1608,6 +1645,10 @@ async function smartNewsLive(){
     }
 
     renderNewsArticles(data.articles || []);
+    if(status){
+      status.className = 'news-status ok';
+      status.innerHTML = `Articles récupérés : <b>${(data.articles || []).length}</b><br>Moteur utilisé : <b>${escapeHTML(data.provider || 'non précisé')}</b><br>Synthèse IA en cours...`;
+    }
 
     const diag = data.diagnostics || [];
     const provider = data.provider || 'non précisé';
@@ -1654,8 +1695,12 @@ Réponse attendue en français, détaillée :
     const synthese = await callSmartToolsAI('SmartNews Immo', prompt);
     if(out) out.innerHTML = renderAI(synthese) + `<div class="ai-actions"><button class="btn secondary" onclick="copyToClipboard(\`${String(synthese).replace(/`/g,"\\`")}\`)">Copier la synthèse</button><button class="btn secondary" onclick="copyToClipboard(\`${String(articleBrief).replace(/`/g,"\\`")}\`)">Copier les sources</button></div>`;
   }catch(e){
-    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2><div class="warnBox"><b>SmartNews live indisponible.</b><br>${escapeHTML(e.message || String(e))}<br><br>À vérifier dans Vercel : GNEWS_API_KEY ou NEWS_API_KEY ou TAVILY_API_KEY, puis Redeploy.</div>`;
+    const msg = e.message || String(e);
+    if(status){ status.className = 'news-status error'; status.innerHTML = `<b>Erreur SmartNews :</b><br>${escapeHTML(msg)}<br><br>Teste aussi l’adresse /api/news dans le navigateur.`; }
+    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2><div class="warnBox"><b>SmartNews live indisponible.</b><br>${escapeHTML(msg)}<br><br>À vérifier dans Vercel : GNEWS_API_KEY ou NEWS_API_KEY ou TAVILY_API_KEY, puis Redeploy.</div>`;
     if(articlesBox) articlesBox.innerHTML = "Impossible de charger les articles live pour le moment.";
+  } finally {
+    if(btn){ btn.disabled = false; btn.textContent = 'Chercher les articles du jour'; }
   }
 }
 
