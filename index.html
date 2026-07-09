@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.0 modules intégrés</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.2 SmartNews renforcé</title>
 <style>
 :root{
   --teal:#008985;
@@ -491,6 +491,74 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   .integrated-tool .value{text-align:left;}
 }
 
+
+/* V5.11.1 — SmartNews live internet */
+.news-live-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.news-article{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin:10px 0;
+}
+.news-article h3{
+  margin:0 0 7px;
+  font-size:17px;
+}
+.news-article .meta{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+.news-article p{
+  margin:0 0 10px;
+  color:#405064;
+  line-height:1.45;
+}
+.news-article a{
+  font-weight:900;
+}
+.news-summary{
+  background:#f7fafc;
+  border:1px dashed #bbcbd8;
+  border-radius:14px;
+  padding:13px;
+  white-space:pre-line;
+}
+@media(max-width:860px){
+  .news-live-grid{grid-template-columns:1fr;}
+}
+
+
+/* V5.11.2 — SmartNews diagnostic */
+.news-diagnostic{
+  background:#fff8df;
+  border:1px solid #f1d28a;
+  color:#4f3b09;
+  border-radius:14px;
+  padding:12px;
+  margin:10px 0;
+  font-size:13px;
+  line-height:1.45;
+}
+.news-diagnostic b{color:#1f2f46}
+.news-source-badge{
+  display:inline-block;
+  border:1px solid var(--line);
+  background:#f7fafc;
+  border-radius:999px;
+  padding:5px 9px;
+  font-size:12px;
+  font-weight:900;
+  color:var(--navy);
+  margin:0 5px 5px 0;
+}
+
 </style>
 </head>
 <body>
@@ -515,6 +583,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
     <button onclick="show('calculs',this)">SmartCalcul</button>
     <button onclick="show('assistants',this)">SmartAssistants</button>
     <button onclick="show('ai',this)">SmartTools AI</button>
+    <button onclick="show('news',this)">SmartNews</button>
     <button onclick="show('writer',this)">SmartWriter</button>
     <button onclick="show('publish',this)">SmartPublish</button>
     <button onclick="show('manager',this)">SmartManager</button>
@@ -529,6 +598,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
     <div class="grid">
       <article class="card" onclick="show('calculs',navBtnByText('SmartCalcul'))"><div class="icon">🧮</div><h3>SmartCalcul</h3><p>Accéder à tous les modules financiers : simulateur de faisabilité, barème honoraires complet, frais de notaire, prêt relais, simulateur crédit.</p><span class="pill">Module prioritaire</span></article>
       <article class="card" onclick="show('publish',navBtnByText('SmartPublish'))"><div class="icon">📣</div><h3>SmartPublish</h3><p>Créer un post Facebook, un article court, un script vidéo ou un message WhatsApp prêt à publier.</p><span class="pill">Communication</span></article>
+      <article class="card" onclick="show('news',navBtnByText('SmartNews'))"><div class="icon">📰</div><h3>SmartNews Immo</h3><p>Articles du jour sur l’immobilier, le crédit, le DPE, la location et le marché local.</p><span class="pill">Internet live</span></article>
       <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Documents à réunir selon maison, copropriété, terrain, SCI, succession.</p><span class="pill">Sécurisation</span></article>
       <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Accès au dossier SharePoint de L'Adresse CONCEPT PREMIUM : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">SharePoint</span></article>
       <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition simple ou avancée selon règles internes : entreur, sorteur, copro, droit de suite.</p><span class="pill">Interne</span></article>
@@ -679,6 +749,66 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
       <div class="result" id="m_out">Plan manager ici.</div>
     </div>
   </section>
+
+
+  <section id="news" class="section">
+    <div class="block-title">
+      <h2>📰 SmartNews Immo — articles du jour</h2>
+      <p>Recherche internet en direct via GNews / NewsAPI / Tavily, avec secours Google News RSS, puis synthèse métier approfondie avec Gemini.</p>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <h2>Recherche d’articles</h2>
+        <div class="row">
+          <label>Thème
+            <select id="news_theme">
+              <option value="immobilier France">Immobilier France</option>
+              <option value="marché immobilier France">Marché immobilier</option>
+              <option value="crédit immobilier taux France">Crédit immobilier / taux</option>
+              <option value="DPE immobilier France">DPE / rénovation énergétique</option>
+              <option value="location immobilier France">Location</option>
+              <option value="copropriété immobilier France">Copropriété</option>
+              <option value="fiscalité immobilière France">Fiscalité immobilière</option>
+              <option value="notaires immobilier France">Notaires / prix</option>
+              <option value="immobilier Seine-et-Marne Melun">Local Seine-et-Marne / Melun</option>
+            </select>
+          </label>
+          <label>Nombre d’articles
+            <select id="news_limit">
+              <option value="8">8 articles</option>
+              <option value="12" selected>12 articles</option>
+              <option value="16">16 articles</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Recherche personnalisée
+          <input id="news_query" placeholder="Ex : baisse des taux crédit immobilier, DPE, marché Seine-et-Marne...">
+        </label>
+
+        <div class="toolbar">
+          <button class="btn" onclick="smartNewsLive()">Chercher les articles du jour</button>
+          <button class="btn secondary" onclick="copyNewsBrief()">Copier le brief ChatGPT</button>
+        </div>
+
+        <div class="small-help">
+          SmartNews affiche maintenant le moteur réellement utilisé, le nombre d’articles trouvés et les détails techniques. Il essaie GNews, NewsAPI, Tavily, puis un secours Google News RSS sans clé.
+        </div>
+      </div>
+
+      <div class="result" id="news_ai_out">
+        <h2>Synthèse SmartNews</h2>
+        La synthèse apparaîtra ici après recherche.
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <h2>Articles trouvés</h2>
+      <div id="news_articles">Aucun article chargé pour l’instant.</div>
+    </div>
+  </section>
+
 
   <section id="roadmap" class="section">
     <div class="panel">
@@ -1422,6 +1552,111 @@ function honReset(){
   if(ph) ph.style.display='block';
   if(rs) rs.style.display='none';
   honDernierTexte='';
+}
+
+
+function buildNewsQuery(){
+  const custom = document.getElementById('news_query')?.value?.trim();
+  const theme = document.getElementById('news_theme')?.value || 'immobilier France';
+  return custom || theme;
+}
+
+function copyNewsBrief(){
+  const q = buildNewsQuery();
+  copyToClipboard(`Recherche articles du jour sur : ${q}\nObjectif : faire une synthèse immobilière utile pour une agence L'Adresse CONCEPT PREMIUM, avec idées de posts Facebook et points de vigilance pour vendeurs/acquéreurs.`);
+}
+
+function renderNewsArticles(articles){
+  const box = document.getElementById('news_articles');
+  if(!box) return;
+  if(!articles || !articles.length){
+    box.innerHTML = "Aucun article trouvé.";
+    return;
+  }
+  box.innerHTML = articles.map((a,i)=>{
+    const source = a.source || 'Source inconnue';
+    const date = a.publishedAt ? new Date(a.publishedAt).toLocaleString('fr-FR') : '';
+    const desc = a.description || a.content || '';
+    const url = a.url || '#';
+    return `<article class="news-article">
+      <h3>${i+1}. ${escapeHTML(a.title || 'Sans titre')}</h3>
+      <div class="meta">${escapeHTML(source)} ${date ? '— ' + escapeHTML(date) : ''}</div>
+      <p>${escapeHTML(desc).slice(0,420)}</p>
+      ${url && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener">Lire l’article source</a>` : ''}
+    </article>`;
+  }).join('');
+}
+
+async function smartNewsLive(){
+  const out = document.getElementById('news_ai_out');
+  const articlesBox = document.getElementById('news_articles');
+  const q = buildNewsQuery();
+  const limit = document.getElementById('news_limit')?.value || '12';
+
+  if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>Recherche en cours sur internet : <b>${escapeHTML(q)}</b>...`;
+  if(articlesBox) articlesBox.innerHTML = "Recherche des articles du jour en cours...";
+
+  try{
+    const res = await fetch('/api/news', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({query:q, limit:Number(limit)})
+    });
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok || data.error){
+      throw new Error(data.error || 'Erreur SmartNews');
+    }
+
+    renderNewsArticles(data.articles || []);
+
+    const diag = data.diagnostics || [];
+    const provider = data.provider || 'non précisé';
+    const count = (data.articles || []).length;
+
+    const diagnosticHTML = `<div class="news-diagnostic">
+      <b>Diagnostic SmartNews :</b><br>
+      Moteur utilisé : <b>${escapeHTML(provider)}</b><br>
+      Articles trouvés : <b>${count}</b><br>
+      Détails : ${escapeHTML((diag || []).join(' | ') || 'Aucun détail technique')}
+    </div>`;
+
+    if(articlesBox) articlesBox.insertAdjacentHTML('afterbegin', diagnosticHTML);
+
+    const articleBrief = (data.articles || []).map((a,i)=>`${i+1}. ${a.title}\nSource: ${a.source || ''}\nDate: ${a.publishedAt || ''}\nRésumé: ${a.description || a.content || ''}\nLien: ${a.url || ''}`).join('\n\n');
+
+    const prompt = `Tu es SmartNews Immo pour L'Adresse CONCEPT PREMIUM.
+
+À partir des articles ci-dessous, fais une synthèse approfondie, concrète et exploitable par un directeur d'agence immobilière.
+Ne fais pas une réponse courte. Analyse vraiment les tendances, les risques et les opportunités commerciales.
+Structure la réponse avec des titres nets et des exemples d'utilisation terrain.
+
+Recherche : ${q}
+Nombre d'articles : ${count}
+Moteur de recherche utilisé : ${provider}
+
+Articles :
+${articleBrief}
+
+Réponse attendue en français, détaillée :
+1. Synthèse exécutive du jour en 8 à 10 lignes
+2. Les 8 informations importantes à retenir
+3. Impact concret pour les vendeurs
+4. Impact concret pour les acquéreurs
+5. Impact concret pour les investisseurs
+6. Ce que l'équipe commerciale doit surveiller cette semaine
+7. Opportunités de prospection et d'appels vendeurs
+8. Arguments simples à utiliser en rendez-vous
+9. 5 idées de posts Facebook/LinkedIn
+10. 1 message court prêt à envoyer à l'équipe`;
+
+    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>${diagnosticHTML}Articles trouvés : ${count}. Synthèse IA approfondie en cours...`;
+
+    const synthese = await callSmartToolsAI('SmartNews Immo', prompt);
+    if(out) out.innerHTML = renderAI(synthese) + `<div class="ai-actions"><button class="btn secondary" onclick="copyToClipboard(\`${String(synthese).replace(/`/g,"\\`")}\`)">Copier la synthèse</button><button class="btn secondary" onclick="copyToClipboard(\`${String(articleBrief).replace(/`/g,"\\`")}\`)">Copier les sources</button></div>`;
+  }catch(e){
+    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2><div class="warnBox"><b>SmartNews live indisponible.</b><br>${escapeHTML(e.message || String(e))}<br><br>À vérifier dans Vercel : GNEWS_API_KEY ou NEWS_API_KEY ou TAVILY_API_KEY, puis Redeploy.</div>`;
+    if(articlesBox) articlesBox.innerHTML = "Impossible de charger les articles live pour le moment.";
+  }
 }
 
 </script>

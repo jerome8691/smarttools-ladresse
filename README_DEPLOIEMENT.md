@@ -1,32 +1,29 @@
-# SmartTools V5.11.0 — modules financiers intégrés directement
+# SmartTools V5.11.2 — SmartNews renforcé + diagnostic
 
-Correction demandée :
-- le Barème honoraires n'est plus chargé par lien externe ou iframe ;
-- le Simulateur de faisabilité financement immobilier n'est plus chargé par lien externe ou iframe ;
-- les deux outils sont maintenant intégrés directement dans le code `index.html` de SmartTools.
+Correction :
+- SmartNews affiche maintenant le moteur réellement utilisé et les détails techniques.
+- Le retour IA est beaucoup plus approfondi.
+- SmartNews ne dépend plus uniquement de GNews ou NewsAPI :
+  1. GNews si `GNEWS_API_KEY` est présente ;
+  2. NewsAPI si `NEWS_API_KEY` est présente ;
+  3. Tavily si `TAVILY_API_KEY` est présente ;
+  4. Google News RSS en secours sans clé.
+- La période de recherche passe à 3 jours pour éviter “aucun résultat” sur les sujets immobiliers très ciblés.
+- L'endpoint `/api/news` accepte maintenant GET pour tester rapidement si l'API est bien déployée.
 
-Barème honoraires intégré :
-- saisie prix de vente ou net vendeur cible ;
-- honoraires barème ;
-- honoraires proposés ;
-- minimum 6 % ;
-- taux réel ;
-- copie du résultat.
+Test rapide après déploiement :
+- ouvrir `https://TON-SITE.vercel.app/api/news`
+- tu dois voir :
+  - `status: ok`
+  - quelles clés sont détectées true/false.
 
-Simulateur de faisabilité intégré :
-- résidence principale ;
-- investissement locatif ;
-- prêt relais / achat-revente ;
-- frais de notaire automatiques ;
-- taux d'effort ;
-- reste à vivre ;
-- synthèse courtier.
+Fichiers importants :
+- `index.html`
+- `api/news.js`
+- `api/ai.js`
+- `vercel.json`
+- `package.json`
 
-Base conservée :
-- Gemini rapide / anti-timeout ;
-- SmartPublish avec image ;
-- SmartCalcul prioritaire ;
-- logo agence ;
-- SharePoint ;
-- profil Assistante ;
-- Congés & absences.
+Après remplacement :
+- commit GitHub ;
+- Vercel > Redeploy.
