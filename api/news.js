@@ -1,3 +1,13 @@
+const OVERALL_LIMIT_MS = 24000;
+
+function now() {
+  return Date.now();
+}
+
+function timeLeft(deadline) {
+  return Math.max(1000, deadline - now());
+}
+
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -52,90 +62,73 @@ function dedupeArticles(articles) {
   return out;
 }
 
-function buildQueries(query) {
+function buildQuery(query) {
   const base = query && query.trim() ? query.trim() : "immobilier France";
-  return [
-    base,
-    `${base} actualité immobilier logement crédit DPE France`,
-    `immobilier OR logement OR "crédit immobilier" OR DPE France`,
-    `"marché immobilier" OR "taux immobilier" OR "prix immobilier" France`
-  ];
+  return `${base} immobilier logement crédit DPE France`;
 }
 
-async function withTimeout(promise, ms, label) {
-  let id;
-  const timeout = new Promise((_, reject) => {
-    id = setTimeout(() => reject(new Error(`${label} : délai dépassé après ${ms / 1000}s`)), ms);
-  });
+async function fetchWithTimeout(url, options = {}, ms = 7000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
   try {
-    return await Promise.race([promise, timeout]);
+    return await fetch(url, { ...options, signal: controller.signal });
   } finally {
-    clearTimeout(id);
+    clearTimeout(timer);
   }
 }
 
-async function tryGNews(query, limit, diagnostics) {
+async function tryGNews(query, limit, diagnostics, deadline) {
   if (!process.env.GNEWS_API_KEY) throw new Error("GNEWS_API_KEY absente");
   const max = Math.min(Math.max(limit || 12, 1), 20);
   const from = daysAgoISO(3);
   const to = todayISO();
+  const q = encodeURIComponent(buildQuery(query));
+  const url = `https://gnews.io/api/v4/search?q=${q}&lang=fr&country=fr&max=${max}&from=${from}&to=${to}&sortby=publishedAt&apikey=${process.env.GNEWS_API_KEY}`;
 
-  let all = [];
-  for (const q0 of buildQueries(query).slice(0, 2)) {
-    const q = encodeURIComponent(q0);
-    const url = `https://gnews.io/api/v4/search?q=${q}&lang=fr&country=fr&max=${max}&from=${from}&to=${to}&sortby=publishedAt&apikey=${process.env.GNEWS_API_KEY}`;
-    const response = await withTimeout(fetch(url), 12000, "GNews");
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(`GNews ${response.status} : ${data?.errors?.[0] || data?.message || "erreur API"}`);
-    all.push(...(data.articles || []).map(cleanArticle));
-    if (dedupeArticles(all).length >= Math.min(8, max)) break;
-  }
+  const response = await fetchWithTimeout(url, {}, Math.min(7000, timeLeft(deadline)));
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(`GNews ${response.status} : ${data?.errors?.[0] || data?.message || "erreur API"}`);
 
-  const articles = dedupeArticles(all).slice(0, max);
-  diagnostics.push(`GNews OK : ${articles.length} article(s), période ${from} → ${to}`);
+  const articles = dedupeArticles((data.articles || []).map(cleanArticle)).slice(0, max);
+  diagnostics.push(`GNews OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("GNews : aucun article trouvé");
   return { provider: "GNews", articles, diagnostics };
 }
 
-async function tryNewsAPI(query, limit, diagnostics) {
+async function tryNewsAPI(query, limit, diagnostics, deadline) {
   if (!process.env.NEWS_API_KEY) throw new Error("NEWS_API_KEY absente");
-  const pageSize = Math.min(Math.max(limit || 12, 1), 100);
+  const pageSize = Math.min(Math.max(limit || 12, 1), 50);
   const from = daysAgoISO(3);
+  const q = encodeURIComponent(buildQuery(query));
+  const url = `https://newsapi.org/v2/everything?q=${q}&language=fr&from=${from}&sortBy=publishedAt&pageSize=${pageSize}&apiKey=${process.env.NEWS_API_KEY}`;
 
-  let all = [];
-  for (const q0 of buildQueries(query).slice(0, 2)) {
-    const q = encodeURIComponent(q0);
-    const url = `https://newsapi.org/v2/everything?q=${q}&language=fr&from=${from}&sortBy=publishedAt&pageSize=${pageSize}&apiKey=${process.env.NEWS_API_KEY}`;
-    const response = await withTimeout(fetch(url), 12000, "NewsAPI");
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok || data.status === "error") throw new Error(`NewsAPI ${response.status} : ${data?.message || data?.code || "erreur API"}`);
-    all.push(...(data.articles || []).map(cleanArticle));
-    if (dedupeArticles(all).length >= Math.min(8, pageSize)) break;
-  }
+  const response = await fetchWithTimeout(url, {}, Math.min(7000, timeLeft(deadline)));
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || data.status === "error") throw new Error(`NewsAPI ${response.status} : ${data?.message || data?.code || "erreur API"}`);
 
-  const articles = dedupeArticles(all).slice(0, pageSize);
-  diagnostics.push(`NewsAPI OK : ${articles.length} article(s), depuis ${from}`);
+  const articles = dedupeArticles((data.articles || []).map(cleanArticle)).slice(0, pageSize);
+  diagnostics.push(`NewsAPI OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("NewsAPI : aucun article trouvé");
   return { provider: "NewsAPI", articles, diagnostics };
 }
 
-async function tryTavily(query, limit, diagnostics) {
+async function tryTavily(query, limit, diagnostics, deadline) {
   if (!process.env.TAVILY_API_KEY) throw new Error("TAVILY_API_KEY absente");
-  const response = await withTimeout(fetch("https://api.tavily.com/search", {
+  const response = await fetchWithTimeout("https://api.tavily.com/search", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${process.env.TAVILY_API_KEY}`,
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      query: `${query} actualité aujourd'hui France immobilier logement crédit taux DPE`,
+      query: `${query} actualité immobilier France taux crédit DPE logement`,
       topic: "news",
-      search_depth: "advanced",
-      max_results: Math.min(Math.max(limit || 12, 1), 20),
+      search_depth: "basic",
+      max_results: Math.min(Math.max(limit || 12, 1), 12),
       include_answer: false,
       include_raw_content: false
     })
-  }), 12000, "Tavily");
+  }, Math.min(8000, timeLeft(deadline)));
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(`Tavily ${response.status} : ${data?.error || data?.message || "erreur API"}`);
@@ -162,42 +155,31 @@ function parseGoogleNewsRSS(xml, limit) {
     const desc = cleanText((item.match(/<description>([\s\S]*?)<\/description>/) || [,""])[1]);
     const pubDate = cleanText((item.match(/<pubDate>([\s\S]*?)<\/pubDate>/) || [,""])[1]);
     const source = cleanText((item.match(/<source[^>]*>([\s\S]*?)<\/source>/) || [,"Google News"])[1]);
-    return {
-      title,
-      description: desc,
-      content: desc,
-      url: linkRaw,
-      source,
-      publishedAt: pubDate
-    };
+    return { title, description: desc, content: desc, url: linkRaw, source, publishedAt: pubDate };
   });
   return dedupeArticles(articles).slice(0, limit);
 }
 
-async function tryGoogleNewsRSS(query, limit, diagnostics) {
-  const max = Math.min(Math.max(limit || 12, 1), 30);
-  const all = [];
+async function tryGoogleNewsRSS(query, limit, diagnostics, deadline) {
+  const max = Math.min(Math.max(limit || 12, 1), 20);
+  const q = encodeURIComponent(`${buildQuery(query)} when:7d`);
+  const url = `https://news.google.com/rss/search?q=${q}&hl=fr&gl=FR&ceid=FR:fr`;
+  const response = await fetchWithTimeout(url, {
+    headers: { "User-Agent": "SmartTools-LAdresse/1.0" }
+  }, Math.min(8000, timeLeft(deadline)));
 
-  for (const q0 of buildQueries(query).slice(0, 3)) {
-    const q = encodeURIComponent(`${q0} when:3d`);
-    const url = `https://news.google.com/rss/search?q=${q}&hl=fr&gl=FR&ceid=FR:fr`;
-    const response = await withTimeout(fetch(url, {
-      headers: { "User-Agent": "SmartTools-LAdresse/1.0" }
-    }), 12000, "Google News RSS");
-    const xml = await response.text();
-    if (!response.ok) throw new Error(`Google News RSS ${response.status}`);
-    all.push(...parseGoogleNewsRSS(xml, max));
-    if (dedupeArticles(all).length >= Math.min(8, max)) break;
-  }
+  const xml = await response.text();
+  if (!response.ok) throw new Error(`Google News RSS ${response.status}`);
 
-  const articles = dedupeArticles(all).slice(0, max);
-  diagnostics.push(`Google News RSS OK : ${articles.length} article(s), secours sans clé`);
+  const articles = parseGoogleNewsRSS(xml, max);
+  diagnostics.push(`Google News RSS OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("Google News RSS : aucun article trouvé");
   return { provider: "Google News RSS", articles, diagnostics };
 }
 
 export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
+
   if (req.method === "GET") {
     return res.status(200).json({
       status: "ok",
@@ -209,21 +191,28 @@ export default async function handler(req, res) {
       }
     });
   }
+
   if (req.method !== "POST") return res.status(405).json({ error: "Méthode non autorisée" });
 
+  const started = now();
+  const deadline = started + OVERALL_LIMIT_MS;
   const { query = "immobilier France", limit = 12 } = req.body || {};
-  const diagnostics = [];
+  const diagnostics = [`Début recherche : ${new Date().toISOString()}`];
 
   for (const fn of [tryGNews, tryNewsAPI, tryTavily, tryGoogleNewsRSS]) {
+    if (now() > deadline - 1500) break;
     try {
-      return res.status(200).json(await fn(query, limit, diagnostics));
+      const result = await fn(query, limit, diagnostics, deadline);
+      result.elapsedMs = now() - started;
+      return res.status(200).json(result);
     } catch (error) {
-      diagnostics.push(error.message);
+      diagnostics.push(error.name === "AbortError" ? "Timeout source news" : error.message);
     }
   }
 
   return res.status(503).json({
-    error: "Aucune source SmartNews disponible.",
-    diagnostics
+    error: "Aucune source SmartNews disponible dans le délai imparti.",
+    diagnostics,
+    elapsedMs: now() - started
   });
 }
