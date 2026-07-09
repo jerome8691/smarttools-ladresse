@@ -180,24 +180,50 @@ async function tryGoogleNewsRSS(query, limit, diagnostics, deadline) {
 export default async function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(200).end();
 
+  const started = now();
+  const deadline = started + OVERALL_LIMIT_MS;
+
+  // GET sans q = diagnostic santé.
+  // GET avec q = vraie recherche testable directement dans le navigateur.
   if (req.method === "GET") {
-    return res.status(200).json({
-      status: "ok",
-      message: "SmartNews API active. Utilisez POST avec { query, limit }.",
-      env: {
-        GNEWS_API_KEY: Boolean(process.env.GNEWS_API_KEY),
-        NEWS_API_KEY: Boolean(process.env.NEWS_API_KEY),
-        TAVILY_API_KEY: Boolean(process.env.TAVILY_API_KEY)
+    const q = req.query?.q || req.query?.query;
+    const limit = Number(req.query?.limit || 12);
+
+    if (!q) {
+      return res.status(200).json({
+        status: "ok",
+        message: "SmartNews API active. Pour tester une recherche : /api/news?q=taux%20de%20credit&limit=12",
+        env: {
+          GNEWS_API_KEY: Boolean(process.env.GNEWS_API_KEY),
+          NEWS_API_KEY: Boolean(process.env.NEWS_API_KEY),
+          TAVILY_API_KEY: Boolean(process.env.TAVILY_API_KEY)
+        }
+      });
+    }
+
+    const diagnostics = [`GET recherche : ${q}`, `Début : ${new Date().toISOString()}`];
+    for (const fn of [tryGNews, tryNewsAPI, tryTavily, tryGoogleNewsRSS]) {
+      if (now() > deadline - 1500) break;
+      try {
+        const result = await fn(String(q), limit, diagnostics, deadline);
+        result.elapsedMs = now() - started;
+        return res.status(200).json(result);
+      } catch (error) {
+        diagnostics.push(error.name === "AbortError" ? "Timeout source news" : error.message);
       }
+    }
+
+    return res.status(503).json({
+      error: "Aucune source SmartNews disponible dans le délai imparti.",
+      diagnostics,
+      elapsedMs: now() - started
     });
   }
 
   if (req.method !== "POST") return res.status(405).json({ error: "Méthode non autorisée" });
 
-  const started = now();
-  const deadline = started + OVERALL_LIMIT_MS;
   const { query = "immobilier France", limit = 12 } = req.body || {};
-  const diagnostics = [`Début recherche : ${new Date().toISOString()}`];
+  const diagnostics = [`POST recherche : ${query}`, `Début : ${new Date().toISOString()}`];
 
   for (const fn of [tryGNews, tryNewsAPI, tryTavily, tryGoogleNewsRSS]) {
     if (now() > deadline - 1500) break;
