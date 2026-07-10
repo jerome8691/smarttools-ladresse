@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "functions": {
+    "api/ai.js": {
+      "maxDuration": 30
+    },
+    "api/news.js": {
+      "maxDuration": 30
+    }
+  }
+}
