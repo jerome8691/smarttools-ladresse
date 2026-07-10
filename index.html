@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.12.0 SmartNews fallback local fiscalité</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.12.1 Checklist compromis</title>
 <style>
 :root{
   --teal:#008985;
@@ -650,6 +650,89 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   margin:0 0 12px;
 }
 
+
+/* V5.12.1 — Check-list compromis / pièces acquéreur */
+.compromis-grid{
+  display:grid;
+  grid-template-columns:0.92fr 1.08fr;
+  gap:16px;
+}
+.compromis-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(15,38,70,.08);
+  padding:16px;
+}
+.compromis-card h3{
+  margin:0 0 10px;
+  font-size:18px;
+}
+.compromis-badge{
+  display:inline-block;
+  background:#eaf8f7;
+  color:#006e6b;
+  border:1px solid #b8dfdc;
+  border-radius:999px;
+  padding:5px 9px;
+  font-size:12px;
+  font-weight:900;
+  margin:0 5px 6px 0;
+}
+.compromis-list{
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+.compromis-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  border:1px solid var(--line);
+  background:#fbfcff;
+  border-radius:13px;
+  padding:10px 11px;
+  line-height:1.35;
+}
+.compromis-item input{
+  width:auto;
+  margin-top:3px;
+  flex:0 0 auto;
+}
+.compromis-item span{
+  color:#1f2f46;
+}
+.compromis-section{
+  margin:16px 0 8px;
+  padding-left:10px;
+  border-left:4px solid #008985;
+  font-weight:900;
+  color:var(--navy);
+}
+.compromis-note{
+  background:#fff8df;
+  border:1px solid #f1d28a;
+  color:#4f3b09;
+  border-radius:14px;
+  padding:12px;
+  margin-top:12px;
+  line-height:1.45;
+  font-size:13px;
+}
+.compromis-copy{
+  white-space:pre-line;
+  background:#f7fafc;
+  border:1px dashed #bbcbd8;
+  border-radius:14px;
+  padding:12px;
+  margin-top:12px;
+  font-size:13px;
+  color:#33445b;
+}
+@media(max-width:900px){
+  .compromis-grid{grid-template-columns:1fr;}
+}
+
 </style>
 </head>
 <body>
@@ -690,7 +773,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
       <article class="card" onclick="show('calculs',navBtnByText('SmartCalcul'))"><div class="icon">🧮</div><h3>SmartCalcul</h3><p>Accéder à tous les modules financiers : simulateur de faisabilité, barème honoraires complet, frais de notaire, prêt relais, simulateur crédit.</p><span class="pill">Module prioritaire</span></article>
       <article class="card" onclick="show('publish',navBtnByText('SmartPublish'))"><div class="icon">📣</div><h3>SmartPublish</h3><p>Créer un post Facebook, un article court, un script vidéo ou un message WhatsApp prêt à publier.</p><span class="pill">Communication</span></article>
       <article class="card" onclick="show('news',navBtnByText('SmartNews'))"><div class="icon">📰</div><h3>SmartNews Immo</h3><p>Articles du jour sur l’immobilier, le crédit, le DPE, la location et le marché local.</p><span class="pill">Internet live</span></article>
-      <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Documents à réunir selon maison, copropriété, terrain, SCI, succession.</p><span class="pill">Sécurisation</span></article>
+      <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Pièces acquéreur à réunir selon le type d'achat : RP, prêt relais, secondaire, locatif, rachat de prêt.</p><span class="pill">Acquéreur</span></article>
       <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Documents obligatoires</h3><p>Accès au dossier SharePoint de L'Adresse CONCEPT PREMIUM : diagnostics, pièces vendeur, copro, urbanisme.</p><span class="pill">SharePoint</span></article>
       <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Commission</h3><p>Répartition simple ou avancée selon règles internes : entreur, sorteur, copro, droit de suite.</p><span class="pill">Interne</span></article>
       <article class="card" onclick="openModule('aiConfig')"><div class="icon">⚙️</div><h3>Configuration IA</h3><p>Voir les moteurs disponibles : OpenAI, Gemini, Groq et mode test.</p><span class="pill">Réglages</span></article>
@@ -1053,7 +1136,7 @@ function openModule(name){
     invest: investHTML(),
     baisse: baisseHTML(),
     commission: commissionHTML(),
-    compromis: checklistHTML('Check-list compromis','Maison, copropriété, terrain, SCI, succession : pièces à réclamer avant rédaction.'),
+    compromis: compromisHTML(),
     documents: documentsHTML(),
     historique: checklistHTML('Historique','Module à venir : dernières simulations, favoris, reprise rapide, export PDF.'),
     estimate: promptHTML('🏠 SmartEstimate','Prépare un rendez-vous estimation : questions vendeur, documents, arguments exclusivité, points de vigilance.'),
@@ -1065,7 +1148,7 @@ function openModule(name){
   }[name] || checklistHTML('Module','Module en préparation.');
   document.getElementById('moduleContent').innerHTML=html;
   show('module',null);
-  setTimeout(()=>{ if(name==='credit')calcCredit(); if(name==='finance')setTimeout(sfCalculate,50); },50);
+  setTimeout(()=>{ if(name==='credit')calcCredit(); if(name==='finance')setTimeout(sfCalculate,50); if(name==='compromis')renderCompromisChecklist(); },50);
 }
 
 
@@ -1263,6 +1346,88 @@ function commissionHTML(){return `<div class="split"><div class="panel"><h2>🤝
 <label>Part entrée %<input id="c_entree" value="50"></label>
 <label>Part sortie %<input id="c_sortie" value="50"></label>
 <button class="btn" onclick="calcCommission()">Répartir</button></div><div class="result" id="c_out">Résultat</div></div>`}
+
+const COMPROMIS_CHECKLISTS = {"rp": {"label": "Résidence principale", "badges": ["Achat classique", "Acquéreur"], "intro": "Pièces nécessaires pour l’acquisition d’une résidence principale.", "sections": {"Identité / situation familiale": ["Carte d’identité en cours de validité", "Copie du livret de famille", "Si séparation ou divorce : copie du jugement"], "Revenus / activité": ["Avis d’imposition des deux dernières années", "Trois derniers bulletins de salaire + décembre", "Si non salarié : trois derniers bilans + Kbis + statuts", "Contrat de travail ou attestation employeur"], "Banque / financement": ["Justificatifs des prêts en cours + tableaux d’amortissement", "Relevés de tous les comptes bancaires des trois derniers mois", "Relevé d’épargne : PEL, LDDS/Codévi, Livret A…", "Si donation : lettre manuscrite + carte d’identité + relevé de compte du donateur avec l’apport"], "Projet": ["Compromis de vente"], "Si déjà propriétaire d’un investissement locatif": ["Titre de propriété", "Bail de location", "Dernière quittance"], "Si locataire": ["Bail de location", "Dernière quittance de loyer", "Justificatif de domicile : exemple facture EDF"], "Si hébergé à titre gracieux": ["Attestation d’hébergement à titre gracieux avec dates + carte d’identité de l’hébergeant", "Si l’hébergeant est propriétaire : taxe foncière + taxe d’habitation", "Si l’hébergeant est locataire : bail de location + dernière quittance"]}}, "rp_relais": {"label": "Résidence principale avec prêt relais", "badges": ["Prêt relais", "Achat-revente"], "intro": "Pièces nécessaires pour une nouvelle résidence principale avec mise en place d’un prêt relais.", "sections": {"Identité / situation familiale": ["Carte d’identité en cours de validité", "Copie du livret de famille", "Si séparation ou divorce : copie du jugement"], "Revenus / activité": ["Avis d’imposition des deux dernières années", "Trois derniers bulletins de salaire + décembre", "Si non salarié : trois derniers bilans + Kbis + statuts", "Contrat de travail ou attestation employeur"], "Banque / financement": ["Justificatifs des prêts en cours + tableaux d’amortissement", "Relevés de tous les comptes bancaires des trois derniers mois", "Relevé d’épargne : PEL, LDDS/Codévi, Livret A…", "Si donation : lettre manuscrite + carte d’identité + relevé de compte du donateur avec l’apport"], "Nouveau projet": ["Compromis de vente"], "Bien vendu / à vendre pour le relais": ["Titre de propriété + taxe foncière", "Mandat de vente ou estimation à la vente"], "Si déjà propriétaire d’un investissement locatif": ["Titre de propriété", "Bail de location", "Dernière quittance"]}}, "secondaire": {"label": "Résidence secondaire", "badges": ["Résidence secondaire", "Acquéreur"], "intro": "Pièces nécessaires pour l’acquisition d’une résidence secondaire.", "sections": {"Identité / situation familiale": ["Carte d’identité en cours de validité", "Copie du livret de famille", "Si séparation ou divorce : copie du jugement"], "Revenus / activité": ["Avis d’imposition des deux dernières années", "Trois derniers bulletins de salaire + décembre", "Si non salarié : trois derniers bilans + Kbis + statuts", "Contrat de travail ou attestation employeur"], "Banque / financement": ["Justificatifs des prêts en cours + tableaux d’amortissement", "Relevés de tous les comptes bancaires des trois derniers mois", "Relevé d’épargne : PEL, LDDS/Codévi, Livret A…", "Si donation : lettre manuscrite + carte d’identité + relevé de compte du donateur avec l’apport"], "Projet": ["Compromis de vente", "Titre de propriété + attestation d’assurance habitation + taxe foncière"], "Si déjà propriétaire d’un investissement locatif": ["Titre de propriété", "Bail de location", "Dernière quittance"]}}, "locatif": {"label": "Investissement locatif", "badges": ["Investisseur", "Locatif"], "intro": "Pièces nécessaires pour l’acquisition d’un investissement locatif.", "sections": {"Identité / situation familiale": ["Carte d’identité en cours de validité", "Copie du livret de famille", "Si séparation ou divorce : copie du jugement"], "Revenus / activité": ["Avis d’imposition des deux dernières années", "Trois derniers bulletins de salaire + décembre", "Si non salarié : trois derniers bilans + Kbis + statuts", "Contrat de travail ou attestation employeur"], "Banque / financement": ["Justificatifs des prêts en cours + tableaux d’amortissement", "Relevés de tous les comptes bancaires des trois derniers mois", "Relevé d’épargne : PEL, LDDS/Codévi, Livret A…", "Si donation : lettre manuscrite + carte d’identité + relevé de compte du donateur avec l’apport"], "Projet": ["Compromis de vente"], "Si déjà propriétaire d’un investissement locatif": ["Titre de propriété", "Bail de location", "Dernière quittance"], "Si locataire": ["Bail de location", "Dernière quittance de loyer", "Justificatif de domicile : exemple facture EDF"], "Si hébergé à titre gracieux": ["Attestation d’hébergement à titre gracieux avec dates + carte d’identité de l’hébergeant", "Si l’hébergeant est propriétaire : taxe foncière + taxe d’habitation", "Si l’hébergeant est locataire : bail de location + dernière quittance"], "Si propriétaire": ["Titre de propriété + attestation d’assurance habitation + taxe foncière"]}}, "rachat": {"label": "Rachat de prêt immobilier", "badges": ["Rachat de prêt", "Crédits"], "intro": "Pièces nécessaires pour un rachat de prêt immobilier avec, éventuellement, rachats de crédits à la consommation.", "sections": {"Identité / situation familiale": ["Carte d’identité en cours de validité", "Copie du livret de famille", "Si séparation ou divorce : copie du jugement"], "Revenus / activité": ["Avis d’imposition des deux dernières années", "Trois derniers bulletins de salaire + décembre", "Si non salarié : trois derniers bilans + Kbis + statuts", "Contrat de travail ou attestation employeur"], "Prêts à racheter / financement": ["Offre de prêt immobilier + tableaux d’amortissement", "Si autres prêts : justificatifs + tableaux d’amortissement", "Relevés de tous les comptes bancaires des trois derniers mois", "Relevé d’épargne : PEL, LDDS/Codévi, Livret A…", "Si donation : lettre manuscrite + carte d’identité + relevé de compte du donateur avec l’apport"], "Bien concerné": ["Titre de propriété + attestation d’assurance habitation + taxe foncière"], "Si déjà propriétaire d’un investissement locatif": ["Titre de propriété", "Bail de location", "Dernière quittance"]}}};
+
+function compromisHTML(){
+  const options = Object.entries(COMPROMIS_CHECKLISTS).map(([key,cfg])=>`<option value="${key}">${cfg.label}</option>`).join('');
+  return `<div class="panel">
+    <h2>📋 Check-list compromis — pièces acquéreur</h2>
+    <p>Choisis le type d’achat pour afficher automatiquement les pièces à demander. Les éléments issus des fiches transmises ont été repris sans marque ni coordonnées externes.</p>
+    <div class="compromis-grid">
+      <div class="compromis-card">
+        <h3>Type d’achat</h3>
+        <label>Situation acquéreur / financement
+          <select id="compromis_type" onchange="renderCompromisChecklist()">${options}</select>
+        </label>
+        <div class="compromis-note">
+          Cette check-list sert à préparer le dossier compromis / financement. Elle ne remplace pas la liste définitive demandée par le notaire, la banque ou le courtier.
+        </div>
+        <div class="toolbar">
+          <button class="btn" onclick="copyCompromisChecklist()">Copier la liste</button>
+          <button class="btn secondary" onclick="resetCompromisChecklist()">Décocher</button>
+          <button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour accueil</button>
+        </div>
+        <div id="compromis_copy" class="compromis-copy">La liste prête à copier apparaîtra ici.</div>
+      </div>
+      <div class="compromis-card">
+        <h3 id="compromis_title">Pièces à réunir</h3>
+        <div id="compromis_badges"></div>
+        <div id="compromis_intro" class="small-help"></div>
+        <div id="compromis_list" class="compromis-list"></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCompromisChecklist(){
+  const key = document.getElementById('compromis_type')?.value || 'rp';
+  const cfg = COMPROMIS_CHECKLISTS[key] || COMPROMIS_CHECKLISTS.rp;
+  const title = document.getElementById('compromis_title');
+  const badges = document.getElementById('compromis_badges');
+  const intro = document.getElementById('compromis_intro');
+  const list = document.getElementById('compromis_list');
+  if(title) title.textContent = cfg.label;
+  if(badges) badges.innerHTML = (cfg.badges||[]).map(b=>`<span class="compromis-badge">${b}</span>`).join('');
+  if(intro) intro.textContent = cfg.intro || '';
+  if(list){
+    let html = '';
+    Object.entries(cfg.sections || {}).forEach(([section,items])=>{
+      html += `<div class="compromis-section">${section}</div>`;
+      items.forEach((item,idx)=>{
+        const id = `comp_${key}_${section.replace(/\W+/g,'_')}_${idx}`;
+        html += `<label class="compromis-item"><input type="checkbox" data-compromis-check><span>${item}</span></label>`;
+      });
+    });
+    list.innerHTML = html;
+  }
+  buildCompromisCopy();
+}
+
+function buildCompromisCopy(){
+  const key = document.getElementById('compromis_type')?.value || 'rp';
+  const cfg = COMPROMIS_CHECKLISTS[key] || COMPROMIS_CHECKLISTS.rp;
+  let lines = [`Check-list pièces acquéreur — ${cfg.label}`, ''];
+  Object.entries(cfg.sections || {}).forEach(([section,items])=>{
+    lines.push(section);
+    items.forEach(item=>lines.push('☐ ' + item));
+    lines.push('');
+  });
+  const box = document.getElementById('compromis_copy');
+  if(box) box.textContent = lines.join('\n').trim();
+  return lines.join('\n').trim();
+}
+
+function copyCompromisChecklist(){
+  const text = buildCompromisCopy();
+  copyToClipboard(text);
+}
+
+function resetCompromisChecklist(){
+  document.querySelectorAll('[data-compromis-check]').forEach(cb=>cb.checked=false);
+}
+
+
 function checklistHTML(title,text){return `<div class="panel"><h2>${title}</h2><div class="box">${text}<br><br>Ce module sera enrichi avec cases à cocher, exports et modèles prêts à copier.</div><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour cockpit</button></div>`}
 function documentsHTML(){return `<div class="panel"><h2>📑 Documents obligatoires</h2><div class="box">Accédez au dossier SharePoint officiel de L'Adresse CONCEPT PREMIUM pour retrouver les documents à jour : diagnostics, pièces vendeur, copropriété, urbanisme et modèles internes.</div><div class="toolbar"><button class="btn" onclick="window.open(SHAREPOINT_DOCUMENTS_URL,'_blank','noopener,noreferrer')">Ouvrir le dossier SharePoint</button><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour accueil</button></div></div>`}
 function promptHTML(title,seed){return `<div class="split"><div class="panel"><h2>${title}</h2><label>Demande<textarea id="p_text">${seed}</textarea></label><button class="btn" onclick="promptDemo('${title.replace(/'/g,"")}')">Générer</button></div><div class="result" id="p_out">Résultat généré ici.</div></div>`}

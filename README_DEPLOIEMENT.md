@@ -1,15 +1,20 @@
-# SmartTools V5.12.0 — SmartNews correction local & fiscalité
+# SmartTools V5.12.1 — Check-list compromis enrichie
 
-Correction :
-- les thèmes “Local Seine-et-Marne / Melun” et “Fiscalité immobilière” ne bloquent plus si la requête exacte ne trouve rien ;
-- SmartNews teste maintenant plusieurs requêtes élargies ;
-- Google News RSS passe de `when:7d` à `when:30d` pour les thèmes moins fréquents ;
-- si un thème local/fiscalité ne remonte rien, SmartNews bascule sur un socle immobilier général plutôt que d'afficher une erreur ;
-- le nombre d'articles reste fixé à 5.
+Modifications :
+- remplacement du module simple “Check-list compromis” par une vraie check-list dynamique ;
+- ajout des types d’achat fournis :
+  - Résidence principale ;
+  - Résidence principale avec prêt relais ;
+  - Résidence secondaire ;
+  - Investissement locatif ;
+  - Rachat de prêt immobilier ;
+- affichage automatique des pièces selon le type choisi ;
+- cases à cocher ;
+- bouton copier la liste ;
+- suppression de toute référence au logo / coordonnées IMMoney.
 
 À remplacer :
 - `index.html`
-- `api/news.js`
 - `package.json`
 
 Puis :
