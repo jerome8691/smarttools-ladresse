@@ -1,22 +1,19 @@
-# SmartTools V5.11.5 — SmartNews articles d'abord
+# SmartTools V5.11.9 — SmartNews 5 articles
 
-Correction importante :
-- SmartNews récupère et affiche maintenant les articles AVANT de lancer la synthèse Gemini.
-- Si Gemini met trop longtemps, les articles restent visibles et le bouton se débloque.
-- Le front appelle maintenant `/api/news?q=...&limit=...` en GET, plus facile à tester dans le navigateur.
-- `/api/news` sans q reste le diagnostic.
-- `/api/news?q=taux%20de%20credit&limit=12` lance une vraie recherche articles.
-
-Tests après déploiement :
-1. `https://TON-SITE.vercel.app/api/news`
-   -> diagnostic avec NEWS_API_KEY true/false
-2. `https://TON-SITE.vercel.app/api/news?q=taux%20de%20credit&limit=12`
-   -> doit retourner des articles ou une erreur détaillée
-3. SmartNews dans l'interface
+Modification demandée :
+- suppression du choix du nombre d'articles ;
+- SmartNews affiche automatiquement 5 articles ;
+- priorité aux sources pertinentes pour l'immobilier :
+  - SeLoger, Logic-Immo, Bien'ici, MeilleursAgents, Notaires, FNAIM, PAP ;
+  - puis sources économie/crédit/immobilier fiables comme MoneyVox, Capital, BFM, Les Echos, Magnolia, Actual-Immo, Mon Immeuble, etc.
+- la synthèse IA reste à la demande via le bouton “Afficher la synthèse IA”.
 
 À remplacer :
 - `index.html`
 - `api/news.js`
-- `api/ai.js`
-- `vercel.json`
 - `package.json`
+- conserver ou remplacer aussi `api/ai.js` et `vercel.json`.
+
+Après remplacement :
+- Vercel > Redeploy ;
+- CTRL + F5.
