@@ -1,19 +1,17 @@
-# SmartTools V5.11.9 — SmartNews 5 articles
+# SmartTools V5.12.0 — SmartNews correction local & fiscalité
 
-Modification demandée :
-- suppression du choix du nombre d'articles ;
-- SmartNews affiche automatiquement 5 articles ;
-- priorité aux sources pertinentes pour l'immobilier :
-  - SeLoger, Logic-Immo, Bien'ici, MeilleursAgents, Notaires, FNAIM, PAP ;
-  - puis sources économie/crédit/immobilier fiables comme MoneyVox, Capital, BFM, Les Echos, Magnolia, Actual-Immo, Mon Immeuble, etc.
-- la synthèse IA reste à la demande via le bouton “Afficher la synthèse IA”.
+Correction :
+- les thèmes “Local Seine-et-Marne / Melun” et “Fiscalité immobilière” ne bloquent plus si la requête exacte ne trouve rien ;
+- SmartNews teste maintenant plusieurs requêtes élargies ;
+- Google News RSS passe de `when:7d` à `when:30d` pour les thèmes moins fréquents ;
+- si un thème local/fiscalité ne remonte rien, SmartNews bascule sur un socle immobilier général plutôt que d'afficher une erreur ;
+- le nombre d'articles reste fixé à 5.
 
 À remplacer :
 - `index.html`
 - `api/news.js`
 - `package.json`
-- conserver ou remplacer aussi `api/ai.js` et `vercel.json`.
 
-Après remplacement :
+Puis :
 - Vercel > Redeploy ;
 - CTRL + F5.
