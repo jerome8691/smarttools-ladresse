@@ -1,22 +1,9 @@
 const OVERALL_LIMIT_MS = 24000;
 
-function now() {
-  return Date.now();
-}
-
-function timeLeft(deadline) {
-  return Math.max(1000, deadline - now());
-}
-
-function todayISO() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function daysAgoISO(days) {
-  const d = new Date();
-  d.setDate(d.getDate() - days);
-  return d.toISOString().slice(0, 10);
-}
+function now() { return Date.now(); }
+function timeLeft(deadline) { return Math.max(1000, deadline - now()); }
+function todayISO() { return new Date().toISOString().slice(0, 10); }
+function daysAgoISO(days) { const d = new Date(); d.setDate(d.getDate() - days); return d.toISOString().slice(0, 10); }
 
 function cleanText(s = "") {
   return String(s)
@@ -62,25 +49,26 @@ function dedupeArticles(articles) {
   return out;
 }
 
-
 const SMARTNEWS_SOURCE_PRIORITY = [
   "seloger", "logic-immo", "bienici", "meilleursagents", "notaires",
   "immobilier.notaires", "fnaim", "unpi", "pap", "capital",
   "bfmtv", "lefigaro", "lesechos", "latribune", "moneyvox",
   "magnolia", "cafpi", "pretto", "vousfinancer", "empruntis",
-  "actual-immo", "journaldeleconomie", "monimmeuble", "lemoniteur"
+  "actual-immo", "journaldeleconomie", "monimmeuble", "lemoniteur",
+  "seine-et-marne", "actu.fr", "leparisien"
 ];
 
 function sourceScore(article) {
-  const haystack = `${article.source || ""} ${article.url || ""} ${article.title || ""}`.toLowerCase();
+  const haystack = `${article.source || ""} ${article.url || ""} ${article.title || ""} ${article.description || ""}`.toLowerCase();
   let score = 0;
   SMARTNEWS_SOURCE_PRIORITY.forEach((needle, idx) => {
-    if (haystack.includes(needle)) score += 100 - idx;
+    if (haystack.includes(needle)) score += 110 - idx;
   });
-  if (haystack.includes("immobilier")) score += 25;
+  if (haystack.includes("immobilier")) score += 30;
   if (haystack.includes("crédit") || haystack.includes("credit") || haystack.includes("taux")) score += 18;
-  if (haystack.includes("dpe") || haystack.includes("logement")) score += 15;
-  if (haystack.includes("france")) score += 5;
+  if (haystack.includes("dpe") || haystack.includes("logement")) score += 18;
+  if (haystack.includes("fiscal") || haystack.includes("impôt") || haystack.includes("taxe")) score += 18;
+  if (haystack.includes("seine-et-marne") || haystack.includes("melun") || haystack.includes("77")) score += 25;
   return score;
 }
 
@@ -92,9 +80,49 @@ function prioritizeArticles(articles, limit = 5) {
     .map(x => x.article);
 }
 
-function buildQuery(query) {
+function isLocalQuery(query = "") {
+  const q = String(query).toLowerCase();
+  return q.includes("seine") || q.includes("melun") || q.includes("77") || q.includes("local");
+}
+
+function isFiscalQuery(query = "") {
+  const q = String(query).toLowerCase();
+  return q.includes("fiscal") || q.includes("impôt") || q.includes("impot") || q.includes("taxe");
+}
+
+function buildQueries(query) {
   const base = query && query.trim() ? query.trim() : "immobilier France";
-  return `${base} immobilier logement crédit DPE France`;
+
+  if (isLocalQuery(base)) {
+    return [
+      "immobilier Seine-et-Marne Melun",
+      "marché immobilier Seine-et-Marne",
+      "prix immobilier Melun Seine-et-Marne",
+      "immobilier 77 Seine-et-Marne",
+      "logement Seine-et-Marne Melun",
+      "immobilier Ile-de-France Seine-et-Marne",
+      "marché immobilier Ile-de-France"
+    ];
+  }
+
+  if (isFiscalQuery(base)) {
+    return [
+      "fiscalité immobilière France propriétaires",
+      "impôts immobilier propriétaires France",
+      "taxe foncière immobilier France",
+      "plus-value immobilière France",
+      "loi finances immobilier propriétaires",
+      "fiscalité location immobilière France",
+      "immobilier fiscalité logement France"
+    ];
+  }
+
+  return [
+    `${base} immobilier logement France`,
+    `${base} actualité France`,
+    "immobilier logement crédit DPE France",
+    "marché immobilier taux crédit DPE France"
+  ];
 }
 
 async function fetchWithTimeout(url, options = {}, ms = 7000) {
@@ -110,16 +138,21 @@ async function fetchWithTimeout(url, options = {}, ms = 7000) {
 async function tryGNews(query, limit, diagnostics, deadline) {
   if (!process.env.GNEWS_API_KEY) throw new Error("GNEWS_API_KEY absente");
   const max = 5;
-  const from = daysAgoISO(3);
+  const from = daysAgoISO(7);
   const to = todayISO();
-  const q = encodeURIComponent(buildQuery(query));
-  const url = `https://gnews.io/api/v4/search?q=${q}&lang=fr&country=fr&max=${max}&from=${from}&to=${to}&sortby=publishedAt&apikey=${process.env.GNEWS_API_KEY}`;
+  let all = [];
 
-  const response = await fetchWithTimeout(url, {}, Math.min(7000, timeLeft(deadline)));
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(`GNews ${response.status} : ${data?.errors?.[0] || data?.message || "erreur API"}`);
+  for (const q0 of buildQueries(query).slice(0, 3)) {
+    const q = encodeURIComponent(q0);
+    const url = `https://gnews.io/api/v4/search?q=${q}&lang=fr&country=fr&max=10&from=${from}&to=${to}&sortby=publishedAt&apikey=${process.env.GNEWS_API_KEY}`;
+    const response = await fetchWithTimeout(url, {}, Math.min(6500, timeLeft(deadline)));
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(`GNews ${response.status} : ${data?.errors?.[0] || data?.message || "erreur API"}`);
+    all.push(...(data.articles || []).map(cleanArticle));
+    if (prioritizeArticles(all, max).length >= max) break;
+  }
 
-  const articles = prioritizeArticles((data.articles || []).map(cleanArticle), 5);
+  const articles = prioritizeArticles(all, max);
   diagnostics.push(`GNews OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("GNews : aucun article trouvé");
   return { provider: "GNews", articles, diagnostics };
@@ -127,16 +160,20 @@ async function tryGNews(query, limit, diagnostics, deadline) {
 
 async function tryNewsAPI(query, limit, diagnostics, deadline) {
   if (!process.env.NEWS_API_KEY) throw new Error("NEWS_API_KEY absente");
-  const pageSize = 20;
-  const from = daysAgoISO(3);
-  const q = encodeURIComponent(buildQuery(query));
-  const url = `https://newsapi.org/v2/everything?q=${q}&language=fr&from=${from}&sortBy=publishedAt&pageSize=${pageSize}&apiKey=${process.env.NEWS_API_KEY}`;
+  const from = daysAgoISO(7);
+  let all = [];
 
-  const response = await fetchWithTimeout(url, {}, Math.min(7000, timeLeft(deadline)));
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || data.status === "error") throw new Error(`NewsAPI ${response.status} : ${data?.message || data?.code || "erreur API"}`);
+  for (const q0 of buildQueries(query).slice(0, 3)) {
+    const q = encodeURIComponent(q0);
+    const url = `https://newsapi.org/v2/everything?q=${q}&language=fr&from=${from}&sortBy=publishedAt&pageSize=20&apiKey=${process.env.NEWS_API_KEY}`;
+    const response = await fetchWithTimeout(url, {}, Math.min(6500, timeLeft(deadline)));
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.status === "error") throw new Error(`NewsAPI ${response.status} : ${data?.message || data?.code || "erreur API"}`);
+    all.push(...(data.articles || []).map(cleanArticle));
+    if (prioritizeArticles(all, 5).length >= 5) break;
+  }
 
-  const articles = prioritizeArticles((data.articles || []).map(cleanArticle), 5);
+  const articles = prioritizeArticles(all, 5);
   diagnostics.push(`NewsAPI OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("NewsAPI : aucun article trouvé");
   return { provider: "NewsAPI", articles, diagnostics };
@@ -151,10 +188,10 @@ async function tryTavily(query, limit, diagnostics, deadline) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      query: `${query} actualité immobilier France taux crédit DPE logement`,
+      query: buildQueries(query)[0] + " actualité immobilier France",
       topic: "news",
       search_depth: "basic",
-      max_results: 5,
+      max_results: 10,
       include_answer: false,
       include_raw_content: false
     })
@@ -191,17 +228,37 @@ function parseGoogleNewsRSS(xml, limit) {
 }
 
 async function tryGoogleNewsRSS(query, limit, diagnostics, deadline) {
-  const max = 5;
-  const q = encodeURIComponent(`${buildQuery(query)} when:7d`);
-  const url = `https://news.google.com/rss/search?q=${q}&hl=fr&gl=FR&ceid=FR:fr`;
-  const response = await fetchWithTimeout(url, {
-    headers: { "User-Agent": "SmartTools-LAdresse/1.0" }
-  }, Math.min(8000, timeLeft(deadline)));
+  let all = [];
 
-  const xml = await response.text();
-  if (!response.ok) throw new Error(`Google News RSS ${response.status}`);
+  // Plusieurs requêtes : exactes puis élargies. Le "when" est volontairement élargi
+  // pour les thèmes qui publient moins d'articles chaque jour.
+  for (const q0 of buildQueries(query)) {
+    const withWhen = `${q0} when:30d`;
+    const url = `https://news.google.com/rss/search?q=${encodeURIComponent(withWhen)}&hl=fr&gl=FR&ceid=FR:fr`;
+    const response = await fetchWithTimeout(url, {
+      headers: { "User-Agent": "SmartTools-LAdresse/1.0" }
+    }, Math.min(7000, timeLeft(deadline)));
 
-  const articles = parseGoogleNewsRSS(xml, max);
+    const xml = await response.text();
+    if (!response.ok) throw new Error(`Google News RSS ${response.status}`);
+    all.push(...parseGoogleNewsRSS(xml, 5));
+    if (prioritizeArticles(all, 5).length >= 5) break;
+  }
+
+  // Secours final : si le thème local/fiscalité est trop étroit, on garde un socle immo général.
+  if (prioritizeArticles(all, 5).length === 0 && (isLocalQuery(query) || isFiscalQuery(query))) {
+    for (const q0 of ["marché immobilier France when:30d", "logement immobilier France when:30d", "prix immobilier France when:30d"]) {
+      const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q0)}&hl=fr&gl=FR&ceid=FR:fr`;
+      const response = await fetchWithTimeout(url, {
+        headers: { "User-Agent": "SmartTools-LAdresse/1.0" }
+      }, Math.min(7000, timeLeft(deadline)));
+      const xml = await response.text();
+      if (response.ok) all.push(...parseGoogleNewsRSS(xml, 5));
+      if (prioritizeArticles(all, 5).length >= 5) break;
+    }
+  }
+
+  const articles = prioritizeArticles(all, 5);
   diagnostics.push(`Google News RSS OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("Google News RSS : aucun article trouvé");
   return { provider: "Google News RSS", articles, diagnostics };
@@ -213,8 +270,6 @@ export default async function handler(req, res) {
   const started = now();
   const deadline = started + OVERALL_LIMIT_MS;
 
-  // GET sans q = diagnostic santé.
-  // GET avec q = vraie recherche testable directement dans le navigateur.
   if (req.method === "GET") {
     const q = req.query?.q || req.query?.query;
     const limit = 5;
