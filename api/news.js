@@ -62,6 +62,36 @@ function dedupeArticles(articles) {
   return out;
 }
 
+
+const SMARTNEWS_SOURCE_PRIORITY = [
+  "seloger", "logic-immo", "bienici", "meilleursagents", "notaires",
+  "immobilier.notaires", "fnaim", "unpi", "pap", "capital",
+  "bfmtv", "lefigaro", "lesechos", "latribune", "moneyvox",
+  "magnolia", "cafpi", "pretto", "vousfinancer", "empruntis",
+  "actual-immo", "journaldeleconomie", "monimmeuble", "lemoniteur"
+];
+
+function sourceScore(article) {
+  const haystack = `${article.source || ""} ${article.url || ""} ${article.title || ""}`.toLowerCase();
+  let score = 0;
+  SMARTNEWS_SOURCE_PRIORITY.forEach((needle, idx) => {
+    if (haystack.includes(needle)) score += 100 - idx;
+  });
+  if (haystack.includes("immobilier")) score += 25;
+  if (haystack.includes("crédit") || haystack.includes("credit") || haystack.includes("taux")) score += 18;
+  if (haystack.includes("dpe") || haystack.includes("logement")) score += 15;
+  if (haystack.includes("france")) score += 5;
+  return score;
+}
+
+function prioritizeArticles(articles, limit = 5) {
+  return dedupeArticles(articles)
+    .map((article, index) => ({ article, index, score: sourceScore(article) }))
+    .sort((a, b) => (b.score - a.score) || (a.index - b.index))
+    .slice(0, 5)
+    .map(x => x.article);
+}
+
 function buildQuery(query) {
   const base = query && query.trim() ? query.trim() : "immobilier France";
   return `${base} immobilier logement crédit DPE France`;
@@ -79,7 +109,7 @@ async function fetchWithTimeout(url, options = {}, ms = 7000) {
 
 async function tryGNews(query, limit, diagnostics, deadline) {
   if (!process.env.GNEWS_API_KEY) throw new Error("GNEWS_API_KEY absente");
-  const max = Math.min(Math.max(limit || 12, 1), 20);
+  const max = 5;
   const from = daysAgoISO(3);
   const to = todayISO();
   const q = encodeURIComponent(buildQuery(query));
@@ -89,7 +119,7 @@ async function tryGNews(query, limit, diagnostics, deadline) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(`GNews ${response.status} : ${data?.errors?.[0] || data?.message || "erreur API"}`);
 
-  const articles = dedupeArticles((data.articles || []).map(cleanArticle)).slice(0, max);
+  const articles = prioritizeArticles((data.articles || []).map(cleanArticle), 5);
   diagnostics.push(`GNews OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("GNews : aucun article trouvé");
   return { provider: "GNews", articles, diagnostics };
@@ -97,7 +127,7 @@ async function tryGNews(query, limit, diagnostics, deadline) {
 
 async function tryNewsAPI(query, limit, diagnostics, deadline) {
   if (!process.env.NEWS_API_KEY) throw new Error("NEWS_API_KEY absente");
-  const pageSize = Math.min(Math.max(limit || 12, 1), 50);
+  const pageSize = 20;
   const from = daysAgoISO(3);
   const q = encodeURIComponent(buildQuery(query));
   const url = `https://newsapi.org/v2/everything?q=${q}&language=fr&from=${from}&sortBy=publishedAt&pageSize=${pageSize}&apiKey=${process.env.NEWS_API_KEY}`;
@@ -106,7 +136,7 @@ async function tryNewsAPI(query, limit, diagnostics, deadline) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data.status === "error") throw new Error(`NewsAPI ${response.status} : ${data?.message || data?.code || "erreur API"}`);
 
-  const articles = dedupeArticles((data.articles || []).map(cleanArticle)).slice(0, pageSize);
+  const articles = prioritizeArticles((data.articles || []).map(cleanArticle), 5);
   diagnostics.push(`NewsAPI OK : ${articles.length} article(s)`);
   if (!articles.length) throw new Error("NewsAPI : aucun article trouvé");
   return { provider: "NewsAPI", articles, diagnostics };
@@ -124,7 +154,7 @@ async function tryTavily(query, limit, diagnostics, deadline) {
       query: `${query} actualité immobilier France taux crédit DPE logement`,
       topic: "news",
       search_depth: "basic",
-      max_results: Math.min(Math.max(limit || 12, 1), 12),
+      max_results: 5,
       include_answer: false,
       include_raw_content: false
     })
@@ -133,14 +163,14 @@ async function tryTavily(query, limit, diagnostics, deadline) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(`Tavily ${response.status} : ${data?.error || data?.message || "erreur API"}`);
 
-  const articles = dedupeArticles((data.results || []).map(r => cleanArticle({
+  const articles = prioritizeArticles((data.results || []).map(r => cleanArticle({
     title: r.title,
     description: r.content,
     content: r.content,
     url: r.url,
     source: r.url ? new URL(r.url).hostname.replace(/^www\./, "") : "Tavily",
     publishedAt: r.published_date || ""
-  }))).slice(0, limit);
+  })), 5);
 
   diagnostics.push(`Tavily OK : ${articles.length} résultat(s)`);
   if (!articles.length) throw new Error("Tavily : aucun résultat trouvé");
@@ -157,11 +187,11 @@ function parseGoogleNewsRSS(xml, limit) {
     const source = cleanText((item.match(/<source[^>]*>([\s\S]*?)<\/source>/) || [,"Google News"])[1]);
     return { title, description: desc, content: desc, url: linkRaw, source, publishedAt: pubDate };
   });
-  return dedupeArticles(articles).slice(0, limit);
+  return prioritizeArticles(articles, 5);
 }
 
 async function tryGoogleNewsRSS(query, limit, diagnostics, deadline) {
-  const max = Math.min(Math.max(limit || 12, 1), 20);
+  const max = 5;
   const q = encodeURIComponent(`${buildQuery(query)} when:7d`);
   const url = `https://news.google.com/rss/search?q=${q}&hl=fr&gl=FR&ceid=FR:fr`;
   const response = await fetchWithTimeout(url, {
@@ -187,12 +217,12 @@ export default async function handler(req, res) {
   // GET avec q = vraie recherche testable directement dans le navigateur.
   if (req.method === "GET") {
     const q = req.query?.q || req.query?.query;
-    const limit = Number(req.query?.limit || 12);
+    const limit = 5;
 
     if (!q) {
       return res.status(200).json({
         status: "ok",
-        message: "SmartNews API active. Pour tester une recherche : /api/news?q=taux%20de%20credit&limit=12",
+        message: "SmartNews API active. Pour tester une recherche : /api/news?q=taux%20de%20credit",
         env: {
           GNEWS_API_KEY: Boolean(process.env.GNEWS_API_KEY),
           NEWS_API_KEY: Boolean(process.env.NEWS_API_KEY),
@@ -222,7 +252,8 @@ export default async function handler(req, res) {
 
   if (req.method !== "POST") return res.status(405).json({ error: "Méthode non autorisée" });
 
-  const { query = "immobilier France", limit = 12 } = req.body || {};
+  const { query = "immobilier France" } = req.body || {};
+  const limit = 5;
   const diagnostics = [`POST recherche : ${query}`, `Début : ${new Date().toISOString()}`];
 
   for (const fn of [tryGNews, tryNewsAPI, tryTavily, tryGoogleNewsRSS]) {
