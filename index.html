@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.7 SmartNews affichage permuté</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.11.8 SmartNews synthèse à la demande</title>
 <style>
 :root{
   --teal:#008985;
@@ -630,6 +630,26 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
   font-weight:800;
 }
 
+
+/* V5.11.8 — SmartNews sans encart diagnostic + synthèse à la demande */
+.news-diagnostic{display:none!important;}
+.news-summary-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:16px;
+  margin-top:10px;
+}
+.news-summary-card h3{
+  margin:0 0 8px;
+  font-size:18px;
+}
+.news-summary-card p{
+  color:var(--muted);
+  line-height:1.45;
+  margin:0 0 12px;
+}
+
 </style>
 </head>
 <body>
@@ -864,7 +884,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
           <button class="btn secondary" onclick="copyNewsBrief()">Copier le brief ChatGPT</button>
         </div>
 
-        <div id="news_status" class="news-status">Prêt — SmartNews V5.11.7. Clique sur “Chercher les articles du jour”. Le statut s’affichera ici immédiatement.</div>
+        <div id="news_status" class="news-status">Prêt — SmartNews V5.11.8. Clique sur “Chercher les articles du jour”. Le statut s’affichera ici immédiatement.</div>
 
         <div class="small-help">
           SmartNews affiche maintenant le moteur réellement utilisé, le nombre d’articles trouvés et les détails techniques. Il essaie GNews, NewsAPI, Tavily, puis un secours Google News RSS sans clé.
@@ -879,7 +899,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;margin-top:26px}
 
     <div class="panel" style="margin-top:16px">
       <h2>Synthèse SmartNews</h2>
-      <div id="news_articles">La synthèse IA apparaîtra ici après affichage des articles.</div>
+      <div id="news_articles">La synthèse IA n’est pas générée automatiquement. Un bouton apparaîtra ici après la recherche si tu veux l’afficher.</div>
     </div>
   </section>
 
@@ -1641,7 +1661,11 @@ function escapeHTML(value){
     .replace(/'/g, "&#039;");
 }
 
+
 let lastNewsArticles = [];
+let lastNewsMeta = null;
+let lastNewsArticleBrief = "";
+let lastNewsPrompt = "";
 
 function buildNewsQuery(){
   const custom = document.getElementById('news_query')?.value?.trim();
@@ -1658,10 +1682,10 @@ function renderNewsArticles(articles){
   const box = document.getElementById('news_ai_out');
   if(!box) return;
   if(!articles || !articles.length){
-    box.innerHTML = "Aucun article trouvé.";
+    box.innerHTML = "<h2>Articles trouvés</h2>Aucun article trouvé.";
     return;
   }
-  box.innerHTML = `<h2>Articles trouvés</h2><div class="news-top-note">Les articles et leurs liens sont affichés ici en premier. La synthèse IA se trouve dans le bloc du dessous.</div>` + articles.map((a,i)=>{
+  box.innerHTML = `<h2>Articles trouvés</h2><div class="news-top-note">Les articles et leurs liens sont affichés ici en premier. La synthèse IA est disponible uniquement si tu cliques sur le bouton du bloc du dessous.</div>` + articles.map((a,i)=>{
     const source = a.source || 'Source inconnue';
     const date = a.publishedAt ? new Date(a.publishedAt).toLocaleString('fr-FR') : '';
     const desc = a.description || a.content || '';
@@ -1696,7 +1720,7 @@ async function smartNewsFetchWithTimeout(url, options={}, ms=18000){
 async function smartNewsAIWithTimeout(module, prompt, ms=26000){
   return await Promise.race([
     callSmartToolsAI(module, prompt),
-    new Promise((_, reject)=>setTimeout(()=>reject(new Error("Synthèse IA trop longue : délai dépassé. Les articles sont déjà affichés ci-dessous.")), ms))
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error("Synthèse IA trop longue : délai dépassé. Les articles sont déjà affichés.")), ms))
   ]);
 }
 
@@ -1711,58 +1735,16 @@ async function smartNewsTestAPI(){
   }
 }
 
-async function smartNewsLive(event){
-  if(event && typeof event.preventDefault === 'function') event.preventDefault();
-
-  const out = document.getElementById('news_articles');
-  const articlesBox = document.getElementById('news_ai_out');
-  const btn = document.getElementById('btn_smartnews_live');
-  const q = buildNewsQuery();
-  const limit = document.getElementById('news_limit')?.value || '12';
-
-  if(btn){ btn.disabled = true; btn.textContent = 'Recherche articles...'; }
-  smartNewsSetStatus('loading', `<div class="news-step"><span class="news-spinner"></span><span>Étape 1/2 : recherche des articles pour <b>${escapeHTML(q)}</b>.<br>Délai maximum : 18 secondes.<br><small>Version SmartNews V5.11.7</small></span></div>`);
-  if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>La synthèse IA apparaîtra ici après récupération des articles.`;
-  if(articlesBox) articlesBox.innerHTML = `<h2>Articles trouvés</h2>Recherche des articles en cours...`;
-
-  try{
-    const url = `/api/news?q=${encodeURIComponent(q)}&limit=${encodeURIComponent(limit)}`;
-    const res = await smartNewsFetchWithTimeout(url, {}, 18000);
-    const raw = await res.text();
-    let data = {};
-    try { data = JSON.parse(raw); } catch { throw new Error("Réponse /api/news non JSON : " + raw.slice(0,300)); }
-    if(!res.ok || data.error){
-      throw new Error((data.error || 'Erreur SmartNews') + (data.diagnostics ? " | " + data.diagnostics.join(" | ") : ""));
-    }
-
-    lastNewsArticles = data.articles || [];
-    renderNewsArticles(lastNewsArticles);
-
-    const diag = data.diagnostics || [];
-    const provider = data.provider || 'non précisé';
-    const count = lastNewsArticles.length;
-
-    const diagnosticHTML = `<div class="news-diagnostic">
-      <b>Diagnostic SmartNews :</b><br>
-      Moteur utilisé : <b>${escapeHTML(provider)}</b><br>
-      Articles trouvés : <b>${count}</b><br>
-      Temps serveur : <b>${data.elapsedMs || '?'} ms</b><br>
-      Détails : ${escapeHTML((diag || []).join(' | ') || 'Aucun détail technique')}
-    </div>`;
-
-    if(articlesBox) articlesBox.insertAdjacentHTML('afterbegin', diagnosticHTML);
-
-    smartNewsSetStatus('ok', `Articles récupérés : <b>${count}</b><br>Moteur utilisé : <b>${escapeHTML(provider)}</b><br>Les articles sont affichés en haut. Synthèse IA en cours dans le bloc du dessous...`);
-
-    const articleBrief = lastNewsArticles.map((a,i)=>`${i+1}. ${a.title}\nSource: ${a.source || ''}\nDate: ${a.publishedAt || ''}\nRésumé: ${a.description || a.content || ''}\nLien: ${a.url || ''}`).join('\n\n');
-
-    const prompt = `Tu es SmartNews Immo pour L'Adresse CONCEPT PREMIUM.
+function buildSmartNewsPrompt(q, provider, articles){
+  const articleBrief = (articles || []).map((a,i)=>`${i+1}. ${a.title}\nSource: ${a.source || ''}\nDate: ${a.publishedAt || ''}\nRésumé: ${a.description || a.content || ''}\nLien: ${a.url || ''}`).join('\n\n');
+  lastNewsArticleBrief = articleBrief;
+  return `Tu es SmartNews Immo pour L'Adresse CONCEPT PREMIUM.
 
 À partir des articles ci-dessous, fais une synthèse approfondie, concrète et exploitable par un directeur d'agence immobilière.
 Ne fais pas une réponse courte. Analyse les tendances, les risques et les opportunités commerciales.
 
 Recherche : ${q}
-Nombre d'articles : ${count}
+Nombre d'articles : ${(articles || []).length}
 Moteur utilisé : ${provider}
 
 Articles :
@@ -1778,28 +1760,87 @@ Réponse attendue :
 7. Arguments simples à utiliser en rendez-vous
 8. 5 idées de posts Facebook/LinkedIn
 9. Message court prêt à envoyer à l'équipe`;
+}
 
-    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>${diagnosticHTML}<div class="news-step"><span class="news-spinner"></span><span>Synthèse IA en cours... Elle apparaîtra ici, sous la zone articles.</span></div>`;
+function showSmartNewsSummaryButton(){
+  const out = document.getElementById('news_articles');
+  if(!out) return;
+  const count = lastNewsArticles.length || 0;
+  const provider = lastNewsMeta?.provider || 'non précisé';
+  out.innerHTML = `<h2>Synthèse SmartNews</h2>
+    <div class="news-summary-card">
+      <h3>Synthèse IA disponible à la demande</h3>
+      <p>${count} article(s) ont été trouvés via ${escapeHTML(provider)}. Clique seulement si tu veux générer une synthèse métier avec Gemini.</p>
+      <div class="toolbar">
+        <button type="button" class="btn" onclick="generateSmartNewsSummary()">Afficher la synthèse IA</button>
+        <button type="button" class="btn secondary" onclick="copyToClipboard(\`${String(lastNewsArticleBrief).replace(/`/g,"\\`")}\`)">Copier les sources</button>
+      </div>
+    </div>`;
+}
 
-    try{
-      const synthese = await smartNewsAIWithTimeout('SmartNews Immo', prompt, 26000);
-      if(out) out.innerHTML = renderAI(synthese) + `<div class="ai-actions"><button class="btn secondary" onclick="copyToClipboard(\`${String(synthese).replace(/`/g,"\\`")}\`)">Copier la synthèse</button><button class="btn secondary" onclick="copyToClipboard(\`${String(articleBrief).replace(/`/g,"\\`")}\`)">Copier les sources</button></div>`;
-      smartNewsSetStatus('ok', `Terminé : <b>${count}</b> article(s) récupéré(s), synthèse IA générée.`);
-    }catch(aiErr){
-      if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>${diagnosticHTML}<div class="news-timeout-box"><b>Articles récupérés, mais synthèse IA non terminée.</b><br>${escapeHTML(aiErr.message || String(aiErr))}<br><br>Tu peux déjà utiliser les articles affichés ci-dessous ou copier les sources.</div><div class="ai-actions"><button class="btn secondary" onclick="copyToClipboard(\`${String(articleBrief).replace(/`/g,"\\`")}\`)">Copier les sources</button></div>`;
-      smartNewsSetStatus('error', `Articles récupérés, mais la synthèse IA a dépassé le délai. Les articles restent affichés.`);
+async function generateSmartNewsSummary(){
+  const out = document.getElementById('news_articles');
+  if(!lastNewsArticles.length){
+    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2>Aucun article disponible. Lance d’abord une recherche.`;
+    return;
+  }
+  if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2><div class="news-step"><span class="news-spinner"></span><span>Synthèse IA en cours...</span></div>`;
+  smartNewsSetStatus('loading', `Synthèse IA en cours à partir de <b>${lastNewsArticles.length}</b> article(s)...`);
+  try{
+    const synthese = await smartNewsAIWithTimeout('SmartNews Immo', lastNewsPrompt, 26000);
+    if(out) out.innerHTML = renderAI(synthese) + `<div class="ai-actions"><button class="btn secondary" onclick="copyToClipboard(\`${String(synthese).replace(/`/g,"\\`")}\`)">Copier la synthèse</button><button class="btn secondary" onclick="copyToClipboard(\`${String(lastNewsArticleBrief).replace(/`/g,"\\`")}\`)">Copier les sources</button></div>`;
+    smartNewsSetStatus('ok', `Synthèse IA générée à partir de <b>${lastNewsArticles.length}</b> article(s).`);
+  }catch(e){
+    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2><div class="news-timeout-box"><b>Synthèse IA non terminée.</b><br>${escapeHTML(e.message || String(e))}<br><br>Les articles restent disponibles dans le bloc du dessus.</div><div class="ai-actions"><button class="btn secondary" onclick="showSmartNewsSummaryButton()">Réafficher le bouton synthèse</button><button class="btn secondary" onclick="copyToClipboard(\`${String(lastNewsArticleBrief).replace(/`/g,"\\`")}\`)">Copier les sources</button></div>`;
+    smartNewsSetStatus('error', `La synthèse IA a dépassé le délai. Les articles restent affichés.`);
+  }
+}
+
+async function smartNewsLive(event){
+  if(event && typeof event.preventDefault === 'function') event.preventDefault();
+
+  const summaryBox = document.getElementById('news_articles');
+  const articlesBox = document.getElementById('news_ai_out');
+  const btn = document.getElementById('btn_smartnews_live');
+  const q = buildNewsQuery();
+  const limit = document.getElementById('news_limit')?.value || '12';
+
+  lastNewsArticles = [];
+  lastNewsMeta = null;
+  lastNewsArticleBrief = "";
+  lastNewsPrompt = "";
+
+  if(btn){ btn.disabled = true; btn.textContent = 'Recherche articles...'; }
+  smartNewsSetStatus('loading', `<div class="news-step"><span class="news-spinner"></span><span>Recherche des articles pour <b>${escapeHTML(q)}</b>.<br>Délai maximum : 18 secondes.<br><small>Version SmartNews V5.11.8</small></span></div>`);
+  if(articlesBox) articlesBox.innerHTML = `<h2>Articles trouvés</h2>Recherche des articles en cours...`;
+  if(summaryBox) summaryBox.innerHTML = `<h2>Synthèse SmartNews</h2>La synthèse IA sera disponible via un bouton après récupération des articles.`;
+
+  try{
+    const url = `/api/news?q=${encodeURIComponent(q)}&limit=${encodeURIComponent(limit)}`;
+    const res = await smartNewsFetchWithTimeout(url, {}, 18000);
+    const raw = await res.text();
+    let data = {};
+    try { data = JSON.parse(raw); } catch { throw new Error("Réponse /api/news non JSON : " + raw.slice(0,300)); }
+    if(!res.ok || data.error){
+      throw new Error((data.error || 'Erreur SmartNews') + (data.diagnostics ? " | " + data.diagnostics.join(" | ") : ""));
     }
 
+    lastNewsArticles = data.articles || [];
+    lastNewsMeta = {provider:data.provider || 'non précisé', elapsedMs:data.elapsedMs || null, diagnostics:data.diagnostics || []};
+    renderNewsArticles(lastNewsArticles);
+    lastNewsPrompt = buildSmartNewsPrompt(q, lastNewsMeta.provider, lastNewsArticles);
+    showSmartNewsSummaryButton();
+
+    smartNewsSetStatus('ok', `Articles récupérés : <b>${lastNewsArticles.length}</b><br>Moteur utilisé : <b>${escapeHTML(lastNewsMeta.provider)}</b><br>Synthèse IA non lancée automatiquement.`);
   }catch(e){
     const msg = e.message || String(e);
-    smartNewsSetStatus('error', `<b>Erreur SmartNews :</b><br>${escapeHTML(msg)}<br><br>Comme /api/news répond en GET, le problème vient probablement de la recherche article, de la clé NewsAPI, ou d'une ancienne version index.html encore en cache.`);
-    if(out) out.innerHTML = `<h2>Synthèse SmartNews</h2><div class="warnBox"><b>SmartNews live indisponible.</b><br>${escapeHTML(msg)}</div>`;
-    if(articlesBox) articlesBox.innerHTML = "Impossible de charger les articles live pour le moment.";
+    smartNewsSetStatus('error', `<b>Erreur SmartNews :</b><br>${escapeHTML(msg)}`);
+    if(articlesBox) articlesBox.innerHTML = `<h2>Articles trouvés</h2><div class="warnBox"><b>SmartNews live indisponible.</b><br>${escapeHTML(msg)}</div>`;
+    if(summaryBox) summaryBox.innerHTML = `<h2>Synthèse SmartNews</h2>Impossible de générer la synthèse car les articles n’ont pas été récupérés.`;
   } finally {
     if(btn){ btn.disabled = false; btn.textContent = 'Chercher les articles du jour'; }
   }
 }
-
 
 window.addEventListener('error', function(event){
   const status = document.getElementById('news_status');
