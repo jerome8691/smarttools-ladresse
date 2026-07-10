@@ -1,4 +1,4 @@
-# SmartTools V5.12.6 — Accueil réorganisé
+# SmartTools V5.13.3 — Accueil réorganisé
 
 Modifications :
 - “Documents obligatoires” renommé en “Accès SharePoint Concept Premium”.
@@ -22,18 +22,27 @@ Puis :
 - CTRL + F5
 
 
-V5.12.6 : libellés d’accueil ajustés : Business, Documents et liens utiles, Suivi des absences.
+V5.13.3 : libellés d’accueil ajustés : Business, Documents et liens utiles, Suivi des absences.
 
 
-V5.12.6 : ajout de SmartWriter dans la rubrique Business de la page d’accueil.
+V5.13.3 : ajout de SmartWriter dans la rubrique Business de la page d’accueil.
 
-V5.12.6 :
-- interface Business premium ;
-- cartes visuelles avec conseillers dédiés par module SMART ;
-- portraits illustratifs intégrés directement dans le HTML, sans dépendance externe ;
-- ajout de bandeaux conseiller dans les modules SmartEstimate, SmartNegotiate, SmartProspect, SmartCalcul, SmartWriter et Calcul commission.
+V5.13.3 :
+- suppression complète des grands blocs visuels / conseillers entre Business et Documents et liens utiles ;
+- retour à une grille Business propre, compacte et lisible ;
+- suppression des photos / avatars conseillers ;
+- conservation de SmartWriter dans Business.
 
-V5.12.6 :
-- conseillers affichés avec prénom uniquement ;
-- remplacement des avatars illustrés par des portraits photo-réalistes générés et intégrés dans `assets/advisors/` ;
-- les photos sont fournies dans le ZIP et ne dépendent pas d’un service externe.
+
+V5.13.3 : retour des photos + prénoms dans Business, sous forme compacte, avec prénoms cohérents avec le visage.
+
+V5.13.3 :
+- suppression des modules dupliqués qui apparaissaient entre Business et Documents et liens utiles ;
+- conservation des cartes Business avec photos et prénoms cohérents ;
+- suppression de l'ancienne section SmartAssistants si présente.
+
+
+V5.13.3 : remplacement du prénom Camille / Julien par Marc sur le conseiller commission.
+
+
+V5.13.3 : remplacement réel du fichier assets/advisors/marc.jpg par un portrait masculin.
