@@ -1,3 +1,5 @@
+Version V5136 : photos validées Antoine, Claire, Julie, Marc, Nadia, Sophie correctement associées aux prénoms.
+
 # SmartTools V5.13.3 — Accueil réorganisé
 
 Modifications :
@@ -46,3 +48,6 @@ V5.13.3 : remplacement du prénom Camille / Julien par Marc sur le conseiller co
 
 
 V5.13.3 : remplacement réel du fichier assets/advisors/marc.jpg par un portrait masculin.
+
+
+V5.13.7 : compatibilité mobile renforcée, clic tactile fiable sur les cartes et affichage en une colonne sur smartphone.
