@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SmartTools Concept Premium — V6 Mobile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.13.8 PC + mobile stable</title>
 <style>
 :root{
   --teal:#008985;
@@ -872,73 +872,24 @@ button[onclick*="Accueil"]{
 @media (max-width:768px){.advisor-mini-name{font-size:18px}.advisor-mini-role{font-size:12px}}
 
 
-/* SmartTools V6 — mobile natif */
+/* V5.13.8 — compatibilité PC + mobile sans modifier les clics existants */
 html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
 *{box-sizing:border-box}
-button,input,select,textarea{font-size:16px}
-button,.card[role="button"],.hero-news-card[role="button"]{
-  touch-action:manipulation;
-  -webkit-tap-highlight-color:rgba(0,137,133,.18);
-}
-.card[role="button"],.hero-news-card[role="button"]{cursor:pointer}
-.card[role="button"]:focus-visible,.hero-news-card[role="button"]:focus-visible{
-  outline:3px solid rgba(0,137,133,.35);
-  outline-offset:3px;
-}
-.tabs{
-  overflow-x:auto;
-  overscroll-behavior-x:contain;
-  -webkit-overflow-scrolling:touch;
-}
+.card[onclick],.hero-news-card[onclick]{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,137,133,.18)}
+.card[onclick] > *:not(button):not(a):not(input):not(select):not(textarea):not(label),
+.hero-news-card[onclick] > *:not(button):not(a):not(input):not(select):not(textarea):not(label){pointer-events:none}
+.card[onclick] button,.card[onclick] a,.card[onclick] input,.card[onclick] select,.card[onclick] textarea,.card[onclick] label,
+.hero-news-card[onclick] button,.hero-news-card[onclick] a{pointer-events:auto}
+input,select,textarea,button{font-size:16px}
+.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .tabs button{flex:0 0 auto;min-height:44px}
-.install-app-btn{
-  background:#d9f5ec!important;
-  color:#006e6b!important;
-  border:1px solid #a8dfd0!important;
-}
-.mobile-back-bar{
-  display:none;
-  position:sticky;
-  top:0;
-  z-index:40;
-  padding:8px 12px;
-  background:rgba(255,255,255,.94);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(0,0,0,.08);
-}
-.mobile-back-bar button{
-  min-height:44px;
-  border:0;
-  border-radius:12px;
-  padding:10px 14px;
-  background:#d9f5ec;
-  color:#006e6b;
-  font-weight:900;
-}
 @media(max-width:820px){
-  .mobile-back-bar.visible{display:block}
-  .hero,.split,.tool-grid,.compromis-grid,.row2,.row3,.grid,.home-grid-compact{
-    grid-template-columns:1fr!important;
-  }
-  .app,main,.section,.panel,.result,.integrated-tool,.tool-card,.compromis-card{
-    width:100%!important;
-    max-width:100%!important;
-    min-width:0!important;
-  }
-  .card{
-    width:100%!important;
-    min-width:0!important;
-    min-height:auto!important;
-  }
-  .toolbar{
-    display:grid!important;
-    grid-template-columns:1fr!important;
-    gap:10px!important;
-  }
-  .toolbar button,.toolbar .btn,.btn{
-    width:100%!important;
-    min-height:46px!important;
-  }
+  .app,main,.section,.panel,.result,.integrated-tool,.tool-card,.compromis-card{width:100%!important;max-width:100%!important;min-width:0!important}
+  .hero,.grid,.home-grid-compact,.split,.tool-grid,.compromis-grid,.row2,.row3{grid-template-columns:1fr!important}
+  .home-grid-compact .card,.grid .card,.card{width:100%!important;min-width:0!important;min-height:auto!important}
+  .toolbar{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
+  .toolbar button,.toolbar .btn,.btn{width:100%!important;min-height:46px!important}
+  .advisor-mini{align-items:center!important}
   .advisor-mini-photo{width:58px!important;height:58px!important;flex:0 0 58px!important}
   textarea{min-height:140px}
 }
@@ -948,18 +899,9 @@ button,.card[role="button"],.hero-news-card[role="button"]{
   .tabs button{padding:10px 12px!important;font-size:14px!important}
   .card{padding:17px!important}
   .home-module-title h2{font-size:24px!important}
-  .hero-news-card{grid-template-columns:42px 1fr!important}
 }
 
 </style>
-
-<link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#006e6b">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="SmartTools">
-<link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
-
 </head>
 <body>
 <div class="app">
@@ -971,7 +913,7 @@ button,.card[role="button"],.hero-news-card[role="button"]{
       <div class="brand-text"><h1>Portail opérationnel L'Adresse CONCEPT PREMIUM</h1><p>Le portail métier de L'Adresse CONCEPT PREMIUM : calculer, préparer, argumenter et décider plus vite.</p></div>
     </div>
     <div class="stats hero-news">
-      <div class="hero-news-card" data-section="news" role="button" tabindex="0">
+      <div class="hero-news-card" onclick="show('news',navBtnByText('SmartNews Immo'))">
         <div class="hero-news-icon">📰</div>
         <div>
           <b>SmartNews Immo</b>
@@ -983,16 +925,14 @@ button,.card[role="button"],.hero-news-card[role="button"]{
   </section>
 
   <nav class="tabs">
-    <button class="active" type="button" data-nav-section="dashboard">Accueil</button>
-    <button type="button" data-nav-section="news">SmartNews Immo</button>
-    <button type="button" data-nav-section="publish">SmartPublish</button>
-    <button type="button" data-nav-section="writer">SmartWriter</button>
-    <button type="button" data-nav-section="manager">SmartManager</button>
-    <button type="button" data-nav-section="roadmap">Roadmap</button>
-    <button type="button" data-nav-section="adminia">ADMIN IA</button>
-      <button type="button" id="installAppBtn" class="install-app-btn" hidden>Installer l’application</button>
+    <button class="active" onclick="show('dashboard',this)">Accueil</button>
+    <button onclick="show('news',this)">SmartNews Immo</button>
+    <button onclick="show('publish',this)">SmartPublish</button>
+    <button onclick="show('writer',this)">SmartWriter</button>
+    <button onclick="show('manager',this)">SmartManager</button>
+    <button onclick="show('roadmap',this)">Roadmap</button>
+    <button onclick="show('adminia',this)">ADMIN IA</button>
   </nav>
-<div id="mobileBackBar" class="mobile-back-bar"><button type="button" id="mobileBackBtn">← Retour à l’accueil</button></div>
 
   <section id="dashboard" class="section active">
     <div class="home-module-title">
@@ -1000,27 +940,27 @@ button,.card[role="button"],.hero-news-card[role="button"]{
       <p>Les outils commerciaux du quotidien : estimer, négocier, prospecter, rédiger, calculer et suivre les commissions.</p>
     </div>
     <div class="grid home-grid-compact">
-      <article class="card advisor-card" data-module="estimate" role="button" tabindex="0">
+      <article class="card advisor-card" onclick="openModule('estimate')">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/claire.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Claire</div><div class="advisor-mini-role">Estimation & stratégie vendeur</div></div></div>
         <div class="icon">🏠</div><h3>SmartEstimate</h3><p>Préparer un rendez-vous estimation : questions vendeur, documents, objections, exclusivité.</p><span class="pill">Estimation</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" data-module="negotiate" role="button" tabindex="0">
+      <article class="card advisor-card" onclick="openModule('negotiate')">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/julie.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Julie</div><div class="advisor-mini-role">Négociation & objections</div></div></div>
         <div class="icon">📉</div><h3>SmartNegotiate</h3><p>Défendre les honoraires, argumenter une baisse de prix, préparer une négociation.</p><span class="pill">Négociation</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" data-section="calculs" role="button" tabindex="0">
+      <article class="card advisor-card" onclick="show('calculs',navBtnByText('Accueil'))">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/sophie.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Sophie</div><div class="advisor-mini-role">Financement & simulations</div></div></div>
         <div class="icon">🧮</div><h3>SmartCalcul</h3><p>Accéder aux modules financiers : faisabilité, crédit, notaire, prêt relais, honoraires.</p><span class="pill">Calculs métier</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" data-module="prospect" role="button" tabindex="0">
+      <article class="card advisor-card" onclick="openModule('prospect')">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/nadia.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Nadia</div><div class="advisor-mini-role">Prospection & relance</div></div></div>
         <div class="icon">☎️</div><h3>SmartProspect</h3><p>Scripts de prospection, relances vendeurs, copropriété, anciens clients et DPE.</p><span class="pill">Prospection</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" data-section="writer" role="button" tabindex="0">
+      <article class="card advisor-card" onclick="show('writer',navBtnByText('SmartWriter'))">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/antoine.jpg')"></div><div><div class="advisor-mini-kicker">Conseiller dédié</div><div class="advisor-mini-name">Antoine</div><div class="advisor-mini-role">Rédaction & communication</div></div></div>
         <div class="icon">✍️</div><h3>SmartWriter</h3><p>Rédiger et reformuler rapidement mails, messages vendeurs, posts, comptes rendus et textes commerciaux.</p><span class="pill">Rédaction</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" data-module="commission" role="button" tabindex="0">
+      <article class="card advisor-card" onclick="openModule('commission')">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/marc.jpg')"></div><div><div class="advisor-mini-kicker">Conseiller dédié</div><div class="advisor-mini-name">Marc</div><div class="advisor-mini-role">Commission & règles internes</div></div></div>
         <div class="icon">🤝</div><h3>Calcul commission</h3><p>Répartition interne entre entrée, sortie, mandat, droit de suite et règles agence.</p><span class="pill">Commission</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
@@ -1031,8 +971,8 @@ button,.card[role="button"],.hero-news-card[role="button"]{
       <p>Les documents nécessaires pour sécuriser les dossiers acquéreurs et accéder au SharePoint Concept Premium.</p>
     </div>
     <div class="grid home-grid-compact">
-      <article class="card" data-module="compromis" role="button" tabindex="0"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Pièces acquéreur selon le type d’achat : résidence principale, prêt relais, secondaire, locatif, rachat.</p><span class="pill">Dossier acquéreur</span></article>
-      <article class="card" data-module="documents" role="button" tabindex="0"><div class="icon">📑</div><h3>Accès SharePoint Concept Premium</h3><p>Ouvrir SharePoint Concept Premium officiel : modèles, documents partagés, process et supports internes.</p><span class="pill">SharePoint</span></article>
+      <article class="card" onclick="openModule('compromis')"><div class="icon">📋</div><h3>Check-list compromis</h3><p>Pièces acquéreur selon le type d’achat : résidence principale, prêt relais, secondaire, locatif, rachat.</p><span class="pill">Dossier acquéreur</span></article>
+      <article class="card" onclick="openModule('documents')"><div class="icon">📑</div><h3>Accès SharePoint Concept Premium</h3><p>Ouvrir SharePoint Concept Premium officiel : modèles, documents partagés, process et supports internes.</p><span class="pill">SharePoint</span></article>
     </div>
 
     <div class="home-module-title">
@@ -1040,7 +980,7 @@ button,.card[role="button"],.hero-news-card[role="button"]{
       <p>Accès aux outils de suivi et règles internes liées aux congés et absences.</p>
     </div>
     <div class="grid home-grid-compact">
-      <article class="card" data-action="conges" role="button" tabindex="0"><div class="icon">🌴</div><h3>Congés & absences</h3><p>Accéder à l’outil de suivi ou de règles des congés de l’agence.</p><span class="pill">Absences</span></article>
+      <article class="card" onclick="openCongesTool()"><div class="icon">🌴</div><h3>Congés & absences</h3><p>Accéder à l’outil de suivi ou de règles des congés de l’agence.</p><span class="pill">Absences</span></article>
     </div>
   </section>
 
@@ -1057,7 +997,7 @@ button,.card[role="button"],.hero-news-card[role="button"]{
       <article class="card" onclick="openModule('relais')"><div class="icon">🌉</div><h3>Prêt relais</h3><p>Valeur prudente, capital restant dû, relais net et besoin complémentaire.</p><span class="pill">Relais</span></article>
       <article class="card" onclick="openModule('invest')"><div class="icon">🏢</div><h3>Investissement locatif</h3><p>Rentabilité brute, rentabilité nette simplifiée et cash-flow mensuel.</p><span class="pill">Investisseur</span></article>
       <article class="card" onclick="openModule('baisse')"><div class="icon">📉</div><h3>Baisse de prix</h3><p>Effet sur le prix affiché, le net vendeur, les honoraires et l'argumentaire.</p><span class="pill">Rdv vendeur</span></article>
-      <article class="card" data-module="commission" role="button" tabindex="0"><div class="icon">🤝</div><h3>Calcul commission</h3><p>Répartition interne entreur / sorteur / mandat / droit de suite.</p><span class="pill">Interne</span></article>
+      <article class="card" onclick="openModule('commission')"><div class="icon">🤝</div><h3>Calcul commission</h3><p>Répartition interne entreur / sorteur / mandat / droit de suite.</p><span class="pill">Interne</span></article>
     </div>
   </section>
 
@@ -1232,8 +1172,8 @@ button,.card[role="button"],.hero-news-card[role="button"]{
       Ces outils ne sont plus affichés sur la page d’accueil. Ils restent disponibles ici pour vérifier la connexion IA ou les moteurs configurés dans Vercel.
     </div>
     <div class="grid">
-      <article class="card" data-module="aiConfig" role="button" tabindex="0"><div class="icon">⚙️</div><h3>Configuration IA</h3><p>Voir les moteurs disponibles : OpenAI, Gemini, Groq et mode test.</p><span class="pill">Réglages</span></article>
-      <article class="card" data-module="testapi" role="button" tabindex="0"><div class="icon">🧪</div><h3>Test IA</h3><p>Tester que SmartTools appelle bien l’API Vercel et que la réponse IA fonctionne.</p><span class="pill">Diagnostic</span></article>
+      <article class="card" onclick="openModule('aiConfig')"><div class="icon">⚙️</div><h3>Configuration IA</h3><p>Voir les moteurs disponibles : OpenAI, Gemini, Groq et mode test.</p><span class="pill">Réglages</span></article>
+      <article class="card" onclick="openModule('testapi')"><div class="icon">🧪</div><h3>Test IA</h3><p>Tester que SmartTools appelle bien l’API Vercel et que la réponse IA fonctionne.</p><span class="pill">Diagnostic</span></article>
     </div>
   </section>
 
@@ -2229,102 +2169,6 @@ window.addEventListener('unhandledrejection', function(event){
     status.innerHTML = '<b>Erreur promise détectée :</b><br>' + escapeHTML((event.reason && event.reason.message) || event.reason || 'Erreur inconnue');
   }
 });
-
-</script>
-<script>
-
-/* SmartTools V6 — navigation native mobile */
-(function(){
-  'use strict';
-
-  function activateSection(sectionId, navButton){
-    if(typeof window.show !== 'function') return;
-    window.show(sectionId, navButton || null);
-    updateBackBar(sectionId);
-  }
-
-  function updateBackBar(sectionId){
-    const bar = document.getElementById('mobileBackBar');
-    if(!bar) return;
-    bar.classList.toggle('visible', sectionId && sectionId !== 'dashboard');
-  }
-
-  function runElementAction(element){
-    if(!element) return;
-    const moduleName = element.dataset.module;
-    const sectionName = element.dataset.section;
-    const actionName = element.dataset.action;
-    const navSection = element.dataset.navSection;
-
-    if(moduleName){
-      if(typeof window.openModule === 'function') window.openModule(moduleName);
-      updateBackBar('module');
-      return;
-    }
-
-    if(sectionName){
-      activateSection(sectionName, document.querySelector(`[data-nav-section="${sectionName}"]`));
-      return;
-    }
-
-    if(navSection){
-      activateSection(navSection, element);
-      return;
-    }
-
-    if(actionName === 'conges' && typeof window.openCongesTool === 'function'){
-      window.openCongesTool();
-    }
-  }
-
-  document.addEventListener('click', function(event){
-    const target = event.target.closest('[data-module],[data-section],[data-action],[data-nav-section]');
-    if(!target) return;
-    event.preventDefault();
-    runElementAction(target);
-  });
-
-  document.addEventListener('keydown', function(event){
-    if(event.key !== 'Enter' && event.key !== ' ') return;
-    const target = event.target.closest('[role="button"][data-module],[role="button"][data-section],[role="button"][data-action]');
-    if(!target) return;
-    event.preventDefault();
-    runElementAction(target);
-  });
-
-  document.getElementById('mobileBackBtn')?.addEventListener('click', function(){
-    activateSection('dashboard', document.querySelector('[data-nav-section="dashboard"]'));
-  });
-
-  let deferredInstallPrompt = null;
-  const installButton = document.getElementById('installAppBtn');
-
-  window.addEventListener('beforeinstallprompt', function(event){
-    event.preventDefault();
-    deferredInstallPrompt = event;
-    if(installButton) installButton.hidden = false;
-  });
-
-  installButton?.addEventListener('click', async function(){
-    if(!deferredInstallPrompt) return;
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
-    deferredInstallPrompt = null;
-    installButton.hidden = true;
-  });
-
-  window.addEventListener('appinstalled', function(){
-    if(installButton) installButton.hidden = true;
-  });
-
-  if('serviceWorker' in navigator){
-    window.addEventListener('load', function(){
-      navigator.serviceWorker.register('/service-worker.js').catch(function(error){
-        console.warn('Service worker non enregistré :', error);
-      });
-    });
-  }
-})();
 
 </script>
 </body>
