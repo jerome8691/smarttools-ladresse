@@ -51,3 +51,6 @@ V5.13.3 : remplacement réel du fichier assets/advisors/marc.jpg par un portrait
 
 
 V5.13.8 : base stable PC conservée, adaptation mobile uniquement par CSS, sans PWA ni modification JavaScript.
+
+
+V5.13.9 : correction SmartEstimate / SmartNegotiate. Ouverture des modules en mode lazy et navigation Business native PC + mobile.

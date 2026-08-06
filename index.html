@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.13.8 PC + mobile stable</title>
+<title>L'Adresse CONCEPT PREMIUM — SmartTools V5.13.9 modules corrigés</title>
 <style>
 :root{
   --teal:#008985;
@@ -872,33 +872,20 @@ button[onclick*="Accueil"]{
 @media (max-width:768px){.advisor-mini-name{font-size:18px}.advisor-mini-role{font-size:12px}}
 
 
-/* V5.13.8 — compatibilité PC + mobile sans modifier les clics existants */
+
+/* V5.13.9 — responsive sans blocage des clics */
 html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
 *{box-sizing:border-box}
-.card[onclick],.hero-news-card[onclick]{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,137,133,.18)}
-.card[onclick] > *:not(button):not(a):not(input):not(select):not(textarea):not(label),
-.hero-news-card[onclick] > *:not(button):not(a):not(input):not(select):not(textarea):not(label){pointer-events:none}
-.card[onclick] button,.card[onclick] a,.card[onclick] input,.card[onclick] select,.card[onclick] textarea,.card[onclick] label,
-.hero-news-card[onclick] button,.hero-news-card[onclick] a{pointer-events:auto}
+[data-module],[data-section]{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,137,133,.18)}
+[data-module]:focus-visible,[data-section]:focus-visible{outline:3px solid rgba(0,137,133,.35);outline-offset:3px}
 input,select,textarea,button{font-size:16px}
-.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tabs button{flex:0 0 auto;min-height:44px}
 @media(max-width:820px){
-  .app,main,.section,.panel,.result,.integrated-tool,.tool-card,.compromis-card{width:100%!important;max-width:100%!important;min-width:0!important}
   .hero,.grid,.home-grid-compact,.split,.tool-grid,.compromis-grid,.row2,.row3{grid-template-columns:1fr!important}
-  .home-grid-compact .card,.grid .card,.card{width:100%!important;min-width:0!important;min-height:auto!important}
+  .app,main,.section,.panel,.result,.integrated-tool,.tool-card,.compromis-card,.card{width:100%!important;max-width:100%!important;min-width:0!important}
   .toolbar{display:grid!important;grid-template-columns:1fr!important;gap:10px!important}
   .toolbar button,.toolbar .btn,.btn{width:100%!important;min-height:46px!important}
-  .advisor-mini{align-items:center!important}
-  .advisor-mini-photo{width:58px!important;height:58px!important;flex:0 0 58px!important}
-  textarea{min-height:140px}
-}
-@media(max-width:520px){
-  header,.header{padding-left:12px!important;padding-right:12px!important}
-  .tabs{gap:8px!important;padding-bottom:8px!important}
-  .tabs button{padding:10px 12px!important;font-size:14px!important}
-  .card{padding:17px!important}
-  .home-module-title h2{font-size:24px!important}
 }
 
 </style>
@@ -940,27 +927,27 @@ input,select,textarea,button{font-size:16px}
       <p>Les outils commerciaux du quotidien : estimer, négocier, prospecter, rédiger, calculer et suivre les commissions.</p>
     </div>
     <div class="grid home-grid-compact">
-      <article class="card advisor-card" onclick="openModule('estimate')">
+      <article class="card advisor-card" data-module="estimate" role="button" tabindex="0">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/claire.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Claire</div><div class="advisor-mini-role">Estimation & stratégie vendeur</div></div></div>
         <div class="icon">🏠</div><h3>SmartEstimate</h3><p>Préparer un rendez-vous estimation : questions vendeur, documents, objections, exclusivité.</p><span class="pill">Estimation</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" onclick="openModule('negotiate')">
+      <article class="card advisor-card" data-module="negotiate" role="button" tabindex="0">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/julie.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Julie</div><div class="advisor-mini-role">Négociation & objections</div></div></div>
         <div class="icon">📉</div><h3>SmartNegotiate</h3><p>Défendre les honoraires, argumenter une baisse de prix, préparer une négociation.</p><span class="pill">Négociation</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" onclick="show('calculs',navBtnByText('Accueil'))">
+      <article class="card advisor-card" data-section="calculs" role="button" tabindex="0">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/sophie.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Sophie</div><div class="advisor-mini-role">Financement & simulations</div></div></div>
         <div class="icon">🧮</div><h3>SmartCalcul</h3><p>Accéder aux modules financiers : faisabilité, crédit, notaire, prêt relais, honoraires.</p><span class="pill">Calculs métier</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" onclick="openModule('prospect')">
+      <article class="card advisor-card" data-module="prospect" role="button" tabindex="0">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/nadia.jpg')"></div><div><div class="advisor-mini-kicker">Conseillère dédiée</div><div class="advisor-mini-name">Nadia</div><div class="advisor-mini-role">Prospection & relance</div></div></div>
         <div class="icon">☎️</div><h3>SmartProspect</h3><p>Scripts de prospection, relances vendeurs, copropriété, anciens clients et DPE.</p><span class="pill">Prospection</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" onclick="show('writer',navBtnByText('SmartWriter'))">
+      <article class="card advisor-card" data-section="writer" role="button" tabindex="0">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/antoine.jpg')"></div><div><div class="advisor-mini-kicker">Conseiller dédié</div><div class="advisor-mini-name">Antoine</div><div class="advisor-mini-role">Rédaction & communication</div></div></div>
         <div class="icon">✍️</div><h3>SmartWriter</h3><p>Rédiger et reformuler rapidement mails, messages vendeurs, posts, comptes rendus et textes commerciaux.</p><span class="pill">Rédaction</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
-      <article class="card advisor-card" onclick="openModule('commission')">
+      <article class="card advisor-card" data-module="commission" role="button" tabindex="0">
         <div class="advisor-mini"><div class="advisor-mini-photo" style="background-image:url('assets/advisors/marc.jpg')"></div><div><div class="advisor-mini-kicker">Conseiller dédié</div><div class="advisor-mini-name">Marc</div><div class="advisor-mini-role">Commission & règles internes</div></div></div>
         <div class="icon">🤝</div><h3>Calcul commission</h3><p>Répartition interne entre entrée, sortie, mandat, droit de suite et règles agence.</p><span class="pill">Commission</span><div class="open-advisor"><span>Ouvrir le conseiller</span><div class="advisor-arrow">→</div></div>
       </article>
@@ -1321,29 +1308,88 @@ function show(id,btn){
   }
 }
 function openModule(name){
-  const html={
-    finance: financeHTML(),
-    credit: creditHTML(),
-    honoraires: honorairesHTML(),
-    notaire: notaireHTML(),
-    relais: relaisHTML(),
-    invest: investHTML(),
-    baisse: baisseHTML(),
-    commission: commissionHTML(),
-    compromis: compromisHTML(),
-    documents: documentsHTML(),
-    historique: checklistHTML('Historique','Module à venir : dernières simulations, favoris, reprise rapide, export PDF.'),
-    estimate: promptHTML('🏠 SmartEstimate','Prépare un rendez-vous estimation : questions vendeur, documents, arguments exclusivité, points de vigilance.'),
-    negotiate: promptHTML('📉 SmartNegotiate','Prépare un argumentaire pour défendre les honoraires, la baisse de prix ou l’exclusivité.'),
-    prospect: promptHTML('☎️ SmartProspect','Prépare un script de prospection copropriété / DPE / ancien client / voisinage.'),
-    testapi: testApiHTML(),
-    aiConfig: aiConfigHTML(),
-  }[name] || checklistHTML('Module','Module en préparation.');
-  document.getElementById('moduleContent').innerHTML=html;
-  show('module',null);
-  setTimeout(()=>{ if(name==='credit')calcCredit(); if(name==='finance')setTimeout(sfCalculate,50); if(name==='compromis')renderCompromisChecklist(); },50);
-}
+  let moduleHTML = '';
 
+  try{
+    switch(name){
+      case 'finance':
+        moduleHTML = financeHTML();
+        break;
+      case 'credit':
+        moduleHTML = creditHTML();
+        break;
+      case 'honoraires':
+        moduleHTML = honorairesHTML();
+        break;
+      case 'notaire':
+        moduleHTML = notaireHTML();
+        break;
+      case 'relais':
+        moduleHTML = relaisHTML();
+        break;
+      case 'invest':
+        moduleHTML = investHTML();
+        break;
+      case 'baisse':
+        moduleHTML = baisseHTML();
+        break;
+      case 'commission':
+        moduleHTML = commissionHTML();
+        break;
+      case 'compromis':
+        moduleHTML = compromisHTML();
+        break;
+      case 'documents':
+        moduleHTML = documentsHTML();
+        break;
+      case 'historique':
+        moduleHTML = checklistHTML('Historique','Module à venir : dernières simulations, favoris, reprise rapide, export PDF.');
+        break;
+      case 'estimate':
+        moduleHTML = promptHTML('🏠 SmartEstimate','Prépare un rendez-vous estimation : questions vendeur, documents, arguments exclusivité, points de vigilance.');
+        break;
+      case 'negotiate':
+        moduleHTML = promptHTML('📉 SmartNegotiate','Prépare un argumentaire pour défendre les honoraires, la baisse de prix ou l’exclusivité.');
+        break;
+      case 'prospect':
+        moduleHTML = promptHTML('☎️ SmartProspect','Prépare un script de prospection copropriété / DPE / ancien client / voisinage.');
+        break;
+      case 'testapi':
+        moduleHTML = testApiHTML();
+        break;
+      case 'aiConfig':
+        moduleHTML = aiConfigHTML();
+        break;
+      default:
+        moduleHTML = checklistHTML('Module','Module en préparation.');
+    }
+
+    const container = document.getElementById('moduleContent');
+    if(!container) throw new Error("La zone moduleContent est introuvable.");
+
+    container.innerHTML = moduleHTML;
+
+    const moduleSection = document.getElementById('module');
+    if(!moduleSection) throw new Error("La section module est introuvable.");
+
+    show('module', null);
+
+    setTimeout(function(){
+      if(name === 'credit' && typeof calcCredit === 'function') calcCredit();
+      if(name === 'finance' && typeof sfCalculate === 'function') sfCalculate();
+      if(name === 'compromis' && typeof renderCompromisChecklist === 'function') renderCompromisChecklist();
+    }, 50);
+  }catch(error){
+    console.error('Erreur ouverture module', name, error);
+    const container = document.getElementById('moduleContent');
+    if(container){
+      container.innerHTML = `<div class="panel"><h2>Module indisponible</h2><div class="warnBox">${escapeHTML(error.message || String(error))}</div><div class="toolbar"><button class="btn secondary" onclick="show('dashboard',navBtnByText('Accueil'))">Retour accueil</button></div></div>`;
+      show('module', null);
+    }else{
+      alert('Impossible d’ouvrir ce module : ' + (error.message || error));
+    }
+  }
+}
 
 function financeHTML(){return `<div class="integrated-tool" id="simfi">
   <div class="tool-head">
@@ -2169,6 +2215,46 @@ window.addEventListener('unhandledrejection', function(event){
     status.innerHTML = '<b>Erreur promise détectée :</b><br>' + escapeHTML((event.reason && event.reason.message) || event.reason || 'Erreur inconnue');
   }
 });
+
+</script>
+<script>
+
+/* V5.13.9 — navigation Business fiable PC + mobile */
+(function(){
+  function executeCard(card){
+    if(!card) return;
+
+    const moduleName = card.getAttribute('data-module');
+    const sectionName = card.getAttribute('data-section');
+
+    if(moduleName){
+      openModule(moduleName);
+      return;
+    }
+
+    if(sectionName){
+      let btn = null;
+      if(sectionName === 'writer') btn = navBtnByText('SmartWriter');
+      if(sectionName === 'calculs') btn = navBtnByText('Accueil');
+      show(sectionName, btn);
+    }
+  }
+
+  document.addEventListener('click', function(event){
+    const card = event.target.closest('#dashboard [data-module], #dashboard [data-section]');
+    if(!card) return;
+    event.preventDefault();
+    executeCard(card);
+  });
+
+  document.addEventListener('keydown', function(event){
+    if(event.key !== 'Enter' && event.key !== ' ') return;
+    const card = event.target.closest('#dashboard [data-module], #dashboard [data-section]');
+    if(!card) return;
+    event.preventDefault();
+    executeCard(card);
+  });
+})();
 
 </script>
 </body>
